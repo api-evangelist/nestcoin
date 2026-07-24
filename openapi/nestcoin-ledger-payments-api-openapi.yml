@@ -1,0 +1,659 @@
+openapi: 3.0.3
+info:
+  version: 3.0.2
+  title: Onboard External API Gateway auth-oauth ledger-payments API
+  description: "**Introduction**\nAPI Gateway for Onboard\n\nThis specification describes API endpoints that are available to the public internet via the API gateway. The different endpoints require different authentication schemes, see documentation for what applies to the operation you want to access.\n\n**Errors**\nUses conventional HTTP response codes to indicate success or failure. In\ngeneral:\n \n- `2xx` status codes indicate success. Codes in the\n- `4xx` range\nindicate a client error (e.g. required parameters, failed request etc.).\n- `5xx` status codes indicate a server error occurred."
+  contact:
+    name: Nestcoin TechOps
+    email: techops@nestcoin.com
+  license:
+    name: UNLICENSED
+servers:
+- url: https://external.dev.onboardpay.co
+  description: Gateway for external API on staging environment.
+tags:
+- name: ledger-payments
+paths:
+  /ledger/cash-payments/rates:
+    x-original-path: /cash-payments/rates
+    get:
+      summary: Get reference rate
+      description: Get reference rate for cash payments
+      operationId: getCashPaymentRates
+      x-visibility: external
+      tags:
+      - ledger-payments
+      parameters:
+      - name: accountCurrency
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: payoutCurrency
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Rate retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransferRate'
+        '400':
+          $ref: '#/components/responses/LedgerSvcInvalidRequest'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+      security:
+      - authToken: []
+  /ledger/cash-payments/quotes:
+    x-original-path: /cash-payments/quotes
+    post:
+      summary: Create transfer quote
+      description: Create quote for cash payment
+      operationId: createTransferQuote
+      x-visibility: external
+      tags:
+      - ledger-payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTransferQuoteRequest'
+      responses:
+        '200':
+          description: Quote created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CashPaymentQuote'
+        '400':
+          $ref: '#/components/responses/LedgerSvcInvalidRequest'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+      security:
+      - authToken: []
+  /ledger/cash-payments:
+    x-original-path: /cash-payments
+    get:
+      summary: Retrieve list of cash payments
+      description: Retrieve a list of cash payments, can accept accountId, status
+      operationId: getCashPayments
+      x-visibility: external
+      tags:
+      - ledger-payments
+      parameters:
+      - name: accountId
+        in: query
+        description: Filter by the account that was debited. Can be the main account ID or a sub-account ID.
+        schema:
+          type: string
+          format: uuid
+      - name: status
+        in: query
+        schema:
+          type: string
+      - $ref: '#/components/parameters/LedgerSvcpage'
+      - $ref: '#/components/parameters/LedgerSvcsize'
+      responses:
+        '200':
+          description: Cash payments list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CashPaymentTransactionList'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+      security:
+      - authToken: []
+    post:
+      summary: Create cash payment
+      description: Create cash payment, using the created quote
+      operationId: createCashPayment
+      x-visibility: external
+      tags:
+      - ledger-payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCashPaymentRequest'
+      responses:
+        '200':
+          description: Cash payment created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransferResponse'
+        '400':
+          $ref: '#/components/responses/LedgerSvcInvalidRequest'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+      security:
+      - authToken: []
+  /ledger/cash-payments/{reference}:
+    x-original-path: /cash-payments/{reference}
+    get:
+      summary: Get specific cash payment
+      description: Get specific cash payment by reference
+      operationId: getCashPaymentByReference
+      x-visibility: external
+      tags:
+      - ledger-payments
+      parameters:
+      - name: reference
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: cash payment details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CashPaymentTransaction'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+        '404':
+          $ref: '#/components/responses/LedgerSvcNotFound'
+      security:
+      - authToken: []
+  /ledger/cash-payments/currencies:
+    x-original-path: /cash-payments/currencies
+    get:
+      summary: Get supported payout currencies
+      description: Get supported payout currencies for cash payment.
+      operationId: getCashPaymentPayoutCurrencies
+      x-visibility: external
+      tags:
+      - ledger-payments
+      responses:
+        '200':
+          description: List of supported payout currencies
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CashPaymentCurrenciesList'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+      security:
+      - authToken: []
+components:
+  schemas:
+    ErrorMessageDto:
+      description: Default error object for services. This gives consistent error object that all services may use.
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          description: Error code
+          example: UNKNOWN_ERROR
+        message:
+          type: string
+          description: Descriptive error message
+          example: Request could not be completed due to an error
+        data:
+          type: object
+          description: Additional data for this error message.
+          additionalProperties: true
+          properties: {}
+      x-common-model: ErrorMessageDto
+    CashPaymentCurrency:
+      type: object
+      required:
+      - name
+      - logo
+      - code
+      - countryCode
+      - paymentChannels
+      properties:
+        name:
+          type: string
+        logo:
+          type: string
+        code:
+          type: string
+        countryCode:
+          type: string
+        paymentChannels:
+          type: array
+          uniqueItems: true
+          default: []
+          items:
+            $ref: '#/components/schemas/CashPaymentChannel'
+      x-source-svc: ledger
+    TransferRate:
+      type: object
+      required:
+      - accountCurrency
+      - cashCurrency
+      - rate
+      properties:
+        accountCurrency:
+          type: string
+          example: USD
+        cashCurrency:
+          type: string
+          description: The cash (fiat) currency. For cash payments this is the payout currency; for cash deposits the pay-in currency.
+          example: NGN
+        rate:
+          type: number
+          example: 1500.5
+      x-source-svc: ledger
+    CreateCashPaymentRequest:
+      type: object
+      description: Details required to create a cash payment. The amount and currency must align with an existing quote.
+      required:
+      - quoteId
+      - accountId
+      - amount
+      - beneficiaryId
+      - reference
+      - paymentReason
+      properties:
+        quoteId:
+          type: string
+          format: uuid
+          description: Identifier of an existing cash payment quote, retrieved from the cash payment quote endpoint.
+        accountId:
+          type: string
+          format: uuid
+          description: Account to debit for this payment. Can be the main account ID or a sub-account ID.
+        reference:
+          type: string
+          description: Alpha-numeric transfer reference, unique for this transfer.
+          example: CTR123456
+          pattern: ^[a-zA-Z0-9_-]{8,48}$
+          minLength: 8
+          maxLength: 48
+        amount:
+          type: number
+          minimum: 0
+          exclusiveMinimum: true
+        unitCurrency:
+          type: string
+          description: "Should be same as one of payout or account currencies in the quote. \nDefaults to account currency if not provided.\n"
+        beneficiaryId:
+          type: string
+          format: uuid
+          description: Identifier of an existing beneficiary to whom the transfer will be made.
+        paymentReason:
+          type: string
+          description: Reason for the payment, to be provided at the time of transfer creation.
+        narration:
+          type: string
+          description: Notes to be included in the transfer.
+      x-source-svc: ledger
+    TransactionStatus:
+      type: string
+      description: 'Status of the transaction, indicating its current state in the processing lifecycle.
+
+        - PENDING: The transaction has been created but not yet processed.
+
+        - IN_PROGRESS: The transaction is currently being processed.
+
+        - FAILED: The transaction processing has failed.
+
+        - SUCCESS: The transaction has been successfully processed.
+
+        '
+      enum:
+      - PENDING
+      - IN_PROGRESS
+      - FAILED
+      - SUCCESS
+      x-source-svc: ledger
+    CashPaymentCurrenciesList:
+      type: object
+      required:
+      - currencies
+      properties:
+        currencies:
+          type: array
+          description: List of supported payout currencies for cash payments.
+          items:
+            $ref: '#/components/schemas/CashPaymentCurrency'
+      x-source-svc: ledger
+    User2FAMethod:
+      type: string
+      enum:
+      - AUTHENTICATOR_APP
+      - EMAIL
+      - SMS
+      x-source-svc: ledger
+    Paging:
+      description: Base object for paginated list
+      type: object
+      properties:
+        name:
+          type: string
+          description: Descriptive name for the list
+        size:
+          minimum: 0
+          type: integer
+          format: int32
+          description: Positive integer
+        totalItems:
+          minimum: 0
+          type: integer
+          format: int32
+          description: Positive integer
+        nextPage:
+          minimum: 0
+          type: integer
+          format: int32
+          description: Positive integer
+        previousPage:
+          minimum: 0
+          type: integer
+          format: int32
+          description: Positive integer
+      discriminator:
+        propertyName: name
+      x-common-model: Paging
+    CashPaymentChannel:
+      type: object
+      required:
+      - name
+      - id
+      - beneficiaryType
+      properties:
+        name:
+          type: string
+          description: Human-readable display name of the payment method
+          example: Bank Transfer
+        id:
+          type: string
+          description: Unique identifier for this payment channel
+          example: BANK_TRANSFER_NIGERIA
+        beneficiaryType:
+          type: string
+          description: 'Type to use for beneficiaries created for this payment channel. See the Beneficiary schema for more details on beneficiary types.
+
+            '
+          example: BeneficiaryLocalBankAccount
+      x-source-svc: ledger
+    TransferResponse:
+      type: object
+      additionalProperties: false
+      description: The payment initiation response
+      required:
+      - id
+      - status
+      - awaiting2fA
+      properties:
+        id:
+          type: string
+          example: P12005E1DV
+        status:
+          $ref: '#/components/schemas/TransactionStatus'
+        awaiting2fA:
+          type: boolean
+          default: false
+          description: Indicates if transfer is awaiting 2FA confirmation. This applies mostly to transaction initiated via dashboard
+        twoFaMethod:
+          type: array
+          description: List of 2fa enabled
+          items:
+            $ref: '#/components/schemas/User2FAMethod'
+      x-source-svc: ledger
+    CashPaymentTransactionList:
+      allOf:
+      - $ref: '#/components/schemas/Paging'
+      - type: object
+        properties:
+          content:
+            type: array
+            items:
+              $ref: '#/components/schemas/CashPaymentTransaction'
+      x-source-svc: ledger
+    CreateTransferQuoteRequest:
+      type: object
+      required:
+      - payoutCurrency
+      - accountCurrency
+      - amount
+      properties:
+        payoutCurrency:
+          type: string
+          example: NGN
+          description: Currency of the payout to the beneficiary.
+        accountCurrency:
+          type: string
+          example: USD
+          description: Currency of the account to be debited.
+        amount:
+          type: number
+          example: 100
+          minimum: 0
+          exclusiveMinimum: true
+          multipleOf: 0.01
+        unitCurrency:
+          type: string
+          description: Should be same as one of payout or account currencies. Defaults to account currency if not provided.
+          example: USD
+      x-source-svc: ledger
+    CashPaymentTransaction:
+      type: object
+      description: Details of a cash payment transaction.
+      required:
+      - id
+      - reference
+      - currency
+      - status
+      - payoutCurrency
+      - amount
+      - rate
+      - payoutAmount
+      - createdDate
+      - recipient
+      properties:
+        id:
+          type: string
+          format: uuid
+        reference:
+          type: string
+          description: Reference for the cash payment transaction at initiation.
+        accountTransactionId:
+          type: string
+          description: Identifier of the transaction on the account.
+        currency:
+          type: string
+          description: Currency in which the account was debited.
+          example: USD
+        status:
+          $ref: '#/components/schemas/TransactionStatus'
+        payoutCurrency:
+          type: string
+          description: Currency in which the beneficiary will be paid out.
+          example: NGN
+        amount:
+          type: number
+          description: Amount transferred.
+          example: 100
+        rate:
+          type: number
+          description: Exchange rate applied for this transfer.
+          example: 1450.75
+        payoutAmount:
+          type: number
+          description: Amount paid out to the beneficiary in payout currency.
+          example: 145075
+        providerReference:
+          type: string
+          description: Reference provided by the cash payment provider.
+          example: PROV123456
+        recipient:
+          $ref: '#/components/schemas/BasicBeneficiaryInfo'
+        createdDate:
+          type: string
+          format: date-time
+      x-source-svc: ledger
+    BasicBeneficiaryInfo:
+      type: object
+      description: Basic information about a beneficiary as at the time of transaction.
+      required:
+      - id
+      - accountName
+      - beneficiaryType
+      - accountIdentifier
+      - paymentChannelId
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the beneficiary.
+        accountName:
+          type: string
+          description: Name on the account
+          example: John Doe
+        beneficiaryType:
+          type: string
+          description: Type of beneficiary object.
+          example: BeneficiaryLocalBankAccount
+        bankName:
+          type: string
+          description: 'Name of the receiving bank, for mobile money this would be the network, and for P2P wallet it will be the name of the account provider
+
+            '
+          example: Great Bank LLC
+        accountIdentifier:
+          type: string
+          description: 'The account identifier at the bank. For mobile money, this is the phone number on account, for P2P wallet, this is the account ID
+
+            Where routing number or sort code is present, this would be `{routingNumber}-{accountNumber}`
+
+            '
+          example: '230101010'
+        paymentChannelId:
+          type: string
+          description: Identifier of the payment channel used for this transaction, if available. This can be used to determine the exact payment method used for the transaction.
+          example: BANK_TRANSFER_NIGERIA
+        country:
+          type: string
+          description: Country where the payment method belongs if available
+          example: IE
+      x-source-svc: ledger
+    CashPaymentQuote:
+      type: object
+      required:
+      - id
+      - payoutCurrency
+      - accountCurrency
+      - rate
+      - minimumAmount
+      - maximumAmount
+      - expiresAt
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the transfer quote.
+        accountCurrency:
+          type: string
+          description: Currency of the account to be debited.
+          example: USD
+        payoutCurrency:
+          type: string
+          description: Currency of the payout to the beneficiary.
+          example: NGN
+        rate:
+          type: number
+          description: Exchange rate applied for this quote
+          example: 1450.75
+        minimumAmount:
+          type: number
+          description: Minimum amount allowed for this quote
+          example: 50
+        maximumAmount:
+          type: number
+          description: Maximum amount allowed for this quote
+          example: 10000
+        minimumPayoutAmount:
+          type: number
+          description: Minimum payout amount allowed for this quote
+          example: 72500
+        maximumPayoutAmount:
+          type: number
+          description: Maximum payout amount allowed for this quote
+          example: 14507500
+        expiresAt:
+          type: string
+          format: date-time
+          description: Timestamp field.
+      x-source-svc: ledger
+  responses:
+    LedgerSvcUnauthorized:
+      description: Client is not authorized to make request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: UNAUTHORIZED
+            message: Either client security header is missing or it is not valid.
+    LedgerSvcInvalidRequest:
+      description: Request could not be validated
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: BAD_REQUEST
+            message: Request could not be validated.
+    LedgerSvcNotFound:
+      description: Entity was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: NOT_FOUND
+            message: Information could not be found
+  parameters:
+    LedgerSvcpage:
+      in: query
+      name: page
+      required: false
+      description: Page parameter, starting from 1
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    LedgerSvcsize:
+      in: query
+      name: size
+      required: false
+      schema:
+        type: integer
+        maximum: 100
+        minimum: 1
+        default: 20
+  securitySchemes:
+    authSignature:
+      type: apiKey
+      name: x-signature
+      in: header
+    authToken:
+      type: apiKey
+      name: x-auth-token
+      in: header
+      description: Auth Token header for inter-service communication
+x-organization: onboard
+x-service-id: external-gateway
+x-preserve-refs:
+- '#/components/schemas/IntegrationProduct'
+- '#/components/schemas/AdAppliedEscrowBalanceDto'
+- '#/components/schemas/P2PWalletRecipient'
+- '#/components/schemas/BankAccountRecipient'
+- '#/components/schemas/MobileMoneyRecipient'
+- '#/components/schemas/OrderEvent'
+- '#/components/schemas/PaymentMethodEventAction'
+- '#/components/schemas/PaymentMethodEventPayload'
+- '#/components/schemas/TransactionServiceErrorCode'
+- '#/components/schemas/ErrorCodes'

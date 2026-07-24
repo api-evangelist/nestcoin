@@ -1,0 +1,675 @@
+openapi: 3.0.3
+info:
+  version: 3.0.2
+  title: Onboard External API Gateway auth-oauth ledger-cash deposits API
+  description: "**Introduction**\nAPI Gateway for Onboard\n\nThis specification describes API endpoints that are available to the public internet via the API gateway. The different endpoints require different authentication schemes, see documentation for what applies to the operation you want to access.\n\n**Errors**\nUses conventional HTTP response codes to indicate success or failure. In\ngeneral:\n \n- `2xx` status codes indicate success. Codes in the\n- `4xx` range\nindicate a client error (e.g. required parameters, failed request etc.).\n- `5xx` status codes indicate a server error occurred."
+  contact:
+    name: Nestcoin TechOps
+    email: techops@nestcoin.com
+  license:
+    name: UNLICENSED
+servers:
+- url: https://external.dev.onboardpay.co
+  description: Gateway for external API on staging environment.
+tags:
+- name: ledger-cash deposits
+paths:
+  /ledger/cash-deposits/rates:
+    x-original-path: /cash-deposits/rates
+    get:
+      summary: Get reference rate
+      description: Get reference rate for cash deposits, from the pay-in currency to the account currency.
+      operationId: getCashDepositRates
+      x-visibility: external
+      tags:
+      - ledger-cash deposits
+      parameters:
+      - name: accountCurrency
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: payinCurrency
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Rate retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransferRate'
+        '400':
+          $ref: '#/components/responses/LedgerSvcInvalidRequest'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+      security:
+      - authToken: []
+  /ledger/cash-deposits/quotes:
+    x-original-path: /cash-deposits/quotes
+    post:
+      summary: Create deposit quote
+      description: Create quote for cash deposit
+      operationId: createDepositQuote
+      x-visibility: external
+      tags:
+      - ledger-cash deposits
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDepositQuoteRequest'
+      responses:
+        '200':
+          description: Quote created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CashDepositQuote'
+        '400':
+          $ref: '#/components/responses/LedgerSvcInvalidRequest'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+      security:
+      - authToken: []
+  /ledger/cash-deposits:
+    x-original-path: /cash-deposits
+    get:
+      summary: Retrieve list of cash deposits
+      description: Retrieve a list of cash deposits, can accept accountId, status
+      operationId: getCashDeposits
+      x-visibility: external
+      tags:
+      - ledger-cash deposits
+      parameters:
+      - name: accountId
+        in: query
+        description: Filter by the account that was credited. Can be the main account ID or a sub-account ID.
+        schema:
+          type: string
+          format: uuid
+      - name: status
+        in: query
+        schema:
+          type: string
+      - $ref: '#/components/parameters/LedgerSvcpage'
+      - $ref: '#/components/parameters/LedgerSvcsize'
+      responses:
+        '200':
+          description: Cash deposits list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CashDepositTransactionList'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+      security:
+      - authToken: []
+    post:
+      summary: Create cash deposit
+      description: Create cash deposit, using the created quote. Returns the deposit transaction, including the payment details the customer must pay into.
+      operationId: createCashDeposit
+      x-visibility: external
+      tags:
+      - ledger-cash deposits
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCashDepositRequest'
+      responses:
+        '200':
+          description: Cash deposit created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CashDepositTransaction'
+        '400':
+          $ref: '#/components/responses/LedgerSvcInvalidRequest'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+      security:
+      - authToken: []
+  /ledger/cash-deposits/{reference}:
+    x-original-path: /cash-deposits/{reference}
+    get:
+      summary: Get specific cash deposit
+      description: Get specific cash deposit by reference
+      operationId: getCashDepositByReference
+      x-visibility: external
+      tags:
+      - ledger-cash deposits
+      parameters:
+      - name: reference
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: cash deposit details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CashDepositTransaction'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+        '404':
+          $ref: '#/components/responses/LedgerSvcNotFound'
+      security:
+      - authToken: []
+  /ledger/cash-deposits/currencies:
+    x-original-path: /cash-deposits/currencies
+    get:
+      summary: Get supported pay-in currencies
+      description: Get supported pay-in currencies for cash deposit. Only whitelisted pay-in currencies are returned.
+      operationId: getCashDepositPayinCurrencies
+      x-visibility: external
+      tags:
+      - ledger-cash deposits
+      responses:
+        '200':
+          description: List of supported pay-in currencies
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CashPaymentCurrenciesList'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+      security:
+      - authToken: []
+components:
+  schemas:
+    CashDepositTransactionList:
+      allOf:
+      - $ref: '#/components/schemas/Paging'
+      - type: object
+        properties:
+          content:
+            type: array
+            items:
+              $ref: '#/components/schemas/CashDepositTransaction'
+      x-source-svc: ledger
+    ErrorMessageDto:
+      description: Default error object for services. This gives consistent error object that all services may use.
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          description: Error code
+          example: UNKNOWN_ERROR
+        message:
+          type: string
+          description: Descriptive error message
+          example: Request could not be completed due to an error
+        data:
+          type: object
+          description: Additional data for this error message.
+          additionalProperties: true
+          properties: {}
+      x-common-model: ErrorMessageDto
+    CashPaymentCurrency:
+      type: object
+      required:
+      - name
+      - logo
+      - code
+      - countryCode
+      - paymentChannels
+      properties:
+        name:
+          type: string
+        logo:
+          type: string
+        code:
+          type: string
+        countryCode:
+          type: string
+        paymentChannels:
+          type: array
+          uniqueItems: true
+          default: []
+          items:
+            $ref: '#/components/schemas/CashPaymentChannel'
+      x-source-svc: ledger
+    TransferRate:
+      type: object
+      required:
+      - accountCurrency
+      - cashCurrency
+      - rate
+      properties:
+        accountCurrency:
+          type: string
+          example: USD
+        cashCurrency:
+          type: string
+          description: The cash (fiat) currency. For cash payments this is the payout currency; for cash deposits the pay-in currency.
+          example: NGN
+        rate:
+          type: number
+          example: 1500.5
+      x-source-svc: ledger
+    CashDepositTransaction:
+      type: object
+      description: Details of a cash deposit transaction.
+      required:
+      - id
+      - reference
+      - currency
+      - status
+      - payinCurrency
+      - amount
+      - rate
+      - payinAmount
+      - createdDate
+      properties:
+        id:
+          type: string
+          format: uuid
+        reference:
+          type: string
+          description: Reference for the cash deposit transaction at initiation.
+        accountTransactionId:
+          type: string
+          description: Identifier of the credit transaction on the account.
+        currency:
+          type: string
+          description: Currency in which the account was credited.
+          example: USD
+        status:
+          $ref: '#/components/schemas/TransactionStatus'
+        payinCurrency:
+          type: string
+          description: Currency the customer paid in.
+          example: NGN
+        amount:
+          type: number
+          description: Amount credited to the account.
+          example: 100
+        rate:
+          type: number
+          description: Exchange rate applied for this deposit.
+          example: 1450.75
+        payinAmount:
+          type: number
+          description: Amount the customer paid in, in the pay-in currency.
+          example: 145075
+        providerReference:
+          type: string
+          description: Reference provided by the cash deposit provider.
+          example: PROV123456
+        paymentDetails:
+          $ref: '#/components/schemas/CashDepositPaymentDetails'
+        createdDate:
+          type: string
+          format: date-time
+      x-source-svc: ledger
+    TransactionStatus:
+      type: string
+      description: 'Status of the transaction, indicating its current state in the processing lifecycle.
+
+        - PENDING: The transaction has been created but not yet processed.
+
+        - IN_PROGRESS: The transaction is currently being processed.
+
+        - FAILED: The transaction processing has failed.
+
+        - SUCCESS: The transaction has been successfully processed.
+
+        '
+      enum:
+      - PENDING
+      - IN_PROGRESS
+      - FAILED
+      - SUCCESS
+      x-source-svc: ledger
+    CashPaymentCurrenciesList:
+      type: object
+      required:
+      - currencies
+      properties:
+        currencies:
+          type: array
+          description: List of supported payout currencies for cash payments.
+          items:
+            $ref: '#/components/schemas/CashPaymentCurrency'
+      x-source-svc: ledger
+    Paging:
+      description: Base object for paginated list
+      type: object
+      properties:
+        name:
+          type: string
+          description: Descriptive name for the list
+        size:
+          minimum: 0
+          type: integer
+          format: int32
+          description: Positive integer
+        totalItems:
+          minimum: 0
+          type: integer
+          format: int32
+          description: Positive integer
+        nextPage:
+          minimum: 0
+          type: integer
+          format: int32
+          description: Positive integer
+        previousPage:
+          minimum: 0
+          type: integer
+          format: int32
+          description: Positive integer
+      discriminator:
+        propertyName: name
+      x-common-model: Paging
+    CashPaymentChannel:
+      type: object
+      required:
+      - name
+      - id
+      - beneficiaryType
+      properties:
+        name:
+          type: string
+          description: Human-readable display name of the payment method
+          example: Bank Transfer
+        id:
+          type: string
+          description: Unique identifier for this payment channel
+          example: BANK_TRANSFER_NIGERIA
+        beneficiaryType:
+          type: string
+          description: 'Type to use for beneficiaries created for this payment channel. See the Beneficiary schema for more details on beneficiary types.
+
+            '
+          example: BeneficiaryLocalBankAccount
+      x-source-svc: ledger
+    CashDepositPaymentDetails:
+      type: object
+      description: 'Destination account details the customer must pay into to fund the deposit. Mirrors a Beneficiary
+
+        (without an id). Carries only the account details needed to make the payment; transaction context
+
+        (amount, status, etc.) lives on the enclosing CashDepositTransaction.
+
+        '
+      required:
+      - details
+      - payinCurrency
+      properties:
+        details:
+          $ref: '#/components/schemas/CashAccountDetails'
+        payinCurrency:
+          type: string
+          description: Currency the destination account accepts for the deposit.
+          example: NGN
+      x-source-svc: ledger
+    CreateCashDepositRequest:
+      type: object
+      description: Details required to create a cash deposit. The amount and currency must align with an existing quote.
+      required:
+      - quoteId
+      - accountId
+      - amount
+      - reference
+      properties:
+        quoteId:
+          type: string
+          format: uuid
+          description: Identifier of an existing cash deposit quote, retrieved from the cash deposit quote endpoint.
+        accountId:
+          type: string
+          format: uuid
+          description: Account to credit for this deposit. Can be the main account ID or a sub-account ID.
+        reference:
+          type: string
+          description: Alpha-numeric deposit reference, unique for this deposit.
+          example: CTR123456
+          pattern: ^[a-zA-Z0-9_-]{8,48}$
+          minLength: 8
+          maxLength: 48
+        amount:
+          type: number
+          minimum: 0
+          exclusiveMinimum: true
+        unitCurrency:
+          type: string
+          description: 'Should be same as one of pay-in or account currencies in the quote.
+
+            Defaults to account currency if not provided.
+
+            '
+        senderInfo:
+          $ref: '#/components/schemas/DepositSenderInfo'
+        narration:
+          type: string
+          description: Notes to be included with the deposit.
+      x-source-svc: ledger
+    DepositSenderInfo:
+      type: object
+      description: Identifies the party sending fiat for the deposit. When omitted on a deposit request, it is constructed from the business details.
+      required:
+      - firstName
+      - lastName
+      - email
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        phoneNumber:
+          type: string
+          pattern: ^\+[1-9][0-9]{0,3}[0-9]{7,14}$
+      x-source-svc: ledger
+    CashAccountDetails:
+      type: object
+      required:
+      - accountInfoType
+      - accountName
+      - accountNumber
+      properties:
+        accountInfoType:
+          type: string
+          pattern: ^Cash(LocalBank|SepaBank|ACHBank|SwiftBank|MobileWallet|MultiRailBank)Account$
+          description: 'Used to determine the exact schema type.
+
+            Allowed values:
+
+            - CashLocalBankAccount
+
+            - CashSepaBankAccount
+
+            - CashACHBankAccount
+
+            - CashSwiftBankAccount
+
+            - CashMobileWalletAccount
+
+            - CashMultiRailBankAccount
+
+            '
+        accountName:
+          type: string
+          description: Name on the destination account.
+          example: John Doe
+        accountNumber:
+          type: string
+          description: 'The destination account identifier. For mobile money this is the phone number, for P2P wallet the account ID.
+
+            Where routing number or sort code is present, this would be `{routingNumber}-{accountNumber}`.
+
+            '
+          example: '230101010'
+        reference:
+          type: string
+          description: 'Reference the customer must include with the deposit so the pay-in is auto-matched.
+
+            Optional — some providers do not require one.
+
+            '
+          example: PROV123456
+      discriminator:
+        propertyName: accountInfoType
+        mapping:
+          CashLocalBankAccount: '#/components/schemas/CashLocalBankAccount'
+          CashSepaBankAccount: '#/components/schemas/CashSepaBankAccount'
+          CashACHBankAccount: '#/components/schemas/CashACHBankAccount'
+          CashSwiftBankAccount: '#/components/schemas/CashSwiftBankAccount'
+          CashMobileWalletAccount: '#/components/schemas/CashMobileWalletAccount'
+          CashMultiRailBankAccount: '#/components/schemas/CashMultiRailBankAccount'
+      x-source-svc: ledger
+    CashDepositQuote:
+      type: object
+      required:
+      - id
+      - payinCurrency
+      - accountCurrency
+      - rate
+      - minimumAmount
+      - maximumAmount
+      - expiresAt
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the deposit quote.
+        accountCurrency:
+          type: string
+          description: Currency of the account to be credited.
+          example: USD
+        payinCurrency:
+          type: string
+          description: Currency the customer pays in.
+          example: NGN
+        rate:
+          type: number
+          description: Exchange rate applied for this quote
+          example: 1450.75
+        minimumAmount:
+          type: number
+          description: Minimum amount allowed for this quote
+          example: 50
+        maximumAmount:
+          type: number
+          description: Maximum amount allowed for this quote
+          example: 10000
+        minimumPayinAmount:
+          type: number
+          description: Minimum pay-in amount allowed for this quote
+          example: 72500
+        maximumPayinAmount:
+          type: number
+          description: Maximum pay-in amount allowed for this quote
+          example: 14507500
+        expiresAt:
+          type: string
+          format: date-time
+          description: Timestamp field.
+      x-source-svc: ledger
+    CreateDepositQuoteRequest:
+      type: object
+      required:
+      - payinCurrency
+      - accountCurrency
+      - amount
+      properties:
+        payinCurrency:
+          type: string
+          example: NGN
+          description: Currency the customer pays in.
+        accountCurrency:
+          type: string
+          example: USD
+          description: Currency of the account to be credited.
+        amount:
+          type: number
+          example: 100
+          minimum: 0
+          exclusiveMinimum: true
+          multipleOf: 0.01
+        unitCurrency:
+          type: string
+          description: Should be same as one of pay-in or account currencies. Defaults to account currency if not provided.
+          example: USD
+      x-source-svc: ledger
+  responses:
+    LedgerSvcUnauthorized:
+      description: Client is not authorized to make request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: UNAUTHORIZED
+            message: Either client security header is missing or it is not valid.
+    LedgerSvcInvalidRequest:
+      description: Request could not be validated
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: BAD_REQUEST
+            message: Request could not be validated.
+    LedgerSvcNotFound:
+      description: Entity was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: NOT_FOUND
+            message: Information could not be found
+  parameters:
+    LedgerSvcpage:
+      in: query
+      name: page
+      required: false
+      description: Page parameter, starting from 1
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    LedgerSvcsize:
+      in: query
+      name: size
+      required: false
+      schema:
+        type: integer
+        maximum: 100
+        minimum: 1
+        default: 20
+  securitySchemes:
+    authSignature:
+      type: apiKey
+      name: x-signature
+      in: header
+    authToken:
+      type: apiKey
+      name: x-auth-token
+      in: header
+      description: Auth Token header for inter-service communication
+x-organization: onboard
+x-service-id: external-gateway
+x-preserve-refs:
+- '#/components/schemas/IntegrationProduct'
+- '#/components/schemas/AdAppliedEscrowBalanceDto'
+- '#/components/schemas/P2PWalletRecipient'
+- '#/components/schemas/BankAccountRecipient'
+- '#/components/schemas/MobileMoneyRecipient'
+- '#/components/schemas/OrderEvent'
+- '#/components/schemas/PaymentMethodEventAction'
+- '#/components/schemas/PaymentMethodEventPayload'
+- '#/components/schemas/TransactionServiceErrorCode'
+- '#/components/schemas/ErrorCodes'

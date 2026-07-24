@@ -1,0 +1,1988 @@
+openapi: 3.0.3
+info:
+  version: 3.0.2
+  title: Onboard External API Gateway auth-oauth exchange-external-api API
+  description: "**Introduction**\nAPI Gateway for Onboard\n\nThis specification describes API endpoints that are available to the public internet via the API gateway. The different endpoints require different authentication schemes, see documentation for what applies to the operation you want to access.\n\n**Errors**\nUses conventional HTTP response codes to indicate success or failure. In\ngeneral:\n \n- `2xx` status codes indicate success. Codes in the\n- `4xx` range\nindicate a client error (e.g. required parameters, failed request etc.).\n- `5xx` status codes indicate a server error occurred."
+  contact:
+    name: Nestcoin TechOps
+    email: techops@nestcoin.com
+  license:
+    name: UNLICENSED
+servers:
+- url: https://external.dev.onboardpay.co
+  description: Gateway for external API on staging environment.
+tags:
+- name: exchange-external-api
+paths:
+  /exchange/api/info:
+    x-original-path: /api/info
+    get:
+      tags:
+      - exchange-external-api
+      summary: Get CEX Profile
+      operationId: queryMyBusinessInfo
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CexProfileDto'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '401':
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+      security:
+      - authToken: []
+      x-visibility: external
+  /exchange/orders/trade:
+    x-original-path: /orders/trade
+    get:
+      tags:
+      - exchange-external-api
+      summary: Start a trade
+      operationId: createOrder
+      parameters:
+      - name: apiKey
+        in: query
+        description: CEX api key
+        required: true
+        schema:
+          type: string
+      - name: product
+        in: query
+        description: Integration product in use e.g web3 or custodial
+        required: true
+        schema:
+          $ref: '#/components/schemas/CreateOrderProductEnum'
+      - name: orderId
+        in: query
+        description: Order ID generated for offramp trades
+        schema:
+          type: string
+      - name: tradeType
+        in: query
+        description: Type of trade
+        required: true
+        schema:
+          $ref: '#/components/schemas/CreateOrderTradeTypeEnum'
+      - name: fiat
+        in: query
+        description: Symbol of fiat currency
+        required: true
+        schema:
+          type: string
+      - name: fiatAmount
+        in: query
+        description: Fiat amount
+        schema:
+          type: number
+      - name: token
+        in: query
+        description: Symbol of token asset
+        required: true
+        schema:
+          type: string
+      - name: tokenAmount
+        in: query
+        description: Token amount
+        schema:
+          type: number
+      - name: networkId
+        in: query
+        description: Onboard blockchain network identifier or chain Id e.g Base will be `base` or `8453` or `0x2105`
+        schema:
+          type: string
+      - name: address
+        in: query
+        description: Wallet address to be debited/credited in order
+        schema:
+          type: string
+      - name: paymentChannel
+        in: query
+        description: Payment channel
+        schema:
+          type: string
+      - name: email
+        in: query
+        description: Customer's email address
+        schema:
+          type: string
+      - name: autoselect
+        in: query
+        description: Offer auto select flag
+        schema:
+          type: boolean
+          default: true
+      responses:
+        '301':
+          description: Redirect
+          content: {}
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '401':
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+      security: []
+      x-visibility: external
+  /exchange/api/orders/trade-options:
+    x-original-path: /api/orders/trade-options
+    get:
+      tags:
+      - exchange-external-api
+      summary: Trade options / configurations for onboard
+      operationId: getTradeOptions
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradeOptions'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '401':
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+      x-visibility: external
+      security: []
+  /exchange/api/orders/price:
+    x-original-path: /api/orders/price
+    get:
+      tags:
+      - exchange-external-api
+      summary: Get best price for order
+      operationId: getPrice
+      parameters:
+      - $ref: '#/components/parameters/ExchangeSvctradeTypeQueryParam'
+      - $ref: '#/components/parameters/ExchangeSvcfiatQueryParam'
+      - $ref: '#/components/parameters/ExchangeSvcfiatAmountQueryParam'
+      - $ref: '#/components/parameters/ExchangeSvctokenQueryParam'
+      - $ref: '#/components/parameters/ExchangeSvctokenAmountQueryParam'
+      - $ref: '#/components/parameters/ExchangeSvcnetworkQueryParam'
+      - $ref: '#/components/parameters/ExchangeSvcpaymentChannelQueryParam'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PriceDto'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '401':
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+      x-visibility: external
+      security: []
+  /exchange/api/orders/trade-url:
+    x-original-path: /api/orders/trade-url
+    get:
+      tags:
+      - exchange-external-api
+      summary: Fetch trade url
+      operationId: initTrade
+      parameters:
+      - name: apiKey
+        in: query
+        description: CEX api key
+        required: true
+        schema:
+          type: string
+      - name: product
+        in: query
+        description: Integration product in use e.g web3 or custodial
+        required: true
+        schema:
+          $ref: '#/components/schemas/InitTradeProductEnum'
+      - name: orderId
+        in: query
+        description: Order ID generated for offramp trades
+        schema:
+          type: string
+      - name: tradeType
+        in: query
+        description: Type of trade
+        required: true
+        schema:
+          $ref: '#/components/schemas/InitTradeTradeTypeEnum'
+      - name: fiat
+        in: query
+        description: Symbol of fiat currency
+        required: true
+        schema:
+          type: string
+      - name: fiatAmount
+        in: query
+        description: Fiat amount
+        schema:
+          type: number
+      - name: token
+        in: query
+        description: Symbol of token asset
+        required: true
+        schema:
+          type: string
+      - name: tokenAmount
+        in: query
+        description: Token amount
+        schema:
+          type: number
+      - name: networkId
+        in: query
+        description: Onboard blockchain network identifier or chain Id e.g Base will be `base` or `8453` or `0x2105`
+        schema:
+          type: string
+      - name: address
+        in: query
+        description: Wallet address to be debited/credited in order
+        schema:
+          type: string
+      - name: paymentChannel
+        in: query
+        description: Payment channel
+        schema:
+          type: string
+      - name: email
+        in: query
+        description: Customer's email address
+        schema:
+          type: string
+      - name: autoselect
+        in: query
+        description: Offer auto select flag
+        schema:
+          type: boolean
+          default: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateOrderDto'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '401':
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+      x-visibility: external
+      security: []
+  /exchange/api/cexs/signers:
+    x-original-path: /api/cexs/signers
+    get:
+      tags:
+      - exchange-external-api
+      summary: Query CEX signer addresses
+      operationId: querySignersExternal
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                required:
+                - signers
+                type: object
+                properties:
+                  signers:
+                    uniqueItems: true
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CexSignerDto'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '401':
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+      security:
+      - authToken: []
+      x-visibility: external
+  /exchange/api/cexs/signers/{networkId}:
+    x-original-path: /api/cexs/signers/{networkId}
+    get:
+      tags:
+      - exchange-external-api
+      summary: Query CEX network signer
+      operationId: queryNetworkSignerExternal
+      parameters:
+      - name: networkId
+        in: path
+        description: Supported network ID
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CexSignerDto'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '401':
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+      security:
+      - authToken: []
+      x-visibility: external
+  /exchange/api/cexs/liquidity-pools:
+    x-original-path: /api/cexs/liquidity-pools
+    get:
+      tags:
+      - exchange-external-api
+      summary: Get CEX deployed liquidity pool contract data
+      operationId: queryLiquidityPoolsExternal
+      parameters:
+      - name: networkId
+        in: query
+        description: Onboard blockchain network identifier or chain Id e.g Base will be `base` or `8453` or `0x2105`
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  liquidityPools:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/LiquidityPoolDto'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '401':
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+      security:
+      - authToken: []
+      x-visibility: external
+    post:
+      tags:
+      - exchange-external-api
+      summary: Create liquidity pool contract for CEX
+      operationId: deployLiquidityPoolExternal
+      requestBody:
+        description: Request data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeployLiquidityPoolCommand'
+        required: false
+      responses:
+        '201':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiquidityPoolDto'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '401':
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+      security:
+      - authToken: []
+      x-visibility: external
+      x-codegen-request-body-name: body
+  /exchange/api/cexs/liquidity-pools/{poolAddress}/balances:
+    x-original-path: /api/cexs/liquidity-pools/{poolAddress}/balances
+    get:
+      tags:
+      - exchange-external-api
+      summary: Get CEX token and coin balances
+      operationId: fetchLiquidityPoolBalanceExternal
+      parameters:
+      - name: networkId
+        in: query
+        description: Onboard blockchain network identifier or chain Id e.g Base will be `base` or `8453` or `0x2105`
+        schema:
+          type: string
+      - name: poolAddress
+        in: path
+        description: Account address for liquidity pool
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  balances:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/LiquidityPoolBalanceDto'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '401':
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+      security:
+      - authToken: []
+      x-visibility: external
+  /exchange/api/orders:
+    x-original-path: /api/orders
+    get:
+      tags:
+      - exchange-external-api
+      summary: Retrieve list of exchange orders
+      operationId: getExchangeOrdersExternal
+      parameters:
+      - name: from
+        in: query
+        description: 15-04-2022
+        schema:
+          type: string
+          format: date
+      - name: to
+        in: query
+        description: 15-08-2022
+        schema:
+          type: string
+          format: date
+      - name: size
+        in: query
+        schema:
+          maximum: 100
+          type: integer
+          default: 20
+      - name: page
+        in: query
+        schema:
+          type: integer
+          default: 1
+      - name: transactionType
+        in: query
+        schema:
+          $ref: '#/components/schemas/GetExchangeOrdersExternalTransactionTypeEnum'
+      - name: statuses
+        in: query
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/GetExchangeOrdersExternalStatusesEnum'
+      - name: token
+        in: query
+        schema:
+          type: string
+      - name: fiat
+        in: query
+        schema:
+          type: string
+      - name: network
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExchangeOrdersResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '401':
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+      security:
+      - authToken: []
+      x-visibility: external
+  /exchange/api/business/orders/{cexOrderId}:
+    x-original-path: /api/business/orders/{cexOrderId}
+    get:
+      tags:
+      - exchange-external-api
+      summary: Retrieve an exchange order by cexOrderId
+      operationId: getExchangeOrderByIdExternal
+      parameters:
+      - name: cexOrderId
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExchangeOrderDTO'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '401':
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+      security:
+      - authToken: []
+      x-visibility: external
+  /exchange/api/offers:
+    x-original-path: /api/offers
+    get:
+      tags:
+      - exchange-external-api
+      summary: Find offers using trading parameters
+      operationId: extFindOffers
+      x-visibility: external
+      parameters:
+      - $ref: '#/components/parameters/ExchangeSvcofferTypeQueryParam'
+      - $ref: '#/components/parameters/ExchangeSvctokenQueryParam'
+      - $ref: '#/components/parameters/ExchangeSvcfiatQueryParam'
+      - $ref: '#/components/parameters/ExchangeSvctokenAmountQueryParam'
+      - $ref: '#/components/parameters/ExchangeSvcfiatAmountQueryParam'
+      - $ref: '#/components/parameters/ExchangeSvcnetworkQueryParam'
+      - $ref: '#/components/parameters/ExchangeSvcpaymentChannelQueryParam'
+      - $ref: '#/components/parameters/ExchangeSvcpaymentChannelTypeQueryParam'
+      - $ref: '#/components/parameters/ExchangeSvcmerchantIdQueryParam'
+      - $ref: '#/components/parameters/ExchangeSvcpageQueryParam'
+      - $ref: '#/components/parameters/ExchangeSvclimitQueryParam'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  offers:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OfferDto'
+                  orderRequestTradeId:
+                    type: string
+                  currentPage:
+                    type: number
+                  totalPages:
+                    type: number
+                  totalCount:
+                    type: number
+                  totalPairOffers:
+                    type: number
+                required:
+                - currentPage
+                - totalPages
+                - totalCount
+                - offers
+                - orderRequestTradeId
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '401':
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+      security: []
+  /exchange/api/offers/best-offer:
+    x-original-path: /api/offers/best-offer
+    get:
+      tags:
+      - exchange-external-api
+      summary: Get best offer using trade parameters
+      operationId: getBestOfferExchange
+      x-visibility: external
+      parameters:
+      - $ref: '#/components/parameters/ExchangeSvcofferTypeQueryParam'
+      - $ref: '#/components/parameters/ExchangeSvctokenQueryParam'
+      - $ref: '#/components/parameters/ExchangeSvcfiatQueryParam'
+      - $ref: '#/components/parameters/ExchangeSvctokenAmountQueryParam'
+      - $ref: '#/components/parameters/ExchangeSvcfiatAmountQueryParam'
+      - $ref: '#/components/parameters/ExchangeSvcnetworkQueryParam'
+      - $ref: '#/components/parameters/ExchangeSvcpaymentChannelQueryParam'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  offer:
+                    $ref: '#/components/schemas/BestOfferDTO'
+                  orderRequestTradeId:
+                    type: string
+                required:
+                - offer
+                - orderRequestTradeId
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '401':
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+      security: []
+components:
+  schemas:
+    DeployLiquidityPoolCommand:
+      required:
+      - cexSigner
+      - networkId
+      type: object
+      properties:
+        networkId:
+          type: string
+          description: ID for network
+          example: bsc_testnet
+        cexSigner:
+          type: string
+          description: CEX signer wallet address
+          example: 0
+      x-source-svc: exchange
+    ErrorMessageDto:
+      description: Default error object for services. This gives consistent error object that all services may use.
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          description: Error code
+          example: UNKNOWN_ERROR
+        message:
+          type: string
+          description: Descriptive error message
+          example: Request could not be completed due to an error
+        data:
+          type: object
+          description: Additional data for this error message.
+          additionalProperties: true
+          properties: {}
+      x-common-model: ErrorMessageDto
+    ExchangeOrdersResponse:
+      type: object
+      properties:
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExchangeOrderDTO'
+        pageNumber:
+          type: integer
+        pageSize:
+          type: integer
+        totalPages:
+          type: integer
+        totalOrders:
+          type: integer
+      x-source-svc: exchange
+    TradeMode:
+      type: string
+      enum:
+      - P2P
+      - IP
+      - OTC
+      x-source-svc: exchange
+    WalletDTO:
+      type: object
+      properties:
+        walletAddress:
+          type: string
+          example: 0
+        networkId:
+          type: string
+          example: bsc_testnet
+        walletName:
+          type: string
+          example: My Trust Wallet
+      x-source-svc: exchange
+    InitTradeTradeTypeEnum:
+      type: string
+      enum:
+      - BUY
+      - SELL
+      x-source-svc: exchange
+    CexProfileDto:
+      required:
+      - businessCategory
+      - businessEmail
+      - businessFormationDate
+      - businessId
+      - businessIndustry
+      - businessLocation
+      - businessName
+      - businessRegCountry
+      - businessRegNo
+      - createdAt
+      - legalEntityType
+      - monthlyTransactionVolume
+      - operatesInRestrictedRegions
+      - taxCountry
+      - taxIdentificationNumber
+      - transactsOnBehalfOfThirdParties
+      - updatedAt
+      type: object
+      properties:
+        businessId:
+          type: string
+          description: General format for UUID
+          format: uuid
+          example: 3a5aaea8-504a-4404-ad3d-b82574fba5e5
+        businessName:
+          type: string
+          description: Registered name of business entity
+          example: Onabord exchange
+        businessEmail:
+          type: string
+          format: email
+          description: Business profile email address
+        businessLocation:
+          type: string
+          description: business full location address
+        productName:
+          type: string
+          description: Product name
+        productWebsiteUrl:
+          type: string
+          description: HTTP link to the product / business website
+          format: url
+        productDescription:
+          type: string
+          description: Description of product
+        businessPhoneNumber:
+          pattern: \+[1-9][0-9]{0,3}[0-9]{7,14}
+          type: string
+          description: Phone number field.
+        businessRegNo:
+          type: string
+          description: Business registration number (if any)
+        businessRegCountry:
+          type: string
+          description: Business country of registration (if any)
+        businessLogoUrl:
+          type: string
+          description: HTTP link to business image logo
+          format: url
+        businessFormationDate:
+          type: string
+          description: Date the business entity was formed
+          format: date
+        businessType:
+          type: string
+        businessIndustry:
+          $ref: '#/components/schemas/BusinessIndustry'
+        enabledProducts:
+          type: array
+          items:
+            type: string
+        operatingAddress:
+          type: string
+          description: Operating address, when different from the registered address
+        taxCountry:
+          type: string
+          description: Tax residency country, Valid alpha2 country code
+          minLength: 2
+          maxLength: 2
+        taxIdentificationNumber:
+          type: string
+          description: Business tax identification number (TIN)
+        legalEntityType:
+          $ref: '#/components/schemas/LegalEntityType'
+        businessCategory:
+          $ref: '#/components/schemas/BusinessCategory'
+        monthlyTransactionVolume:
+          type: string
+          description: Current monthly transaction volume bucket in USD
+        transactsOnBehalfOfThirdParties:
+          type: boolean
+          description: Whether the business transacts on behalf of other parties
+        operatesInRestrictedRegions:
+          type: boolean
+          description: Whether the business operates in or serves customers from restricted regions
+        restrictedRegions:
+          type: string
+          description: Free-text list of restricted regions, when applicable
+        ultimateBeneficialOwners:
+          type: array
+          items:
+            $ref: '#/components/schemas/UltimateBeneficialOwner'
+        directors:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessDirector'
+        authorisedSignatories:
+          type: array
+          description: BVNs of authorised signatories (Nigerian-registered entities)
+          items:
+            type: string
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessDocument'
+        declarationAcceptedAt:
+          type: string
+          format: date-time
+          description: Timestamp field.
+          x-faker: date.recent
+        createdAt:
+          type: string
+          format: date-time
+          description: Timestamp field.
+          x-faker: date.recent
+        updatedAt:
+          type: string
+          format: date-time
+          description: Timestamp field.
+          x-faker: date.recent
+      description: CEX user profile object
+      x-source-svc: exchange
+    PartnerStats:
+      type: object
+      properties:
+        partnerId:
+          type: string
+          format: uuid
+        averageRating:
+          type: number
+          example: 3
+        totalTransactions:
+          type: number
+        tradeCount:
+          type: number
+        completionPercentage:
+          type: number
+          format: double
+          example: 94
+        averageResponseTime:
+          type: number
+          format: double
+          example: 5
+      x-source-svc: exchange
+    FeeConfig:
+      type: object
+      properties:
+        tradeType:
+          $ref: '#/components/schemas/OfferType'
+        tradeMode:
+          $ref: '#/components/schemas/TradeMode'
+        base:
+          type: number
+          description: Flat fee that must be paid for irrespective of percentage fee
+        tradePercentage:
+          type: number
+          description: Fee described as a percentage of the trade
+        cap:
+          type: number
+          description: Maximum value a fee is allowed to have
+        network:
+          type: string
+          description: 'The network this config should be applied to(There will always be at least
+
+            one fee config, that config will have network value of `default`
+
+            '
+      required:
+      - base
+      - tradePercentage
+      - network
+      x-source-svc: exchange
+    OfferPaymentChannelColor:
+      type: object
+      properties:
+        bg:
+          type: string
+        fg:
+          type: string
+      required:
+      - bg
+      - fg
+      x-source-svc: exchange
+    OfferDto:
+      type: object
+      properties:
+        offerId:
+          type: string
+          description: external offer id
+        userId:
+          type: string
+          description: userId of the merchant that created offer
+        network:
+          type: string
+          description: id of network on which the asset is on
+        tokenSymbol:
+          type: string
+          description: symbol of token been sold or bought
+          example: BNB
+        fiatSymbol:
+          type: string
+          description: ISO 4217 code for fiat currency
+          example: USD, NGN
+        offerType:
+          $ref: '#/components/schemas/OfferType'
+        behaviour:
+          $ref: '#/components/schemas/OfferBehavior'
+        totalUnit:
+          type: number
+          description: offer total unit in fiat
+          example: 5000
+        tradedUnit:
+          type: number
+          description: units that has been traded out of the total unit
+          example: 5000
+        lockedUnit:
+          type: number
+          description: units that has been locked out of the offer total unit
+          example: 5000
+        rate:
+          type: number
+          description: price rate to buy or sell
+          example: 500
+        rateCap:
+          type: number
+          description: The minimum (for onramp) or maximum (for offramp) rate allowed for this ad if it's a flexible ad
+          example: 500
+        paymentMethods:
+          type: array
+          items:
+            $ref: '#/components/schemas/OfferPaymentMethod'
+        paymentChannels:
+          type: array
+          items:
+            $ref: '#/components/schemas/OfferPaymentChannel'
+        flexibleOfferMargin:
+          type: number
+          description: offer margin in percentage allowed for flexible offers
+          example: 10
+        status:
+          $ref: '#/components/schemas/OfferStatus'
+        partnerDisplayName:
+          type: string
+          description: Partner's display name
+        partnerRating:
+          type: number
+          example: -1
+        partnerStats:
+          $ref: '#/components/schemas/PartnerStats'
+        statusReason:
+          type: string
+          description: the reason for the current status - mostly applied to non active or offline status
+        tradeMinimumLimit:
+          type: number
+          description: minimum trade limit
+        tradeMaximumLimit:
+          type: number
+          description: maximum trade limit
+        previewImageUrl:
+          type: string
+          description: preview image url
+        maxTimeout:
+          type: object
+          properties:
+            deposit:
+              type: integer
+              description: timeout for buyer to pay in seconds
+              example: 1440
+            confirmation:
+              type: integer
+              description: timeout for seller to confirm in seconds
+              example: 600
+        feeConfig:
+          $ref: '#/components/schemas/FeeConfig'
+        feeConfigs:
+          type: array
+          items:
+            $ref: '#/components/schemas/FeeConfig'
+        tradeCriteria:
+          $ref: '#/components/schemas/TradeCriteria'
+        autoResponseMessage:
+          type: string
+          description: auto response message to be shown to customers
+        adNote:
+          type: string
+          description: note to be shown to the customer
+        tradeRequestBroadcastId:
+          type: string
+          description: trade request broadcast id
+        isPrivate:
+          type: boolean
+          description: Indicates if an ad should be hidden from the public and treated as a private ad.
+        isRateHidden:
+          type: boolean
+          description: Indicates if rate is hidden
+        instantPayEnabled:
+          type: boolean
+          description: Is instant pay enabled for offer
+          default: false
+        instantPayLimit:
+          type: number
+          description: Max tradeable by instant pay on this add. (In fiat value)
+        instantPayMinimum:
+          type: number
+          description: minimum tradeable by instant pay on this add. (In fiat value)
+        instantPayAccountId:
+          type: string
+          description: Account id of instantpay. Useful especially for onramp payins
+        customPayinProvider:
+          type: string
+          description: Provider for custom payin (ONRAMP only)
+        createdAt:
+          type: string
+          format: date-time
+          description: Timestamp field.
+        updatedAt:
+          type: string
+          format: date-time
+          description: Timestamp field.
+        editedAt:
+          type: string
+          format: date-time
+          description: Timestamp field.
+        partnerLastActiveAt:
+          type: string
+          format: date-time
+          description: Timestamp field.
+        primaryEscrowAddress:
+          type: string
+        fiatTradeMinimumLimit:
+          type: number
+        fiatTradeMaximumLimit:
+          type: number
+        maxFiatLimit:
+          type: number
+          description: Maximum fiat limit consideration available units
+        availableUnits:
+          type: number
+          description: Calculated available units when locked  and traded units are deducted
+        fulfillOrderAs:
+          $ref: '#/components/schemas/FulfillOrderAs'
+        autoRefillEnabled:
+          type: boolean
+          description: Flag indicating if auto refill is enabled for this ad
+        autoRefillConfig:
+          $ref: '#/components/schemas/AutoRefillConfig'
+      required:
+      - offerId
+      - userId
+      - network
+      - tokenSymbol
+      - fiatSymbol
+      - offerType
+      - behaviour
+      - totalUnit
+      - tradedUnit
+      - lockedUnit
+      - rate
+      - paymentMethods
+      - status
+      - availableUnits
+      - maxFiatLimit
+      - tradeMinimumLimit
+      - tradeMaximumLimit
+      - createdAt
+      - updatedAt
+      - editedAt
+      - partnerDisplayName
+      - partnerRating
+      - partnerLastActiveAt
+      x-source-svc: exchange
+    OfferType:
+      type: string
+      enum:
+      - ONRAMP
+      - OFFRAMP
+      x-source-svc: exchange
+    GetExchangeOrdersExternalTransactionTypeEnum:
+      type: string
+      enum:
+      - ONRAMP
+      - OFFRAMP
+      x-source-svc: exchange
+    PaymentChannel:
+      required:
+      - name
+      type: object
+      properties:
+        paymentChannelId:
+          type: string
+          description: Identifier for payment channel
+        name:
+          type: string
+          description: Payment channel name
+        supportedCurrencies:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentChannelSupportedCurrency'
+      x-source-svc: exchange
+    BusinessDirector:
+      type: object
+      description: A current director of the business
+      required:
+      - fullName
+      - email
+      properties:
+        fullName:
+          type: string
+        email:
+          type: string
+          format: email
+      x-source-svc: exchange
+    LiquidityPoolBalanceDto:
+      required:
+      - assetSymbol
+      - balance
+      - isNative
+      - networkId
+      type: object
+      properties:
+        networkId:
+          type: string
+        assetSymbol:
+          type: string
+        balance:
+          type: string
+        balanceInUsd:
+          type: number
+        tokenAddress:
+          type: string
+        isNative:
+          type: boolean
+      x-source-svc: exchange
+    ExchangeOrderDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        cexOrderId:
+          minimum: 1
+          type: integer
+        apiKey:
+          type: string
+        lastWebhookSentAt:
+          type: string
+          format: date-time
+          description: Timestamp field.
+          x-faker: date.recent
+        orderId:
+          type: string
+          format: uuid
+        reference:
+          type: string
+          example: 0165359005113074501885
+        customerId:
+          type: string
+          format: uuid
+        customerName:
+          type: string
+          example: John Doe
+        offer:
+          $ref: '#/components/schemas/OrderOfferDTO'
+        escrowAddress:
+          type: string
+          description: Escrow address
+          example: 1.2869144918162796e+48
+        paymentChannelId:
+          type: string
+          example: BANK_TRANSFER_NIGERIA
+        paymentMethod:
+          type: object
+          properties: {}
+        buyerPaymentMethod:
+          type: object
+          properties: {}
+        customerWallet:
+          $ref: '#/components/schemas/WalletDTO'
+        tokenAddress:
+          type: string
+          example: 0
+        status:
+          type: string
+          enum:
+          - INITIATED
+          - DEPOSITED
+          - CONFIRMED
+          - COMPLETED
+          - PENDING
+          - CANCELLED
+          - IN_DISPUTE
+          - AWAITING_ACCEPTANCE
+        createdAt:
+          type: string
+          format: date-time
+          description: Timestamp field.
+          x-faker: date.recent
+        initiatedAt:
+          type: string
+          format: date-time
+          description: Timestamp field.
+          x-faker: date.recent
+        depositedAt:
+          type: string
+          format: date-time
+          description: Timestamp field.
+          x-faker: date.recent
+        confirmedAt:
+          type: string
+          format: date-time
+          description: Timestamp field.
+          x-faker: date.recent
+        completedAt:
+          type: string
+          format: date-time
+          description: Timestamp field.
+          x-faker: date.recent
+        cancelledAt:
+          type: string
+          format: date-time
+          description: Timestamp field.
+          x-faker: date.recent
+        lockHash:
+          type: string
+          default: 'null'
+        confirmationHash:
+          type: string
+          default: 'null'
+        cancellationHash:
+          type: string
+          default: 'null'
+      x-source-svc: exchange
+    DefaultConfigurationResponse:
+      type: object
+      required:
+      - kyc
+      - noKyc
+      properties:
+        kyc:
+          $ref: '#/components/schemas/TransactionLimitResponse'
+        noKyc:
+          $ref: '#/components/schemas/TransactionLimitResponse'
+      x-source-svc: exchange
+    OfferStatus:
+      type: string
+      description: the current offer status
+      default: ACTIVE
+      enum:
+      - PENDING
+      - ACTIVE
+      - OFFLINE
+      - LOW_BALANCE
+      - LIMIT_REACHED
+      x-source-svc: exchange
+    CexSignerDto:
+      required:
+      - address
+      - businessId
+      - networkId
+      type: object
+      properties:
+        businessId:
+          type: string
+          description: General format for UUID
+          format: uuid
+          example: 3a5aaea8-504a-4404-ad3d-b82574fba5e5
+        networkId:
+          type: string
+          description: Gateway network ID
+          example: bsc_testnet
+        address:
+          type: string
+          description: Exchange signer address
+          example: 1.2869144918162796e+48
+        createdAt:
+          type: string
+          format: date-time
+          description: Timestamp field.
+          x-faker: date.recent
+        updatedAt:
+          type: string
+          format: date-time
+          description: Timestamp field.
+          x-faker: date.recent
+      description: Registered wallet address
+      x-source-svc: exchange
+    LiquidityPoolDto:
+      required:
+      - businessId
+      - cexSigner
+      - createdAt
+      - networkId
+      - updatedAt
+      type: object
+      properties:
+        networkId:
+          type: string
+          description: ID for network
+          example: bsc_testnet
+        cexSigner:
+          type: string
+          description: CEX signer wallet address
+          example: 0
+        businessId:
+          type: string
+          description: CEX profile business ID
+        address:
+          type: string
+          description: CEX liquidity pool address
+          example: 0
+        poolIndex:
+          type: number
+          description: on-chain index of liquidity pool account
+        initHash:
+          type: string
+          description: contract creation transaction hash
+        createdAt:
+          type: string
+          format: date-time
+          description: Timestamp field.
+          x-faker: date.recent
+        updatedAt:
+          type: string
+          format: date-time
+          description: Timestamp field.
+          x-faker: date.recent
+      x-source-svc: exchange
+    TransactionLimitResponse:
+      type: object
+      properties:
+        maxSingleTransactionLimit:
+          type: number
+        minSingleTransactionLimit:
+          type: number
+        dailyTransactionLimit:
+          type: number
+        maxLifetimeLimit:
+          type: number
+      x-source-svc: exchange
+    BlockchainNetwork:
+      required:
+      - chainId
+      - explorer
+      - logo
+      - name
+      - nativeAsset
+      - networkId
+      type: object
+      properties:
+        networkId:
+          type: string
+          description: Unique network connector identifier on Onboard
+          example: bsc_testnet
+        name:
+          type: string
+          description: Human readable name for the network
+          example: Binance Smart Chain Network
+        logo:
+          type: string
+          description: network's logo
+          format: url
+        explorer:
+          type: string
+          description: URL to explorer (scan) application for the network
+          format: url
+        chainId:
+          type: number
+          description: Protocol chain ID
+          example: 1
+        nativeAsset:
+          type: string
+          description: Network native coin symbol
+          example: BNB
+        availableTokens:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tokens'
+      x-source-svc: exchange
+    TradeCriteria:
+      type: object
+      properties:
+        verifiedKyc:
+          type: boolean
+      x-source-svc: exchange
+    UltimateBeneficialOwner:
+      type: object
+      description: An individual owning 25% or more of the business
+      required:
+      - fullName
+      - email
+      - ownershipPercentage
+      properties:
+        fullName:
+          type: string
+        email:
+          type: string
+          format: email
+        ownershipPercentage:
+          type: number
+      x-source-svc: exchange
+    OfferTypeQueryParamOfferTypeEnum:
+      type: string
+      enum:
+      - ONRAMP
+      - OFFRAMP
+      x-source-svc: exchange
+    CreateOrderDto:
+      required:
+      - tradeUrl
+      type: object
+      properties:
+        tradeUrl:
+          type: string
+          description: Http link for CEX to redirect to
+      description: Response for a successful create order command
+      x-source-svc: exchange
+    BestOfferDTO:
+      type: object
+      properties:
+        offer:
+          $ref: '#/components/schemas/OfferDto'
+        orderRequestTradeId:
+          type: string
+      required:
+      - offer
+      - orderRequestTradeId
+      x-source-svc: exchange
+    BusinessDocument:
+      type: object
+      description: An uploaded KYB document
+      required:
+      - label
+      - uploadId
+      properties:
+        label:
+          type: string
+          description: Human-readable document name, e.g. Certificate of Incorporation
+        uploadId:
+          type: string
+          description: Identifier of the stored upload
+        url:
+          type: string
+          description: Direct URL to the stored file
+          format: url
+      x-source-svc: exchange
+    CreateOrderTradeTypeEnum:
+      type: string
+      enum:
+      - BUY
+      - SELL
+      x-source-svc: exchange
+    BusinessCategory:
+      type: string
+      description: KYB onboarding tier that determines the required document set
+      enum:
+      - GENERAL_BUSINESS
+      - OTC_FX_LIQUIDITY_PROVIDER
+      - LICENSED_FINANCIAL_SERVICES
+      x-source-svc: exchange
+    CreateOrderProductEnum:
+      type: string
+      enum:
+      - WEB3
+      - CUSTODIAL
+      x-source-svc: exchange
+    TradeOptions:
+      required:
+      - fiats
+      - networks
+      type: object
+      properties:
+        fiats:
+          type: array
+          items:
+            $ref: '#/components/schemas/FiatCurrency'
+        networks:
+          type: array
+          items:
+            $ref: '#/components/schemas/BlockchainNetwork'
+        paymentChannels:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentChannel'
+        transactionLimitsConfig:
+          $ref: '#/components/schemas/DefaultConfigurationResponse'
+      x-source-svc: exchange
+    AutoRefillConfig:
+      type: object
+      required:
+      - threshold
+      - amount
+      properties:
+        threshold:
+          type: number
+          description: If ad available unit go belows this value the system would trigger a auto refill
+        amount:
+          type: number
+          description: The token amount to refill the ad with
+      x-source-svc: exchange
+    LegalEntityType:
+      type: string
+      description: Legal structure of the business entity (KYB "Business type (Entity)")
+      enum:
+      - LIMITED_LIABILITY_COMPANY
+      - PUBLIC_COMPANY
+      - SOLE_PROPRIETORSHIP
+      - PARTNERSHIP
+      - CORPORATION
+      - TRUST
+      - PRIVATE_FOUNDATION
+      - CHARITY
+      - NON_PROFIT_ORGANIZATION
+      - PUBLIC_AGENCY
+      x-source-svc: exchange
+    BusinessIndustry:
+      type: string
+      description: Sector the business primarily operates in
+      enum:
+      - TECHNOLOGY_SOFTWARE
+      - FINANCIAL_SERVICES
+      - ECOMMERCE
+      - MARKETING_ADVERTISING
+      - CONSULTING_PROFESSIONAL_SERVICES
+      - EDUCATION
+      - HEALTHCARE
+      - MANUFACTURING
+      - LOGISTICS_SUPPLY_CHAIN
+      - REAL_ESTATE
+      - CRYPTO_WEB3
+      - GAMING
+      - MEDIA_ENTERTAINMENT
+      - OTHER
+      x-source-svc: exchange
+    PaymentChannelSupportedCurrency:
+      type: object
+      properties:
+        country:
+          type: string
+          description: ISO code (alpha 2) for the country valid for
+        currency:
+          type: string
+          description: ISO code for the supported currency
+      x-source-svc: exchange
+    GetExchangeOrdersExternalStatusesEnum:
+      type: string
+      enum:
+      - INITIATED
+      - DEPOSITED
+      - CONFIRMED
+      - COMPLETED
+      - PENDING
+      - CANCELLED
+      - IN_DISPUTE
+      - AWAITING_ACCEPTANCE
+      x-source-svc: exchange
+    TradeTypeQueryParamTradeTypeEnum:
+      type: string
+      enum:
+      - BUY
+      - SELL
+      x-source-svc: exchange
+    PriceDto:
+      required:
+      - price
+      type: object
+      properties:
+        price:
+          type: number
+          description: The price at which the order will be traded
+      description: Price for a trade
+      x-source-svc: exchange
+    OfferPaymentMethod:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/OfferPaymentChannel'
+      - type: object
+        properties:
+          id:
+            type: string
+      x-source-svc: exchange
+    InitTradeProductEnum:
+      type: string
+      enum:
+      - WEB3
+      - CUSTODIAL
+      x-source-svc: exchange
+    FiatCurrency:
+      required:
+      - isoCode
+      - logo
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          description: Offical name of a currency
+        logo:
+          type: string
+          description: URL to fiat logo
+        isoCode:
+          type: string
+          description: ISO 4217 (alphabetic) for currency
+        symbol:
+          type: string
+          description: Alias to isoCode
+        unicodeSymbol:
+          type: string
+          description: Unicode symbol for fiat
+        transactionLimitsConfig:
+          $ref: '#/components/schemas/DefaultConfigurationResponse'
+      x-source-svc: exchange
+    OfferBehavior:
+      type: string
+      description: Offer rate behavior
+      enum:
+      - FIXED
+      - FLEXIBLE
+      x-source-svc: exchange
+    OfferPaymentChannel:
+      type: object
+      properties:
+        channelId:
+          type: string
+        channelName:
+          type: string
+        channelType:
+          type: string
+        color:
+          $ref: '#/components/schemas/OfferPaymentChannelColor'
+      x-source-svc: exchange
+    FulfillOrderAs:
+      type: string
+      enum:
+      - BUSINESS
+      - PERSONAL
+      x-source-svc: exchange
+    Tokens:
+      required:
+      - decimals
+      - isNative
+      - networkId
+      - symbol
+      type: object
+      properties:
+        symbol:
+          type: string
+          description: Token symbol e.g ETH, USDC, BUSD
+          example: USDC
+        networkId:
+          type: string
+          description: Onboard network identifier
+        decimals:
+          type: number
+          description: Token decimal size
+        isNative:
+          type: boolean
+          description: Flags of the token is native to the blockchain or not
+        address:
+          type: string
+          description: Token address on the chain if it's not a native token
+      x-source-svc: exchange
+    OrderOfferDTO:
+      required:
+      - networkId
+      - partnerId
+      - rate
+      - token
+      - tokenAmount
+      - transactionType
+      type: object
+      properties:
+        offerId:
+          type: string
+          format: uuid
+        partnerId:
+          type: string
+          format: uuid
+        transactionType:
+          type: string
+          enum:
+          - ONRAMP
+          - OFFRAMP
+        rate:
+          type: number
+          example: 0.32
+        networkId:
+          type: string
+          example: TRC20
+        fiatSymbol:
+          type: string
+          example: NGN
+        fiatAmount:
+          type: number
+          example: 120.5
+        token:
+          type: string
+          example: USDT
+        tokenAmount:
+          type: number
+          example: 120.5
+        partnerDisplayName:
+          type: string
+          example: John Doe
+      x-source-svc: exchange
+  parameters:
+    ExchangeSvcofferTypeQueryParam:
+      name: offerType
+      in: query
+      schema:
+        $ref: '#/components/schemas/OfferTypeQueryParamOfferTypeEnum'
+    ExchangeSvcpaymentChannelQueryParam:
+      name: paymentChannel
+      in: query
+      schema:
+        type: string
+    ExchangeSvctokenQueryParam:
+      name: token
+      in: query
+      schema:
+        type: string
+    ExchangeSvcpageQueryParam:
+      name: page
+      in: query
+      schema:
+        type: number
+    ExchangeSvctradeTypeQueryParam:
+      name: tradeType
+      in: query
+      description: 'Type of trade (maps to transaction type: BUY - ONRAMP, SELL - OFFRAMP)
+
+        '
+      required: false
+      schema:
+        $ref: '#/components/schemas/TradeTypeQueryParamTradeTypeEnum'
+    ExchangeSvcmerchantIdQueryParam:
+      name: merchantId
+      in: query
+      required: false
+      schema:
+        type: string
+    ExchangeSvcfiatQueryParam:
+      name: fiat
+      in: query
+      schema:
+        type: string
+    ExchangeSvcfiatAmountQueryParam:
+      name: fiatAmount
+      in: query
+      schema:
+        type: number
+    ExchangeSvctokenAmountQueryParam:
+      name: tokenAmount
+      in: query
+      schema:
+        type: number
+    ExchangeSvcpaymentChannelTypeQueryParam:
+      name: paymentChannelType
+      in: query
+      schema:
+        type: string
+    ExchangeSvclimitQueryParam:
+      name: limit
+      in: query
+      description: Pagination limit
+      schema:
+        type: number
+    ExchangeSvcnetworkQueryParam:
+      name: networkId
+      in: query
+      description: Onboard blockchain network identifier or chain Id e.g Base will be `base` or `8453` or `0x2105`
+      schema:
+        type: string
+  securitySchemes:
+    authSignature:
+      type: apiKey
+      name: x-signature
+      in: header
+    authToken:
+      type: apiKey
+      name: x-auth-token
+      in: header
+      description: Auth Token header for inter-service communication
+x-organization: onboard
+x-service-id: external-gateway
+x-preserve-refs:
+- '#/components/schemas/IntegrationProduct'
+- '#/components/schemas/AdAppliedEscrowBalanceDto'
+- '#/components/schemas/P2PWalletRecipient'
+- '#/components/schemas/BankAccountRecipient'
+- '#/components/schemas/MobileMoneyRecipient'
+- '#/components/schemas/OrderEvent'
+- '#/components/schemas/PaymentMethodEventAction'
+- '#/components/schemas/PaymentMethodEventPayload'
+- '#/components/schemas/TransactionServiceErrorCode'
+- '#/components/schemas/ErrorCodes'

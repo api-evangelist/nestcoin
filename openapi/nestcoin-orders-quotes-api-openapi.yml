@@ -1,0 +1,337 @@
+openapi: 3.0.3
+info:
+  version: 3.0.2
+  title: Onboard External API Gateway auth-oauth orders-quotes API
+  description: "**Introduction**\nAPI Gateway for Onboard\n\nThis specification describes API endpoints that are available to the public internet via the API gateway. The different endpoints require different authentication schemes, see documentation for what applies to the operation you want to access.\n\n**Errors**\nUses conventional HTTP response codes to indicate success or failure. In\ngeneral:\n \n- `2xx` status codes indicate success. Codes in the\n- `4xx` range\nindicate a client error (e.g. required parameters, failed request etc.).\n- `5xx` status codes indicate a server error occurred."
+  contact:
+    name: Nestcoin TechOps
+    email: techops@nestcoin.com
+  license:
+    name: UNLICENSED
+servers:
+- url: https://external.dev.onboardpay.co
+  description: Gateway for external API on staging environment.
+tags:
+- name: orders-quotes
+paths:
+  /orders/quotes:
+    x-original-path: /quotes
+    post:
+      tags:
+      - orders-quotes
+      summary: Request a Quote
+      operationId: requestQuote
+      requestBody:
+        description: body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuoteRequestDto'
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuoteResponseDto'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '401':
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+      security:
+      - authToken: []
+      x-visibility: external
+      x-scopes:
+      - users.onboard.opn-access
+      - users.onboard.api-access
+  /orders/quotes/rates:
+    x-original-path: /quotes/rates
+    get:
+      tags:
+      - orders-quotes
+      x-visibility: external
+      summary: get base rates
+      operationId: getRate
+      parameters:
+      - name: payoutCurrency
+        in: query
+        description: Payment account Currency
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateDto'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '401':
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+      security:
+      - authToken: []
+  /orders/quotes/reference-rate:
+    x-original-path: /quotes/reference-rate
+    get:
+      x-visibility: external
+      tags:
+      - orders-quotes
+      summary: get reference rates
+      operationId: getReferenceRate
+      parameters:
+      - name: payoutCurrency
+        in: query
+        description: Payment account Currency
+        required: true
+        schema:
+          type: string
+      - name: type
+        in: query
+        description: Type or transaction (BUY/SELL)
+        required: true
+        schema:
+          $ref: '#/components/schemas/OrderType'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateDto'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '401':
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+      security: []
+components:
+  schemas:
+    RateDto:
+      title: RateDto
+      type: object
+      properties:
+        currency:
+          type: string
+        price:
+          type: number
+        lastUpdated:
+          type: string
+          format: date-time
+      x-source-svc: orders
+    ErrorMessageDto:
+      description: Default error object for services. This gives consistent error object that all services may use.
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          description: Error code
+          example: UNKNOWN_ERROR
+        message:
+          type: string
+          description: Descriptive error message
+          example: Request could not be completed due to an error
+        data:
+          type: object
+          description: Additional data for this error message.
+          additionalProperties: true
+          properties: {}
+      x-common-model: ErrorMessageDto
+    QuoteRequestDto:
+      title: QuoteRequestDto
+      required:
+      - amount
+      - payoutCurrency
+      - paymentChannel
+      type: object
+      properties:
+        amount:
+          description: asset amount
+          minimum: 0
+          type: number
+        payoutCurrency:
+          description: payout currency
+          type: string
+        paymentChannel:
+          $ref: '#/components/schemas/ProviderPaymentChannel'
+        type:
+          description: 'Order side this quote is being requested for. Defaults to SELL when omitted, preserving the existing
+
+            quote contract for clients that don''t yet supply it. Use BUY to quote an onramp (client pays fiat to
+
+            buy crypto from the merchant).
+
+            '
+          allOf:
+          - $ref: '#/components/schemas/OrderType'
+        paymentMode:
+          description: 'BUY-only. How the buyer intends to pay fiat. Optional — defaults to `DEPOSIT` server-side.
+
+            Used at quote-generation time to filter out merchants whose payment account can''t fulfil
+
+            the requested mode: `DEPOSIT` requires `providerDetails.supportsPayin` or
+
+            `providerDetails.supportsCustomPayin`; `INTERNAL_TRANSFER` requires
+
+            `providerDetails.supportsCustomPayin = true` *and* the order service to have an
+
+            internal-transfer provider override configured for that merchant''s provider (currently
+
+            `onb-nuban-collections → onb-nuban`). The chosen mode is persisted on the resulting
+
+            quote and inherited by the BUY order at creation time — clients do not (and cannot)
+
+            re-specify it when placing the order. Ignored for SELL quotes.
+
+            '
+          allOf:
+          - $ref: '#/components/schemas/PaymentMode'
+      x-source-svc: orders
+    OrderType:
+      type: string
+      enum:
+      - BUY
+      - SELL
+      x-source-svc: orders
+    ProviderPaymentChannel:
+      type: string
+      description: Payment channel a provider is used for
+      enum:
+      - BANK_TRANSFER
+      - MOBILE_MONEY
+      - P2P_WALLET
+      x-source-svc: orders
+    QuoteDto:
+      title: QuoteDto
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        adId:
+          type: string
+          format: uuid
+        payoutCurrency:
+          type: string
+        rate:
+          type: number
+        minimumAmount:
+          type: number
+        maximumAmount:
+          type: number
+        expiresAt:
+          type: string
+          format: date-time
+          description: Timestamp field.
+        paymentMode:
+          description: 'BUY-only. Echoes the paymentMode persisted on the quote so the client can confirm which
+
+            mode this quote was issued under. Null for SELL quotes.
+
+            '
+          allOf:
+          - $ref: '#/components/schemas/PaymentMode'
+      x-source-svc: orders
+    QuoteResponseDto:
+      type: object
+      properties:
+        quote:
+          $ref: '#/components/schemas/QuoteDto'
+        fallbackQuote:
+          $ref: '#/components/schemas/QuoteDto'
+      x-source-svc: orders
+    PaymentMode:
+      type: string
+      default: DEPOSIT
+      description: "How the buyer is paying fiat for a BUY order. Chosen at quote time on `POST /quotes` and\npersisted on the resulting quote; the BUY order then inherits the value when it references\nthe quote. Clients do not (and cannot) re-specify it on the order request — the quote is\nthe binding contract.\n\n- `DEPOSIT` — buyer transfers fiat from an external bank account into the merchant's\n  pay-in account. Every payouts provider supports this and it is the default when the\n  field is omitted.\n- `INTERNAL_TRANSFER` — buyer pays via an internal transfer routed through a configured\n  override provider (currently `onb-nuban` for merchants on `onb-nuban-collections`).\n  Quote generation filters out merchants whose payment account doesn't have\n  `providerDetails.supportsCustomPayin=true`, or whose provider has no configured\n  internal-transfer override on the order service. If no merchant satisfies the request,\n  quote generation returns `NoMatchingQuoteException` rather than producing a quote that\n  would later fail at order placement.\n"
+      enum:
+      - DEPOSIT
+      - INTERNAL_TRANSFER
+      x-source-svc: orders
+  securitySchemes:
+    authSignature:
+      type: apiKey
+      name: x-signature
+      in: header
+    authToken:
+      type: apiKey
+      name: x-auth-token
+      in: header
+      description: Auth Token header for inter-service communication
+x-organization: onboard
+x-service-id: external-gateway
+x-preserve-refs:
+- '#/components/schemas/IntegrationProduct'
+- '#/components/schemas/AdAppliedEscrowBalanceDto'
+- '#/components/schemas/P2PWalletRecipient'
+- '#/components/schemas/BankAccountRecipient'
+- '#/components/schemas/MobileMoneyRecipient'
+- '#/components/schemas/OrderEvent'
+- '#/components/schemas/PaymentMethodEventAction'
+- '#/components/schemas/PaymentMethodEventPayload'
+- '#/components/schemas/TransactionServiceErrorCode'
+- '#/components/schemas/ErrorCodes'

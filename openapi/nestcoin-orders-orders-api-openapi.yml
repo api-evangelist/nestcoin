@@ -1,0 +1,785 @@
+openapi: 3.0.3
+info:
+  version: 3.0.2
+  title: Onboard External API Gateway auth-oauth orders-orders API
+  description: "**Introduction**\nAPI Gateway for Onboard\n\nThis specification describes API endpoints that are available to the public internet via the API gateway. The different endpoints require different authentication schemes, see documentation for what applies to the operation you want to access.\n\n**Errors**\nUses conventional HTTP response codes to indicate success or failure. In\ngeneral:\n \n- `2xx` status codes indicate success. Codes in the\n- `4xx` range\nindicate a client error (e.g. required parameters, failed request etc.).\n- `5xx` status codes indicate a server error occurred."
+  contact:
+    name: Nestcoin TechOps
+    email: techops@nestcoin.com
+  license:
+    name: UNLICENSED
+servers:
+- url: https://external.dev.onboardpay.co
+  description: Gateway for external API on staging environment.
+tags:
+- name: orders-orders
+paths:
+  /orders/clients/orders:
+    x-original-path: /clients/orders
+    post:
+      tags:
+      - orders-orders
+      security:
+      - authToken: []
+      x-visibility: external
+      x-scopes:
+      - users.onboard.opn-access
+      - users.onboard.api-access
+      summary: Create order
+      description: Create client order based on selected quote
+      operationId: createClientOrder
+      requestBody:
+        required: true
+        description: Create order request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrderRequest'
+      responses:
+        '200':
+          description: Order created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusDto'
+        '401':
+          $ref: '#/components/responses/OrdersSvcUnauthorized'
+        '403':
+          $ref: '#/components/responses/OrdersSvcAccessDenied'
+        '404':
+          $ref: '#/components/responses/OrdersSvcNotFound'
+        default:
+          $ref: '#/components/responses/OrdersSvcServerError'
+    get:
+      tags:
+      - orders-orders
+      security:
+      - authToken: []
+      x-visibility: external
+      x-scopes:
+      - users.onboard.opn-access
+      summary: Get orders
+      description: Get client orders
+      operationId: getClientOrders
+      parameters:
+      - in: query
+        required: false
+        name: orderStatus
+        schema:
+          $ref: '#/components/schemas/OrderQueryStatus'
+      - $ref: '#/components/parameters/OrdersSvcorderType'
+      - $ref: '#/components/parameters/OrdersSvcpageNumber'
+      - $ref: '#/components/parameters/OrdersSvcpageSize'
+      responses:
+        '200':
+          description: Orders gotten successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderTransactionList'
+        '401':
+          $ref: '#/components/responses/OrdersSvcUnauthorized'
+        '403':
+          $ref: '#/components/responses/OrdersSvcAccessDenied'
+        '404':
+          $ref: '#/components/responses/OrdersSvcNotFound'
+        default:
+          $ref: '#/components/responses/OrdersSvcServerError'
+  /orders/clients/orders/sell:
+    x-original-path: /clients/orders/sell
+    post:
+      tags:
+      - orders-orders
+      security:
+      - authToken: []
+      x-visibility: external
+      x-scopes:
+      - users.onboard.opn-access
+      - users.onboard.api-access
+      summary: Create SELL order (alias, returns OrderResponse)
+      description: 'Explicit SELL alias for `POST /clients/orders`. Accepts the same `CreateOrderRequest` body,
+
+        but returns the **full `OrderResponse`** rather than the legacy `StatusDto` — same shape as
+
+        `POST /clients/orders/buy` and `GET /clients/orders/{orderRef}`. Use this path when the
+
+        caller wants the persisted order details directly; `POST /clients/orders` (no alias)
+
+        keeps the legacy `StatusDto` response for backward compatibility.
+
+        '
+      operationId: createClientSellOrder
+      requestBody:
+        required: true
+        description: Create SELL order request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrderRequest'
+      responses:
+        '200':
+          description: Order created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+        '401':
+          $ref: '#/components/responses/OrdersSvcUnauthorized'
+        '403':
+          $ref: '#/components/responses/OrdersSvcAccessDenied'
+        '404':
+          $ref: '#/components/responses/OrdersSvcNotFound'
+        default:
+          $ref: '#/components/responses/OrdersSvcServerError'
+  /orders/clients/orders/buy:
+    x-original-path: /clients/orders/buy
+    post:
+      tags:
+      - orders-orders
+      security:
+      - authToken: []
+      x-visibility: external
+      x-scopes:
+      - users.onboard.opn-access
+      - users.onboard.api-access
+      summary: Create BUY order (returns OrderResponse with pay-in details)
+      description: 'Client BUY order — the buyer deposits fiat into a merchant-controlled pay-in account, and once
+
+        the fiat lands, the merchant-locked asset is released to the buyer''s wallet. The request
+
+        carries `sender` (buyer identity for the pay-in) and optional `creditAccountId` (asset
+
+        destination — defaults to the buyer''s default base-currency account). The pay-in mode
+
+        (`DEPOSIT` / `INTERNAL_TRANSFER`) is chosen on `POST /quotes` and inherited from the
+
+        referenced quote; it is **not** specified here.
+
+
+        For `DEPOSIT` paymentMode orders, the server waits briefly (a few seconds) for the pay-in
+
+        account to be provisioned and returns the full `OrderResponse` including
+
+        `payinPaymentDetails` so the buyer knows where and how to deposit fiat. If provisioning is
+
+        still in flight when the wait elapses, `payinPaymentDetails` is `null` — poll
+
+        `GET /clients/orders/{orderRef}` until it appears or the order fails. `INTERNAL_TRANSFER`
+
+        orders return immediately with `payinPaymentDetails` as `null`; poll the order until it
+
+        appears. The same details are re-surfaced on `GET /clients/orders/{orderRef}` at any point.
+
+        '
+      operationId: createClientBuyOrder
+      requestBody:
+        required: true
+        description: Create BUY order request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBuyOrderRequest'
+      responses:
+        '200':
+          description: Order created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+        '401':
+          $ref: '#/components/responses/OrdersSvcUnauthorized'
+        '403':
+          $ref: '#/components/responses/OrdersSvcAccessDenied'
+        '404':
+          $ref: '#/components/responses/OrdersSvcNotFound'
+        default:
+          $ref: '#/components/responses/OrdersSvcServerError'
+  /orders/clients/orders/{orderRef}:
+    x-original-path: /clients/orders/{orderRef}
+    get:
+      security:
+      - authToken: []
+      x-scopes:
+      - users.onboard.opn-access
+      x-visibility: external
+      tags:
+      - orders-orders
+      summary: Get order
+      description: Get client order by reference
+      operationId: getClientOrder
+      parameters:
+      - in: path
+        required: true
+        name: orderRef
+        description: the order reference
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Orders gotten successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+        '401':
+          $ref: '#/components/responses/OrdersSvcUnauthorized'
+        '403':
+          $ref: '#/components/responses/OrdersSvcAccessDenied'
+        '404':
+          $ref: '#/components/responses/OrdersSvcNotFound'
+        default:
+          $ref: '#/components/responses/OrdersSvcServerError'
+  /orders/clients/orders/{orderRef}/cancel:
+    x-original-path: /clients/orders/{orderRef}/cancel
+    post:
+      security:
+      - authToken: []
+      x-scopes:
+      - users.onboard.opn-access
+      - users.onboard.api-access
+      x-visibility: external
+      tags:
+      - orders-orders
+      summary: Cancel a BUY order
+      description: 'Cancel an ongoing BUY order owned by the caller. Allowed only while the order is awaiting
+
+        the buyer''s fiat — `PENDING_INIT`, `ASSET_LOCKED`, or `PAYMENT_INIT`. For `PAYMENT_INIT` the
+
+        pay-in is re-scanned first; if the fiat has already landed the cancel is refused and the
+
+        order proceeds to completion. Cancellation releases the merchant''s locked asset and cancels
+
+        the pay-in. SELL orders are not cancellable through this endpoint.
+
+        '
+      operationId: cancelClientBuyOrder
+      parameters:
+      - in: path
+        required: true
+        name: orderRef
+        description: the order reference
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Order cancelled successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+        '400':
+          description: Order is not in a cancellable state, is not a BUY order, or the pay-in already landed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '401':
+          $ref: '#/components/responses/OrdersSvcUnauthorized'
+        '403':
+          $ref: '#/components/responses/OrdersSvcAccessDenied'
+        '404':
+          $ref: '#/components/responses/OrdersSvcNotFound'
+        default:
+          $ref: '#/components/responses/OrdersSvcServerError'
+components:
+  schemas:
+    CreateOrderRequest:
+      description: 'SELL order request. Canonical payload accepted by `POST /clients/orders` (and the `/sell` alias).
+
+        The order side is implied by the endpoint — `type` is kept for backward compatibility with
+
+        existing clients but is deprecated and ignored by the server. BUY orders use
+
+        `CreateBuyOrderRequest` against `POST /clients/orders/buy`.
+
+        '
+      allOf:
+      - $ref: '#/components/schemas/BaseCreateOrderRequest'
+      - type: object
+        properties:
+          type:
+            description: 'Deprecated — the order side is determined by the endpoint. This field is retained so
+
+              existing clients that still send `type: SELL` continue to validate; the server ignores
+
+              its value. New integrations should omit it. Use `POST /clients/orders/buy` for BUY.
+
+              '
+            deprecated: true
+            allOf:
+            - $ref: '#/components/schemas/OrderType'
+          recipient:
+            $ref: '#/components/schemas/Recipient'
+        required:
+        - recipient
+      x-source-svc: orders
+    ErrorMessageDto:
+      description: Default error object for services. This gives consistent error object that all services may use.
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          description: Error code
+          example: UNKNOWN_ERROR
+        message:
+          type: string
+          description: Descriptive error message
+          example: Request could not be completed due to an error
+        data:
+          type: object
+          description: Additional data for this error message.
+          additionalProperties: true
+          properties: {}
+      x-common-model: ErrorMessageDto
+    BaseOrderResponse:
+      type: object
+      discriminator:
+        propertyName: responseType
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 3a5aaea8-504a-4404-ad3d-b82574fba5e5
+          description: General format for UUID
+        merchantId:
+          type: string
+          format: uuid
+          example: 3a5aaea8-504a-4404-ad3d-b82574fba5e5
+          description: General format for UUID
+        merchantAccountId:
+          type: string
+          format: uuid
+          example: 3a5aaea8-504a-4404-ad3d-b82574fba5e5
+          description: General format for UUID
+        clientId:
+          type: string
+          format: uuid
+          example: 3a5aaea8-504a-4404-ad3d-b82574fba5e5
+          description: General format for UUID
+        reference:
+          type: string
+        assetCurrency:
+          type: string
+        payoutCurrency:
+          type: string
+        payoutReference:
+          type: string
+        payoutRequestReference:
+          type: string
+        paymentChannel:
+          $ref: '#/components/schemas/ProviderPaymentChannel'
+        recipient:
+          description: Details of the recipient (for SELL), specified at order initiation. Details may be masked in merchant view.
+          allOf:
+          - $ref: '#/components/schemas/Recipient'
+        type:
+          $ref: '#/components/schemas/OrderType'
+        status:
+          $ref: '#/components/schemas/OrderQueryStatus'
+        createdAt:
+          type: string
+          format: date-time
+          description: Timestamp field.
+        senderInfo:
+          description: Details of the sender (for BUY), specified at order initiation. Details may be masked in merchant view.
+          allOf:
+          - $ref: '#/components/schemas/SenderInfo'
+        responseType:
+          type: string
+      required:
+      - id
+      - reference
+      - assetCurrency
+      - payoutCurrency
+      - type
+      - status
+      - createdAt
+      - responseType
+      x-source-svc: orders
+    OrderType:
+      type: string
+      enum:
+      - BUY
+      - SELL
+      x-source-svc: orders
+    CreateBuyOrderRequest:
+      description: 'BUY order request accepted by `POST /clients/orders/buy`. Carries buyer (sender)
+
+        information for the pay-in and an optional `creditAccountId` for where the asset should be
+
+        credited. The pay-in mode (`DEPOSIT` / `INTERNAL_TRANSFER`) is **not** specified here —
+
+        it''s chosen on `POST /quotes` and inherited from the referenced `quoteId`, so a BUY order
+
+        can never be placed against a merchant whose payment account doesn''t support the requested
+
+        mode.
+
+        '
+      allOf:
+      - $ref: '#/components/schemas/BaseCreateOrderRequest'
+      - type: object
+        properties:
+          sender:
+            $ref: '#/components/schemas/SenderInfo'
+          creditAccountId:
+            description: Wallet account on the buyer's side that should receive the asset. When omitted, the buyer's default base-currency account is used.
+            type: string
+            format: uuid
+        required:
+        - sender
+      x-source-svc: orders
+    PaymentMode:
+      type: string
+      default: DEPOSIT
+      description: "How the buyer is paying fiat for a BUY order. Chosen at quote time on `POST /quotes` and\npersisted on the resulting quote; the BUY order then inherits the value when it references\nthe quote. Clients do not (and cannot) re-specify it on the order request — the quote is\nthe binding contract.\n\n- `DEPOSIT` — buyer transfers fiat from an external bank account into the merchant's\n  pay-in account. Every payouts provider supports this and it is the default when the\n  field is omitted.\n- `INTERNAL_TRANSFER` — buyer pays via an internal transfer routed through a configured\n  override provider (currently `onb-nuban` for merchants on `onb-nuban-collections`).\n  Quote generation filters out merchants whose payment account doesn't have\n  `providerDetails.supportsCustomPayin=true`, or whose provider has no configured\n  internal-transfer override on the order service. If no merchant satisfies the request,\n  quote generation returns `NoMatchingQuoteException` rather than producing a quote that\n  would later fail at order placement.\n"
+      enum:
+      - DEPOSIT
+      - INTERNAL_TRANSFER
+      x-source-svc: orders
+    BaseCreateOrderRequest:
+      type: object
+      description: Fields shared between SELL and BUY order creation requests. Not used directly as a request body — see CreateOrderRequest (SELL) and CreateBuyOrderRequest (BUY).
+      properties:
+        quoteId:
+          type: string
+          format: uuid
+          example: 3a5aaea8-504a-4404-ad3d-b82574fba5e5
+          description: General format for UUID
+        amount:
+          minimum: 0
+          type: number
+          description: Positive double
+        reference:
+          type: string
+          minLength: 15
+          pattern: ^[a-zA-Z0-9-_]+$
+        twoFaCode:
+          type: string
+          minLength: 4
+        narration:
+          type: string
+          description: A description for the transfer that's passed to the recipient of the orders
+          maxLength: 200
+      required:
+      - quoteId
+      - amount
+      - twoFaCode
+      - reference
+      x-source-svc: orders
+    OrderQueryStatus:
+      type: string
+      enum:
+      - FAILED
+      - ONGOING
+      - COMPLETED
+      x-source-svc: orders
+    SenderInfo:
+      description: 'Information identifying the party sending fiat for a pay-in (BUY order). Mirrors the SenderInfo
+
+        used by the onboard-payouts pay-in endpoints — the order service forwards these fields when
+
+        provisioning the merchant pay-in account.
+
+        '
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        phoneNumber:
+          type: string
+      required:
+      - firstName
+      - lastName
+      x-source-svc: orders
+    OrderTransactionList:
+      allOf:
+      - $ref: '#/components/schemas/Paging'
+      - type: object
+        required:
+        - records
+        properties:
+          records:
+            type: array
+            default: []
+            description: List of order transactions
+            items:
+              $ref: '#/components/schemas/OrderResponse'
+          name:
+            type: string
+            readOnly: true
+            default: OrderTransactionList
+      x-source-svc: orders
+    OrderResponse:
+      description: Order response displayed to merchants and clients. They have different views of the order object.
+      allOf:
+      - $ref: '#/components/schemas/BaseOrderResponse'
+      - type: object
+        properties:
+          amount:
+            type: number
+            description: 'Amount for the order, always specified in the base currency.
+
+              In merchant''s view, this is the amount to receive (SELL) or amount to be sent (BUY)
+
+              In the client''s view, this is the amount they''ll receive (BUY) or amount they are sending (SELL)
+
+              '
+          rate:
+            type: number
+            description: The rate displayed to merchant or client.
+          paymentMode:
+            description: BUY-only. Echoes the paymentMode persisted on the order.
+            allOf:
+            - $ref: '#/components/schemas/PaymentMode'
+          payinPaymentDetails:
+            description: 'BUY-only. Populated once the pay-in account has been provisioned. For DEPOSIT
+
+              paymentMode orders the create endpoints wait briefly for provisioning, so this is
+
+              normally present on the create response; for INTERNAL_TRANSFER orders (or if
+
+              provisioning is still in flight) it is null and appears on
+
+              `GET /clients/orders/{orderRef}` once ready. Null for SELL orders.
+
+              '
+            allOf:
+            - $ref: '#/components/schemas/PayinPaymentDetails'
+        required:
+        - rate
+        - amount
+      x-source-svc: orders
+    Paging:
+      description: Base object for paginated list
+      type: object
+      properties:
+        name:
+          type: string
+          description: Descriptive name for the list
+        size:
+          minimum: 0
+          type: integer
+          format: int32
+          description: Positive integer
+        totalItems:
+          minimum: 0
+          type: integer
+          format: int32
+          description: Positive integer
+        nextPage:
+          minimum: 0
+          type: integer
+          format: int32
+          description: Positive integer
+        previousPage:
+          minimum: 0
+          type: integer
+          format: int32
+          description: Positive integer
+      discriminator:
+        propertyName: name
+      x-common-model: Paging
+    ProviderPaymentChannel:
+      type: string
+      description: Payment channel a provider is used for
+      enum:
+      - BANK_TRANSFER
+      - MOBILE_MONEY
+      - P2P_WALLET
+      x-source-svc: orders
+    Recipient:
+      discriminator:
+        propertyName: recipientType
+        mapping:
+          P2PWalletRecipient: '#/components/schemas/P2PWalletRecipient'
+          BankAccountRecipient: '#/components/schemas/BankAccountRecipient'
+          MobileMoneyRecipient: '#/components/schemas/MobileMoneyRecipient'
+      type: object
+      description: 'Details of the recipient of the transfer. Should be one of
+
+        - `BankAccountRecipient`
+
+        - `P2PWalletRecipient`
+
+        - `MobileMoneyRecipient`
+
+        '
+      required:
+      - email
+      - firstName
+      - lastName
+      - recipientType
+      properties:
+        email:
+          type: string
+          description: Email address of the recipient.
+          format: email
+          minLength: 4
+        phoneNumber:
+          type: string
+          description: Phone number of the recipient.
+          minLength: 9
+        firstName:
+          type: string
+          description: The recipients' first name
+          minLength: 2
+        lastName:
+          type: string
+          description: The recipients' last name
+          minLength: 2
+        recipientType:
+          type: string
+          description: Must match the name of one of the models that extends Recipient
+        isThirdParty:
+          type: boolean
+          description: Indicates if the recipient is a third party (not the account owner)
+          default: false
+      x-source-svc: orders
+    StatusDto:
+      description: Status data, check additional message field.
+      type: object
+      required:
+      - success
+      properties:
+        success:
+          description: Status can be successful or failed, a value of true indicates success.
+          type: boolean
+          example: true
+        message:
+          type: string
+          description: additional message describing status.
+        data:
+          type: object
+          additionalProperties: true
+          description: Data associated with the status, this will not always be present
+        error:
+          $ref: '#/components/schemas/ErrorMessageDto'
+      x-common-model: StatusDto
+    PayinPaymentDetails:
+      type: object
+      description: 'Buyer-facing payment details for a BUY order. Surfaced on the create-order response and on
+
+        `GET /clients/orders/{orderRef}` for BUY orders so the buyer can re-fetch where (and how)
+
+        to deposit fiat at any point in the order''s lifetime.
+
+        '
+      properties:
+        recipient:
+          description: The deposit destination — a BankAccountRecipient / MobileMoneyRecipient / P2PWalletRecipient depending on the merchant's pay-in account type.
+          allOf:
+          - $ref: '#/components/schemas/Recipient'
+        amount:
+          type: number
+          description: Fiat amount the buyer must deposit (matches the order's clientPayoutAmount).
+        currency:
+          type: string
+          description: Currency of the amount above (matches the order's payoutCurrency).
+        paymentMode:
+          $ref: '#/components/schemas/PaymentMode'
+        reference:
+          type: string
+          description: 'Reference the buyer must include with the deposit so the payouts service can auto-match
+
+            the pay-in to this order.
+
+            '
+      required:
+      - recipient
+      - amount
+      - currency
+      - paymentMode
+      - reference
+      x-source-svc: orders
+  responses:
+    OrdersSvcAccessDenied:
+      description: Expected permission is not available.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: ACCESS_DENIED
+            message: Expected permission or scope is not present.
+    OrdersSvcNotFound:
+      description: Entity was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: NOT_FOUND
+            message: Information could not be found
+    OrdersSvcServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: INTERNAL_ERROR
+            message: An internal server error occurred.
+    OrdersSvcUnauthorized:
+      description: Client is not authorized to make request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: UNAUTHORIZED
+            message: Either client security header is missing or it is not valid.
+  parameters:
+    OrdersSvcpageSize:
+      name: size
+      in: query
+      description: Number of items to return
+      schema:
+        type: integer
+        format: int32
+        default: 20
+    OrdersSvcpageNumber:
+      name: page
+      in: query
+      description: Page number of items to return
+      schema:
+        type: integer
+        format: int32
+        default: 1
+    OrdersSvcorderType:
+      name: type
+      in: query
+      description: Filter orders by type (BUY or SELL). When omitted, orders of both types are returned.
+      schema:
+        $ref: '#/components/schemas/OrderType'
+  securitySchemes:
+    authSignature:
+      type: apiKey
+      name: x-signature
+      in: header
+    authToken:
+      type: apiKey
+      name: x-auth-token
+      in: header
+      description: Auth Token header for inter-service communication
+x-organization: onboard
+x-service-id: external-gateway
+x-preserve-refs:
+- '#/components/schemas/IntegrationProduct'
+- '#/components/schemas/AdAppliedEscrowBalanceDto'
+- '#/components/schemas/P2PWalletRecipient'
+- '#/components/schemas/BankAccountRecipient'
+- '#/components/schemas/MobileMoneyRecipient'
+- '#/components/schemas/OrderEvent'
+- '#/components/schemas/PaymentMethodEventAction'
+- '#/components/schemas/PaymentMethodEventPayload'
+- '#/components/schemas/TransactionServiceErrorCode'
+- '#/components/schemas/ErrorCodes'

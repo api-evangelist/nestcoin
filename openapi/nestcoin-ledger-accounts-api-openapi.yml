@@ -1,0 +1,632 @@
+openapi: 3.0.3
+info:
+  version: 3.0.2
+  title: Onboard External API Gateway auth-oauth ledger-accounts API
+  description: "**Introduction**\nAPI Gateway for Onboard\n\nThis specification describes API endpoints that are available to the public internet via the API gateway. The different endpoints require different authentication schemes, see documentation for what applies to the operation you want to access.\n\n**Errors**\nUses conventional HTTP response codes to indicate success or failure. In\ngeneral:\n \n- `2xx` status codes indicate success. Codes in the\n- `4xx` range\nindicate a client error (e.g. required parameters, failed request etc.).\n- `5xx` status codes indicate a server error occurred."
+  contact:
+    name: Nestcoin TechOps
+    email: techops@nestcoin.com
+  license:
+    name: UNLICENSED
+servers:
+- url: https://external.dev.onboardpay.co
+  description: Gateway for external API on staging environment.
+tags:
+- name: ledger-accounts
+paths:
+  /ledger/accounts:
+    x-original-path: /accounts
+    get:
+      summary: Fetch All Customer Account
+      description: This operation allows the client to fetch all customer's accounts
+      operationId: fetchCustomerAccounts
+      x-visibility: external
+      tags:
+      - ledger-accounts
+      responses:
+        '200':
+          description: Account fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerAccountList'
+        '400':
+          $ref: '#/components/responses/LedgerSvcInvalidRequest'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+        '403':
+          $ref: '#/components/responses/LedgerSvcAccessDenied'
+        default:
+          $ref: '#/components/responses/LedgerSvcServerError'
+      security:
+      - authToken: []
+  /ledger/accounts/{accountId}:
+    x-original-path: /accounts/{accountId}
+    get:
+      summary: Fetch account details
+      description: 'This operation allows the client to fetch account details by account id. A client can fetch only their own account details.
+
+        '
+      operationId: getAccountDetails
+      x-visibility: external
+      tags:
+      - ledger-accounts
+      parameters:
+      - $ref: '#/components/parameters/LedgerSvcaccountId'
+      responses:
+        '200':
+          description: Account details fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        '400':
+          $ref: '#/components/responses/LedgerSvcInvalidRequest'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+        '403':
+          $ref: '#/components/responses/LedgerSvcAccessDenied'
+        default:
+          $ref: '#/components/responses/LedgerSvcServerError'
+      security:
+      - authToken: []
+  /ledger/currency/assets:
+    x-original-path: /currency/assets
+    get:
+      summary: Get list of supported assets for main accounts.
+      description: 'This operation allows the client to get the Nestcoin supported
+
+        Assets
+
+        '
+      operationId: getSupportedAssets
+      x-visibility: external
+      tags:
+      - ledger-accounts
+      responses:
+        '200':
+          description: Assets Fetched Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupportedAssetsList'
+        '400':
+          $ref: '#/components/responses/LedgerSvcInvalidRequest'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+        '403':
+          $ref: '#/components/responses/LedgerSvcAccessDenied'
+        default:
+          $ref: '#/components/responses/LedgerSvcServerError'
+      security:
+      - authToken: []
+  /ledger/assets/{assetCode}/network-tokens:
+    x-original-path: /assets/{assetCode}/network-tokens
+    get:
+      summary: Get stablecoin tokens supported for account.
+      operationId: getAssetNetworkTokens
+      parameters:
+      - $ref: '#/components/parameters/LedgerSvcassetCode'
+      description: 'Get list of stablecoin tokens supported for account by asset code.
+
+        The asset code is the currency code of the main account e.g USD
+
+        '
+      x-visibility: external
+      tags:
+      - ledger-accounts
+      responses:
+        '200':
+          description: List of supported stablecoin tokens for the asset code
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetBlockchainTokens'
+        '400':
+          $ref: '#/components/responses/LedgerSvcInvalidRequest'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+        '403':
+          $ref: '#/components/responses/LedgerSvcAccessDenied'
+        default:
+          $ref: '#/components/responses/LedgerSvcServerError'
+      security:
+      - authToken: []
+  /ledger/accounts/{accountId}/account-details:
+    parameters:
+    - $ref: '#/components/parameters/LedgerSvcaccountId'
+    - $ref: '#/components/parameters/LedgerSvcaccountNumberCurrencyQuery'
+    x-original-path: /accounts/{accountId}/account-details
+    get:
+      summary: Get the bank account number for an account.
+      description: 'Returns the bank account number (and bank details) generated for this account in the given
+
+        currency, if one exists.
+
+        '
+      operationId: getAccountNumber
+      x-visibility: external
+      tags:
+      - ledger-accounts
+      responses:
+        '200':
+          description: Bank account number details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CashDepositPaymentDetails'
+        '400':
+          $ref: '#/components/responses/LedgerSvcInvalidRequest'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+        '403':
+          $ref: '#/components/responses/LedgerSvcAccessDenied'
+        '404':
+          $ref: '#/components/responses/LedgerSvcNotFound'
+        default:
+          $ref: '#/components/responses/LedgerSvcServerError'
+      security:
+      - authToken: []
+    post:
+      summary: Create a bank account number for an account.
+      description: 'Generates a bank account number for this account in the given currency through the account-number
+
+        provider. Returns the existing details if one was already generated.
+
+        '
+      operationId: createAccountNumber
+      x-visibility: external
+      tags:
+      - ledger-accounts
+      responses:
+        '201':
+          description: Bank account number created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CashDepositPaymentDetails'
+        '400':
+          $ref: '#/components/responses/LedgerSvcInvalidRequest'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+        '403':
+          $ref: '#/components/responses/LedgerSvcAccessDenied'
+        default:
+          $ref: '#/components/responses/LedgerSvcServerError'
+      security:
+      - authToken: []
+components:
+  schemas:
+    ErrorMessageDto:
+      description: Default error object for services. This gives consistent error object that all services may use.
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          description: Error code
+          example: UNKNOWN_ERROR
+        message:
+          type: string
+          description: Descriptive error message
+          example: Request could not be completed due to an error
+        data:
+          type: object
+          description: Additional data for this error message.
+          additionalProperties: true
+          properties: {}
+      x-common-model: ErrorMessageDto
+    AssetBlockchainTokens:
+      type: object
+      required:
+      - asset
+      - tokens
+      properties:
+        asset:
+          type: string
+          example: USD
+        tokens:
+          type: array
+          description: A list of funding tokens with details of their supported networks.
+          items:
+            $ref: '#/components/schemas/TokenDetails'
+      x-source-svc: ledger
+    LedgerSvcBlockchainNetwork:
+      type: object
+      description: Details of blockchain network
+      required:
+      - name
+      - id
+      - blockTime
+      - confirmations
+      - coinName
+      - coinSymbol
+      properties:
+        id:
+          type: string
+          description: Simple identifier to identify the network
+          example: ETH
+        name:
+          type: string
+          description: Descriptive name for network
+          example: Ethereum
+        blockTime:
+          type: integer
+          format: int32
+          description: Average time to generate new blocks in seconds.
+          minimum: 1
+          example: 15
+        confirmations:
+          type: number
+          description: 'Minimum number of confirmations needed for a transaction to be confirmed.
+
+            Total wait time for an asset can be computed as  blockTime * confirmations.
+
+            '
+          minimum: 1
+          example: 8
+        coinName:
+          type: string
+          example: Ether
+          description: name of the network's native coin
+        coinSymbol:
+          type: string
+          description: symbol of the network's native coin
+          example: ETH
+        supportsMemo:
+          type: boolean
+          description: Indicates if the network has memo support.
+          default: 'false'
+        alias:
+          type: string
+          description: The network alias
+          example: BEP20
+        addressExplorerUrl:
+          type: string
+          format: url
+          example: https://etherscan.io/address
+          description: 'Base URL path of an address on the blockchain explorer. Full URL can be obtained by appending the address to this.
+
+            '
+        txExplorerUrl:
+          type: string
+          format: url
+          example: https://etherscan.io/tx
+          description: 'Base URL Path of a transaction on the blockchain explorer. Full URL can be obtained by appending the TX hash to this URL.
+
+            '
+      x-source-svc: ledger
+    TokenNetwork:
+      type: object
+      required:
+      - code
+      - networkInfo
+      - decimals
+      - contractAddress
+      - minimumDeposit
+      properties:
+        code:
+          type: string
+          description: 'human-readable identifier for the token on this network. Usually a combination of network code and asset symbol
+
+            '
+          example: ETH_USDC
+        decimals:
+          type: integer
+          format: int32
+          example: 6
+          minimum: 0
+          description: The number of decimals used by this token on this network.
+        contractAddress:
+          type: string
+          description: Contract address of the token on the given network.
+          example: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+        minimumDeposit:
+          type: number
+          description: Minimum amount allowed for deposits.
+          example: 5.25
+        depositAvailable:
+          type: boolean
+          description: Indicates if deposits are currently available. Address request will fail if this is false.
+          default: true
+        withdrawalAvailable:
+          type: boolean
+          description: Indicates if withdrawals are currently available. Withdrawal request will fail if this is false.
+          default: true
+        withdrawalFee:
+          type: number
+          minimum: 0
+          example: '100.01'
+          description: Transaction value. Must be positive.
+        networkInfo:
+          $ref: '#/components/schemas/LedgerSvcBlockchainNetwork'
+      x-source-svc: ledger
+    TokenDetails:
+      type: object
+      description: Details of supported funding token object.
+      required:
+      - symbol
+      - name
+      - logoUrl
+      - supportedNetworks
+      properties:
+        symbol:
+          type: string
+          description: Token symbol
+          example: USDC
+        name:
+          type: string
+          description: Token name.
+          example: USD Coin
+        logoUrl:
+          type: string
+          example: https://etherscan.io/token/images/centre-usdc_28.png
+          description: URL for token's logo.
+        supportedNetworks:
+          description: A list of networks on which the token is supported
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/TokenNetwork'
+      x-source-svc: ledger
+    CustomerAccountList:
+      type: object
+      additionalProperties: false
+      properties:
+        content:
+          type: array
+          uniqueItems: true
+          description: List of accounts
+          items:
+            $ref: '#/components/schemas/Account'
+      x-source-svc: ledger
+    Asset:
+      type: object
+      additionalProperties: false
+      properties:
+        code:
+          type: string
+          minLength: 3
+          description: The asset code/symbol for this asset.
+          example: USD
+        name:
+          type: string
+          description: Name of this asset.
+          example: US Dollars
+        decimals:
+          type: integer
+          description: Number of decimal places supported by this asset.
+          example: 2
+        symbol:
+          type: string
+          description: asset symbol
+        supportsBlockchainTransfer:
+          type: boolean
+          description: Indicates if this asset supports blockchain operations like crypto transfers.
+          default: false
+      x-source-svc: ledger
+    CashDepositPaymentDetails:
+      type: object
+      description: 'Destination account details the customer must pay into to fund the deposit. Mirrors a Beneficiary
+
+        (without an id). Carries only the account details needed to make the payment; transaction context
+
+        (amount, status, etc.) lives on the enclosing CashDepositTransaction.
+
+        '
+      required:
+      - details
+      - payinCurrency
+      properties:
+        details:
+          $ref: '#/components/schemas/CashAccountDetails'
+        payinCurrency:
+          type: string
+          description: Currency the destination account accepts for the deposit.
+          example: NGN
+      x-source-svc: ledger
+    SupportedAssetsList:
+      type: object
+      description: List of assets supported for main account.
+      properties:
+        assets:
+          type: array
+          items:
+            $ref: '#/components/schemas/Asset'
+      x-source-svc: ledger
+    CashAccountDetails:
+      type: object
+      required:
+      - accountInfoType
+      - accountName
+      - accountNumber
+      properties:
+        accountInfoType:
+          type: string
+          pattern: ^Cash(LocalBank|SepaBank|ACHBank|SwiftBank|MobileWallet|MultiRailBank)Account$
+          description: 'Used to determine the exact schema type.
+
+            Allowed values:
+
+            - CashLocalBankAccount
+
+            - CashSepaBankAccount
+
+            - CashACHBankAccount
+
+            - CashSwiftBankAccount
+
+            - CashMobileWalletAccount
+
+            - CashMultiRailBankAccount
+
+            '
+        accountName:
+          type: string
+          description: Name on the destination account.
+          example: John Doe
+        accountNumber:
+          type: string
+          description: 'The destination account identifier. For mobile money this is the phone number, for P2P wallet the account ID.
+
+            Where routing number or sort code is present, this would be `{routingNumber}-{accountNumber}`.
+
+            '
+          example: '230101010'
+        reference:
+          type: string
+          description: 'Reference the customer must include with the deposit so the pay-in is auto-matched.
+
+            Optional — some providers do not require one.
+
+            '
+          example: PROV123456
+      discriminator:
+        propertyName: accountInfoType
+        mapping:
+          CashLocalBankAccount: '#/components/schemas/CashLocalBankAccount'
+          CashSepaBankAccount: '#/components/schemas/CashSepaBankAccount'
+          CashACHBankAccount: '#/components/schemas/CashACHBankAccount'
+          CashSwiftBankAccount: '#/components/schemas/CashSwiftBankAccount'
+          CashMobileWalletAccount: '#/components/schemas/CashMobileWalletAccount'
+          CashMultiRailBankAccount: '#/components/schemas/CashMultiRailBankAccount'
+      x-source-svc: ledger
+    Account:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - customerName
+      - balance
+      - availableBalance
+      - currency
+      - createdDate
+      properties:
+        id:
+          description: The customer account identifier
+          type: string
+          format: uuid
+        name:
+          description: The customer account name
+          type: string
+          example: ACME Corp
+        customerName:
+          description: The customer name associated to the details
+          type: string
+          example: Babajide Apata
+        balance:
+          description: The account balance on provider
+          type: number
+          example: '100.00'
+          minimum: 0
+        availableBalance:
+          description: The available balance on provider
+          type: number
+          example: '100.00'
+          minimum: 0
+        currency:
+          description: The account currency code
+          type: string
+          example: GBP
+        createdDate:
+          description: The date the customer was created
+          type: string
+          format: date-time
+      x-source-svc: ledger
+  responses:
+    LedgerSvcUnauthorized:
+      description: Client is not authorized to make request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: UNAUTHORIZED
+            message: Either client security header is missing or it is not valid.
+    LedgerSvcAccessDenied:
+      description: Expected permission is not available.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: ACCESS_DENIED
+            message: Expected permission or scope is not present.
+    LedgerSvcInvalidRequest:
+      description: Request could not be validated
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: BAD_REQUEST
+            message: Request could not be validated.
+    LedgerSvcServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: INTERNAL_ERROR
+            message: An internal server error occurred.
+    LedgerSvcNotFound:
+      description: Entity was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: NOT_FOUND
+            message: Information could not be found
+  parameters:
+    LedgerSvcassetCode:
+      in: path
+      name: assetCode
+      description: The assets code of a crypto
+      required: true
+      schema:
+        type: string
+    LedgerSvcaccountNumberCurrencyQuery:
+      in: query
+      name: currency
+      description: Currency of the bank account number to generate or retrieve.
+      required: false
+      schema:
+        type: string
+        default: USD
+        example: NGN
+    LedgerSvcaccountId:
+      in: path
+      name: accountId
+      description: the unique onboard account ID
+      required: true
+      schema:
+        type: string
+        format: uuid
+  securitySchemes:
+    authSignature:
+      type: apiKey
+      name: x-signature
+      in: header
+    authToken:
+      type: apiKey
+      name: x-auth-token
+      in: header
+      description: Auth Token header for inter-service communication
+x-organization: onboard
+x-service-id: external-gateway
+x-preserve-refs:
+- '#/components/schemas/IntegrationProduct'
+- '#/components/schemas/AdAppliedEscrowBalanceDto'
+- '#/components/schemas/P2PWalletRecipient'
+- '#/components/schemas/BankAccountRecipient'
+- '#/components/schemas/MobileMoneyRecipient'
+- '#/components/schemas/OrderEvent'
+- '#/components/schemas/PaymentMethodEventAction'
+- '#/components/schemas/PaymentMethodEventPayload'
+- '#/components/schemas/TransactionServiceErrorCode'
+- '#/components/schemas/ErrorCodes'

@@ -1,0 +1,607 @@
+openapi: 3.0.3
+info:
+  version: 3.0.2
+  title: Onboard External API Gateway auth-oauth offers-offers API
+  description: "**Introduction**\nAPI Gateway for Onboard\n\nThis specification describes API endpoints that are available to the public internet via the API gateway. The different endpoints require different authentication schemes, see documentation for what applies to the operation you want to access.\n\n**Errors**\nUses conventional HTTP response codes to indicate success or failure. In\ngeneral:\n \n- `2xx` status codes indicate success. Codes in the\n- `4xx` range\nindicate a client error (e.g. required parameters, failed request etc.).\n- `5xx` status codes indicate a server error occurred."
+  contact:
+    name: Nestcoin TechOps
+    email: techops@nestcoin.com
+  license:
+    name: UNLICENSED
+servers:
+- url: https://external.dev.onboardpay.co
+  description: Gateway for external API on staging environment.
+tags:
+- name: offers-offers
+paths:
+  /offers/rate:
+    x-original-path: /offers/rate
+    get:
+      tags:
+      - offers-offers
+      summary: get Weighted Rates
+      operationId: getWeightedRates
+      x-visibility: external
+      parameters:
+      - name: fiatSymbol
+        in: query
+        schema:
+          type: string
+      - name: tokenSymbol
+        in: query
+        schema:
+          type: string
+      - name: offerType
+        in: query
+        schema:
+          $ref: '#/components/schemas/OffersSvcOfferType'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  weightedRate:
+                    type: number
+                    description: weighted rate for the fiat symbol pair
+                    example: 54000
+                  bestRate:
+                    type: number
+                    description: best market rate for the fiat symbol pair
+                    example: 54000
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '401':
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+      security: []
+  /offers/limits:
+    x-original-path: /offers/limits
+    get:
+      tags:
+      - offers-offers
+      summary: Find matching offer for trading pair
+      operationId: getLimits
+      x-visibility: external
+      parameters:
+      - $ref: '#/components/parameters/OffersSvctokenSymbolQueryParam'
+      - $ref: '#/components/parameters/OffersSvcfiatSymbolQueryParam'
+      - $ref: '#/components/parameters/OffersSvcofferTypeQueryParam'
+      - $ref: '#/components/parameters/OffersSvcnetworkQueryParam'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OfferLimitsDto'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '401':
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+      security: []
+  /offers/best-offer:
+    x-original-path: /offers/best-offer
+    get:
+      tags:
+      - offers-offers
+      summary: Get best offer for trade parameters
+      operationId: getBestOfferOffers
+      x-visibility: external
+      parameters:
+      - $ref: '#/components/parameters/OffersSvcunitAmountQueryParam'
+      - $ref: '#/components/parameters/OffersSvcfiatUnitAmountQueryParam'
+      - $ref: '#/components/parameters/OffersSvcnetworkQueryParam'
+      - $ref: '#/components/parameters/OffersSvctokenSymbolQueryParam'
+      - $ref: '#/components/parameters/OffersSvcfiatSymbolQueryParam'
+      - $ref: '#/components/parameters/OffersSvcofferTypeQueryParam'
+      - $ref: '#/components/parameters/OffersSvcpaymentChannelQueryParam'
+      - $ref: '#/components/parameters/OffersSvcmerchantBlackListQueryParam'
+      - $ref: '#/components/parameters/OffersSvcprioritizeIpQueryParam'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OffersSvcOfferDto'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '401':
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+      security: []
+components:
+  schemas:
+    ErrorMessageDto:
+      description: Default error object for services. This gives consistent error object that all services may use.
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          description: Error code
+          example: UNKNOWN_ERROR
+        message:
+          type: string
+          description: Descriptive error message
+          example: Request could not be completed due to an error
+        data:
+          type: object
+          description: Additional data for this error message.
+          additionalProperties: true
+          properties: {}
+      x-common-model: ErrorMessageDto
+    OffersSvcPartnerStats:
+      type: object
+      properties:
+        partnerId:
+          type: string
+          format: uuid
+        averageRating:
+          type: number
+          example: 3
+        totalTransactions:
+          type: number
+        tradeCount:
+          type: number
+        completionPercentage:
+          type: number
+          format: double
+          example: 94
+        averageResponseTime:
+          type: number
+          format: double
+          example: 5
+      x-source-svc: offers
+    OfferLimitsDto:
+      type: object
+      required:
+      - fiatSymbol
+      - tokenSymbol
+      - minTokens
+      - maxTokens
+      properties:
+        fiatSymbol:
+          type: string
+        tokenSymbol:
+          type: string
+        network:
+          type: string
+        offerType:
+          $ref: '#/components/schemas/OffersSvcOfferType'
+        minTokens:
+          type: number
+        maxTokens:
+          type: number
+        minFiat:
+          type: number
+        maxFiat:
+          type: number
+      x-source-svc: offers
+    OffersSvcOfferPaymentChannelColor:
+      type: object
+      properties:
+        bg:
+          type: string
+        fg:
+          type: string
+      required:
+      - bg
+      - fg
+      x-source-svc: offers
+    OffersSvcAutoRefillConfig:
+      type: object
+      required:
+      - threshold
+      - amount
+      properties:
+        threshold:
+          type: number
+          description: If ad available unit go belows this value the system would trigger a auto refill
+        amount:
+          type: number
+          description: The token amount to refill the ad with
+      x-source-svc: offers
+    OffersSvcTradeMode:
+      type: string
+      enum:
+      - P2P
+      - IP
+      - OTC
+      x-source-svc: offers
+    OffersSvcOfferPaymentMethod:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/OffersSvcOfferPaymentChannel'
+      - type: object
+        properties:
+          id:
+            type: string
+      x-source-svc: offers
+    OffersSvcOfferType:
+      type: string
+      enum:
+      - ONRAMP
+      - OFFRAMP
+      x-source-svc: offers
+    OffersSvcFulfillOrderAs:
+      type: string
+      enum:
+      - BUSINESS
+      - PERSONAL
+      x-source-svc: offers
+    OffersSvcTradeCriteria:
+      type: object
+      properties:
+        verifiedKyc:
+          type: boolean
+      x-source-svc: offers
+    OffersSvcOfferPaymentChannel:
+      type: object
+      properties:
+        channelId:
+          type: string
+        channelName:
+          type: string
+        channelType:
+          type: string
+        color:
+          $ref: '#/components/schemas/OffersSvcOfferPaymentChannelColor'
+      x-source-svc: offers
+    OffersSvcOfferStatus:
+      type: string
+      description: the current offer status
+      default: ACTIVE
+      enum:
+      - PENDING
+      - ACTIVE
+      - OFFLINE
+      - LOW_BALANCE
+      - LIMIT_REACHED
+      x-source-svc: offers
+    OffersSvcOfferDto:
+      type: object
+      properties:
+        offerId:
+          type: string
+          description: external offer id
+        userId:
+          type: string
+          description: userId of the merchant that created offer
+        network:
+          type: string
+          description: id of network on which the asset is on
+        tokenSymbol:
+          type: string
+          description: symbol of token been sold or bought
+          example: BNB
+        fiatSymbol:
+          type: string
+          description: ISO 4217 code for fiat currency
+          example: USD, NGN
+        offerType:
+          $ref: '#/components/schemas/OffersSvcOfferType'
+        behaviour:
+          $ref: '#/components/schemas/OffersSvcOfferBehavior'
+        totalUnit:
+          type: number
+          description: offer total unit in fiat
+          example: 5000
+        tradedUnit:
+          type: number
+          description: units that has been traded out of the total unit
+          example: 5000
+        lockedUnit:
+          type: number
+          description: units that has been locked out of the offer total unit
+          example: 5000
+        rate:
+          type: number
+          description: price rate to buy or sell
+          example: 500
+        rateCap:
+          type: number
+          description: The minimum (for onramp) or maximum (for offramp) rate allowed for this ad if it's a flexible ad
+          example: 500
+        paymentMethods:
+          type: array
+          items:
+            $ref: '#/components/schemas/OffersSvcOfferPaymentMethod'
+        paymentChannels:
+          type: array
+          items:
+            $ref: '#/components/schemas/OffersSvcOfferPaymentChannel'
+        flexibleOfferMargin:
+          type: number
+          description: offer margin in percentage allowed for flexible offers
+          example: 10
+        status:
+          $ref: '#/components/schemas/OffersSvcOfferStatus'
+        partnerDisplayName:
+          type: string
+          description: Partner's display name
+        partnerRating:
+          type: number
+          example: -1
+        partnerStats:
+          $ref: '#/components/schemas/OffersSvcPartnerStats'
+        statusReason:
+          type: string
+          description: the reason for the current status - mostly applied to non active or offline status
+        tradeMinimumLimit:
+          type: number
+          description: minimum trade limit
+        tradeMaximumLimit:
+          type: number
+          description: maximum trade limit
+        previewImageUrl:
+          type: string
+          description: preview image url
+        maxTimeout:
+          type: object
+          properties:
+            deposit:
+              type: integer
+              description: timeout for buyer to pay in seconds
+              example: 1440
+            confirmation:
+              type: integer
+              description: timeout for seller to confirm in seconds
+              example: 600
+        feeConfig:
+          $ref: '#/components/schemas/OffersSvcFeeConfig'
+        feeConfigs:
+          type: array
+          items:
+            $ref: '#/components/schemas/OffersSvcFeeConfig'
+        tradeCriteria:
+          $ref: '#/components/schemas/OffersSvcTradeCriteria'
+        autoResponseMessage:
+          type: string
+          description: auto response message to be shown to customers
+        adNote:
+          type: string
+          description: note to be shown to the customer
+        tradeRequestBroadcastId:
+          type: string
+          description: trade request broadcast id
+        isPrivate:
+          type: boolean
+          description: Indicates if an ad should be hidden from the public and treated as a private ad.
+        isRateHidden:
+          type: boolean
+          description: Indicates if rate is hidden
+        instantPayEnabled:
+          type: boolean
+          description: Is instant pay enabled for offer
+          default: false
+        instantPayLimit:
+          type: number
+          description: Max tradeable by instant pay on this add. (In fiat value)
+        instantPayMinimum:
+          type: number
+          description: minimum tradeable by instant pay on this add. (In fiat value)
+        instantPayAccountId:
+          type: string
+          description: Account id of instantpay. Useful especially for onramp payins
+        customPayinProvider:
+          type: string
+          description: Provider for custom payin (ONRAMP only)
+        createdAt:
+          type: string
+          format: date-time
+          description: Timestamp field.
+        updatedAt:
+          type: string
+          format: date-time
+          description: Timestamp field.
+        editedAt:
+          type: string
+          format: date-time
+          description: Timestamp field.
+        partnerLastActiveAt:
+          type: string
+          format: date-time
+          description: Timestamp field.
+        primaryEscrowAddress:
+          type: string
+        fiatTradeMinimumLimit:
+          type: number
+        fiatTradeMaximumLimit:
+          type: number
+        maxFiatLimit:
+          type: number
+          description: Maximum fiat limit consideration available units
+        availableUnits:
+          type: number
+          description: Calculated available units when locked  and traded units are deducted
+        fulfillOrderAs:
+          $ref: '#/components/schemas/OffersSvcFulfillOrderAs'
+        autoRefillEnabled:
+          type: boolean
+          description: Flag indicating if auto refill is enabled for this ad
+        autoRefillConfig:
+          $ref: '#/components/schemas/OffersSvcAutoRefillConfig'
+      required:
+      - offerId
+      - userId
+      - network
+      - tokenSymbol
+      - fiatSymbol
+      - offerType
+      - behaviour
+      - totalUnit
+      - tradedUnit
+      - lockedUnit
+      - rate
+      - paymentMethods
+      - status
+      - availableUnits
+      - maxFiatLimit
+      - tradeMinimumLimit
+      - tradeMaximumLimit
+      - createdAt
+      - updatedAt
+      - editedAt
+      - partnerDisplayName
+      - partnerRating
+      - partnerLastActiveAt
+      x-source-svc: offers
+    OffersSvcOfferBehavior:
+      type: string
+      description: Offer rate behavior
+      enum:
+      - FIXED
+      - FLEXIBLE
+      x-source-svc: offers
+    OffersSvcFeeConfig:
+      type: object
+      properties:
+        tradeType:
+          $ref: '#/components/schemas/OffersSvcOfferType'
+        tradeMode:
+          $ref: '#/components/schemas/OffersSvcTradeMode'
+        base:
+          type: number
+          description: Flat fee that must be paid for irrespective of percentage fee
+        tradePercentage:
+          type: number
+          description: Fee described as a percentage of the trade
+        cap:
+          type: number
+          description: Maximum value a fee is allowed to have
+        network:
+          type: string
+          description: 'The network this config should be applied to(There will always be at least
+
+            one fee config, that config will have network value of `default`
+
+            '
+      required:
+      - base
+      - tradePercentage
+      - network
+      x-source-svc: offers
+  parameters:
+    OffersSvcprioritizeIpQueryParam:
+      name: prioritizeIp
+      in: query
+      required: false
+      schema:
+        type: boolean
+    OffersSvcfiatSymbolQueryParam:
+      name: fiatSymbol
+      in: query
+      schema:
+        type: string
+      required: false
+    OffersSvcfiatUnitAmountQueryParam:
+      name: fiatUnitAmount
+      in: query
+      schema:
+        type: number
+    OffersSvctokenSymbolQueryParam:
+      name: tokenSymbol
+      in: query
+      schema:
+        type: string
+      required: false
+    OffersSvcofferTypeQueryParam:
+      name: offerType
+      in: query
+      schema:
+        $ref: '#/components/schemas/OffersSvcOfferType'
+      required: false
+    OffersSvcmerchantBlackListQueryParam:
+      name: exemptedMerchants
+      in: query
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+    OffersSvcunitAmountQueryParam:
+      name: unitAmount
+      in: query
+      schema:
+        type: number
+    OffersSvcnetworkQueryParam:
+      in: query
+      name: network
+      required: false
+      schema:
+        type: string
+      description: Blockchain network identifier
+    OffersSvcpaymentChannelQueryParam:
+      name: paymentChannel
+      in: query
+      schema:
+        type: string
+  securitySchemes:
+    authSignature:
+      type: apiKey
+      name: x-signature
+      in: header
+    authToken:
+      type: apiKey
+      name: x-auth-token
+      in: header
+      description: Auth Token header for inter-service communication
+x-organization: onboard
+x-service-id: external-gateway
+x-preserve-refs:
+- '#/components/schemas/IntegrationProduct'
+- '#/components/schemas/AdAppliedEscrowBalanceDto'
+- '#/components/schemas/P2PWalletRecipient'
+- '#/components/schemas/BankAccountRecipient'
+- '#/components/schemas/MobileMoneyRecipient'
+- '#/components/schemas/OrderEvent'
+- '#/components/schemas/PaymentMethodEventAction'
+- '#/components/schemas/PaymentMethodEventPayload'
+- '#/components/schemas/TransactionServiceErrorCode'
+- '#/components/schemas/ErrorCodes'

@@ -1,0 +1,674 @@
+openapi: 3.0.3
+info:
+  version: 3.0.2
+  title: Onboard External API Gateway auth-oauth transactions-transactions API
+  description: "**Introduction**\nAPI Gateway for Onboard\n\nThis specification describes API endpoints that are available to the public internet via the API gateway. The different endpoints require different authentication schemes, see documentation for what applies to the operation you want to access.\n\n**Errors**\nUses conventional HTTP response codes to indicate success or failure. In\ngeneral:\n \n- `2xx` status codes indicate success. Codes in the\n- `4xx` range\nindicate a client error (e.g. required parameters, failed request etc.).\n- `5xx` status codes indicate a server error occurred."
+  contact:
+    name: Nestcoin TechOps
+    email: techops@nestcoin.com
+  license:
+    name: UNLICENSED
+servers:
+- url: https://external.dev.onboardpay.co
+  description: Gateway for external API on staging environment.
+tags:
+- name: transactions-transactions
+paths:
+  /transactions/{id}:
+    x-original-path: /transactions/{id}
+    get:
+      tags:
+      - transactions-transactions
+      summary: Retrieve a particular transaction
+      operationId: getTransactionById
+      parameters:
+      - $ref: '#/components/parameters/TransactionsSvcidPathVariable'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionDTO'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '401':
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+      security:
+      - authToken: []
+      x-visibility: external
+  /transactions/{id}/contacts:
+    x-original-path: /transactions/{id}/contacts
+    get:
+      tags:
+      - transactions-transactions
+      summary: Retrieve a particular transaction's contacts. Currently just phone numbers
+      operationId: getTransactionContacts
+      parameters:
+      - $ref: '#/components/parameters/TransactionsSvcidPathVariable'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionContactsDTO'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '401':
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+      security:
+      - authToken: []
+      x-visibility: external
+  /transactions/customers/{id}/history:
+    x-original-path: /transactions/customers/{id}/history
+    get:
+      tags:
+      - transactions-transactions
+      summary: Retrieve list of customer transactions
+      operationId: getCustomerTransactions
+      parameters:
+      - $ref: '#/components/parameters/TransactionsSvcidPathVariableForUserId'
+      - $ref: '#/components/parameters/TransactionsSvctransactionTypeParam'
+      - $ref: '#/components/parameters/TransactionsSvcfromDateParam'
+      - $ref: '#/components/parameters/TransactionsSvctoDateParam'
+      - $ref: '#/components/parameters/TransactionsSvcsizeParam'
+      - $ref: '#/components/parameters/TransactionsSvcpageParam'
+      - $ref: '#/components/parameters/TransactionsSvcstatusesParam'
+      - $ref: '#/components/parameters/TransactionsSvctokenQueryParam'
+      - $ref: '#/components/parameters/TransactionsSvcfiatQueryParam'
+      - $ref: '#/components/parameters/TransactionsSvcnetworkQueryParam'
+      - $ref: '#/components/parameters/TransactionsSvcpaymentChannelQueryParam'
+      - $ref: '#/components/parameters/TransactionsSvcreferenceQueryParam'
+      - $ref: '#/components/parameters/TransactionsSvcotherPartyQueryParam'
+      - name: tradeRequestBroadcastId
+        in: query
+        schema:
+          type: string
+      - $ref: '#/components/parameters/TransactionsSvcisTradeRequestBroadcastQueryParam'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionsResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '401':
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+      security:
+      - authToken: []
+      x-visibility: external
+  /transactions/customers/{id}/history-aggregate:
+    x-original-path: /transactions/customers/{id}/history-aggregate
+    get:
+      tags:
+      - transactions-transactions
+      summary: Retrieve list of customer transactions
+      operationId: getCustomerTransactionsAggregate
+      parameters:
+      - $ref: '#/components/parameters/TransactionsSvcidPathVariableForUserId'
+      - $ref: '#/components/parameters/TransactionsSvctransactionTypeParam'
+      - $ref: '#/components/parameters/TransactionsSvcfromDateParam'
+      - $ref: '#/components/parameters/TransactionsSvctoDateParam'
+      - $ref: '#/components/parameters/TransactionsSvcstatusesParam'
+      - $ref: '#/components/parameters/TransactionsSvctokenQueryParam'
+      - $ref: '#/components/parameters/TransactionsSvcfiatQueryParam'
+      - $ref: '#/components/parameters/TransactionsSvcnetworkQueryParam'
+      - $ref: '#/components/parameters/TransactionsSvcpaymentChannelQueryParam'
+      - $ref: '#/components/parameters/TransactionsSvcreferenceQueryParam'
+      - $ref: '#/components/parameters/TransactionsSvcotherPartyQueryParam'
+      - $ref: '#/components/parameters/TransactionsSvcisTradeRequestBroadcastQueryParam'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionHistoryAggregate'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '401':
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+      security:
+      - authToken: []
+      x-visibility: external
+components:
+  parameters:
+    TransactionsSvcidPathVariable:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    TransactionsSvctransactionTypeParam:
+      name: transactionType
+      in: query
+      schema:
+        $ref: '#/components/schemas/TransactionsSvcTransactionType'
+    TransactionsSvcnetworkQueryParam:
+      name: network
+      in: query
+      schema:
+        type: string
+    TransactionsSvcotherPartyQueryParam:
+      name: otherPartyId
+      in: query
+      schema:
+        type: string
+        format: uuid
+    TransactionsSvcstatusesParam:
+      name: statuses
+      in: query
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          $ref: '#/components/schemas/TransactionOrderStatus'
+    TransactionsSvcisTradeRequestBroadcastQueryParam:
+      name: isTradeRequestBroadcast
+      in: query
+      schema:
+        type: boolean
+    TransactionsSvcfromDateParam:
+      name: from
+      in: query
+      description: 15-04-2022
+      schema:
+        type: string
+        pattern: \d{2}-\d{2}-\d{4}
+    TransactionsSvcidPathVariableForUserId:
+      name: id
+      in: path
+      description: userId
+      required: true
+      schema:
+        type: string
+        format: uuid
+    TransactionsSvcpageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+    TransactionsSvcfiatQueryParam:
+      name: fiat
+      in: query
+      schema:
+        type: string
+    TransactionsSvctoDateParam:
+      name: to
+      in: query
+      description: 15-08-2022
+      schema:
+        type: string
+        pattern: \d{2}-\d{2}-\d{4}
+    TransactionsSvcpaymentChannelQueryParam:
+      name: paymentChannel
+      in: query
+      schema:
+        type: string
+    TransactionsSvcsizeParam:
+      name: size
+      in: query
+      schema:
+        type: integer
+    TransactionsSvcreferenceQueryParam:
+      name: reference
+      in: query
+      schema:
+        type: string
+    TransactionsSvctokenQueryParam:
+      name: token
+      in: query
+      schema:
+        type: string
+  schemas:
+    ErrorMessageDto:
+      description: Default error object for services. This gives consistent error object that all services may use.
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          description: Error code
+          example: UNKNOWN_ERROR
+        message:
+          type: string
+          description: Descriptive error message
+          example: Request could not be completed due to an error
+        data:
+          type: object
+          description: Additional data for this error message.
+          additionalProperties: true
+          properties: {}
+      x-common-model: ErrorMessageDto
+    TransactionsSvcTradeMode:
+      type: string
+      enum:
+      - P2P
+      - IP
+      - OTC
+      x-source-svc: transactions
+    TimeoutDTO:
+      type: object
+      properties:
+        name:
+          type: string
+          enum:
+          - APPROVE_TRANSACTION
+          - MAKE_DEPOSIT
+          - CONFIRM_DEPOSIT
+          - FLAG_DISPUTE
+          - ACKNOWLEDGE_TRANSACTION
+        startTime:
+          type: string
+          format: date-time
+          x-faker: date.recent
+        duration:
+          type: number
+        timeLeft:
+          type: integer
+          format: int64
+      x-source-svc: transactions
+    TradeContext:
+      type: string
+      enum:
+      - STANDARD_TRADE
+      - INTERNAL_RAIL
+      x-source-svc: transactions
+    ThirdpartyOrderInfoDTO:
+      required:
+      - businessId
+      properties:
+        businessId:
+          type: string
+          description: The thirdparty business the customer is trading via
+        tradeId:
+          type: string
+          description: Tracking trade Id
+        product:
+          type: string
+          description: Product name, typically custodial or web
+        blockchainOrderId:
+          type: integer
+        externalOrderReference:
+          type: string
+      x-source-svc: transactions
+    TransactionHistoryAggregate:
+      type: object
+      required:
+      - tradeCount
+      - tradeUsdTotal
+      properties:
+        userId:
+          type: string
+          format: uuid
+        tradeCount:
+          type: integer
+        tradeUsdTotal:
+          type: number
+          example: 3849594.1
+        fiatTotal:
+          type: number
+          example: 1245.92
+        tokenTotal:
+          type: number
+          example: 245.73
+      x-source-svc: transactions
+    TransactionsSvcTransactionType:
+      type: string
+      description: Transaction order type, can be ONRAMP or OFFRAMP
+      enum:
+      - ONRAMP
+      - OFFRAMP
+      x-source-svc: transactions
+    TransactionsSvcOfferDTO:
+      required:
+      - instantPayEnabled
+      - networkId
+      - partnerId
+      - rate
+      - token
+      - tokenAmount
+      - transactionType
+      type: object
+      properties:
+        offerId:
+          type: string
+          format: uuid
+        partnerId:
+          type: string
+          format: uuid
+        transactionType:
+          $ref: '#/components/schemas/TransactionsSvcTransactionType'
+        rate:
+          type: number
+          example: 0.32
+        networkId:
+          type: string
+          example: TRC20
+        fiatSymbol:
+          type: string
+          example: NGN
+        fiatAmount:
+          type: number
+          example: 120.5
+        token:
+          type: string
+          example: USDT
+        tokenAmount:
+          type: number
+          example: 120.5
+        usdAmount:
+          type: number
+          example: 120.5
+        partnerDisplayName:
+          type: string
+          example: John Doe
+        adNote:
+          type: string
+          example: Guaranteed fast payment
+        instantPayEnabled:
+          type: boolean
+        instantPayPaymentAccountId:
+          type: string
+        customPayinProvider:
+          type: string
+        tradeMode:
+          $ref: '#/components/schemas/TransactionsSvcTradeMode'
+      x-source-svc: transactions
+    TransactionOrderStatus:
+      type: string
+      description: Order transaction status
+      enum:
+      - INITIATED
+      - DEPOSITED
+      - CONFIRMED
+      - COMPLETED
+      - PENDING
+      - CANCELLED
+      - IN_DISPUTE
+      - AWAITING_ACCEPTANCE
+      x-source-svc: transactions
+    TransactionDTO:
+      required:
+      - customerId
+      - fee
+      - id
+      - reference
+      - status
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        reference:
+          type: string
+          example: 0165359005113074501885
+        customerId:
+          type: string
+          format: uuid
+        customerName:
+          type: string
+          example: John Doe
+        offer:
+          $ref: '#/components/schemas/TransactionsSvcOfferDTO'
+        escrowAddress:
+          type: string
+          description: Escrow address
+          example: 1.2869144918162796e+48
+        paymentChannelId:
+          type: string
+          example: BANK_TRANSFER_NIGERIA
+        paymentMethod:
+          type: object
+          properties: {}
+        buyerPaymentMethod:
+          type: object
+          properties: {}
+        customerWallet:
+          $ref: '#/components/schemas/TransactionsSvcWalletDTO'
+        tokenAddress:
+          type: string
+          example: 0
+        status:
+          $ref: '#/components/schemas/TransactionOrderStatus'
+        createdAt:
+          type: string
+          format: date-time
+          x-faker: date.recent
+        initiatedAt:
+          type: string
+          format: date-time
+          x-faker: date.recent
+        depositedAt:
+          type: string
+          format: date-time
+          x-faker: date.recent
+        confirmedAt:
+          type: string
+          format: date-time
+          x-faker: date.recent
+        completedAt:
+          type: string
+          format: date-time
+          x-faker: date.recent
+        cancelledAt:
+          type: string
+          format: date-time
+          x-faker: date.recent
+        cancellationReason:
+          type: string
+        disputeId:
+          type: string
+          default: 'null'
+        timeout:
+          $ref: '#/components/schemas/TimeoutDTO'
+        lockHash:
+          type: string
+          default: 'null'
+        confirmationHash:
+          type: string
+          default: 'null'
+        cancellationHash:
+          type: string
+          default: 'null'
+        isPartnerAcknowledged:
+          type: boolean
+          default: false
+        defaultingParty:
+          $ref: '#/components/schemas/UserType'
+        rating:
+          type: number
+          example: 3
+        isCexOrder:
+          type: boolean
+          example: false
+        fee:
+          $ref: '#/components/schemas/Fee'
+        instantPayProcessingStatus:
+          $ref: '#/components/schemas/InstantPayProcessingStatus'
+        tradeValue:
+          type: number
+          description: Actual token amount that is to be traded
+          deprecated: true
+        merchantTokenValue:
+          type: number
+          description: Actual token value that is to be traded by merchant less any fees
+        customerTokenValue:
+          type: number
+          description: Actual token value that is to be traded by customer less any fees
+        payableAmount:
+          type: number
+          description: Actual fiat amount that is to be paid.
+        thirdpartyOrderInfo:
+          $ref: '#/components/schemas/ThirdpartyOrderInfoDTO'
+        isNoKyc:
+          type: boolean
+          description: Flag showing if order is a no kyc order
+        paymentReceiptUploadId:
+          type: string
+          description: Upload ID for receipt uploaded on storage bucket
+          default: 'null'
+        suppressCustomerNotifications:
+          type: boolean
+          description: Flag to indicate if notifications should be sent to the customer or not during the lifetime of this transaction
+          default: false
+        chatUnavailable:
+          type: boolean
+          description: Flag to indicate if chat is unavailable for this transaction
+          default: false
+        tradeContext:
+          $ref: '#/components/schemas/TradeContext'
+      x-source-svc: transactions
+    TransactionContactsDTO:
+      type: object
+      properties:
+        customerPhoneNumber:
+          type: string
+          example: '23408100000000'
+        merchantPhoneNumber:
+          type: string
+          example: '23408100000001'
+      x-source-svc: transactions
+    InstantPayProcessingStatus:
+      type: string
+      enum:
+      - PENDING_IP_REPORT
+      - IN_PROGRESS
+      - FAILURE
+      - SUCCESS
+      x-source-svc: transactions
+    UserType:
+      type: string
+      description: Type of user/role of user in transaction
+      enum:
+      - CUSTOMER
+      - PARTNER
+      x-source-svc: transactions
+    TransactionsSvcWalletDTO:
+      type: object
+      properties:
+        walletAddress:
+          type: string
+          example: 0
+        networkId:
+          type: string
+          example: bsc_testnet
+        walletName:
+          type: string
+          example: My Trust Wallet
+      x-source-svc: transactions
+    TransactionsResponse:
+      type: object
+      properties:
+        transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransactionDTO'
+        pageNumber:
+          type: integer
+        pageSize:
+          type: integer
+        totalPages:
+          type: integer
+        totalTransactions:
+          type: integer
+      x-source-svc: transactions
+    Fee:
+      required:
+      - asFiat
+      - asToken
+      type: object
+      properties:
+        asToken:
+          type: string
+          pattern: ([0-9]*[.])?[0-9]+
+          example: '1000.0'
+        asFiat:
+          type: number
+      x-source-svc: transactions
+  securitySchemes:
+    authSignature:
+      type: apiKey
+      name: x-signature
+      in: header
+    authToken:
+      type: apiKey
+      name: x-auth-token
+      in: header
+      description: Auth Token header for inter-service communication
+x-organization: onboard
+x-service-id: external-gateway
+x-preserve-refs:
+- '#/components/schemas/IntegrationProduct'
+- '#/components/schemas/AdAppliedEscrowBalanceDto'
+- '#/components/schemas/P2PWalletRecipient'
+- '#/components/schemas/BankAccountRecipient'
+- '#/components/schemas/MobileMoneyRecipient'
+- '#/components/schemas/OrderEvent'
+- '#/components/schemas/PaymentMethodEventAction'
+- '#/components/schemas/PaymentMethodEventPayload'
+- '#/components/schemas/TransactionServiceErrorCode'
+- '#/components/schemas/ErrorCodes'

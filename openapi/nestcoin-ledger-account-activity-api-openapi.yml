@@ -1,0 +1,591 @@
+openapi: 3.0.3
+info:
+  version: 3.0.2
+  title: Onboard External API Gateway auth-oauth ledger-account activity API
+  description: "**Introduction**\nAPI Gateway for Onboard\n\nThis specification describes API endpoints that are available to the public internet via the API gateway. The different endpoints require different authentication schemes, see documentation for what applies to the operation you want to access.\n\n**Errors**\nUses conventional HTTP response codes to indicate success or failure. In\ngeneral:\n \n- `2xx` status codes indicate success. Codes in the\n- `4xx` range\nindicate a client error (e.g. required parameters, failed request etc.).\n- `5xx` status codes indicate a server error occurred."
+  contact:
+    name: Nestcoin TechOps
+    email: techops@nestcoin.com
+  license:
+    name: UNLICENSED
+servers:
+- url: https://external.dev.onboardpay.co
+  description: Gateway for external API on staging environment.
+tags:
+- name: ledger-account activity
+paths:
+  /ledger/accounts/{accountId}/activities:
+    x-original-path: /accounts/{accountId}/activities
+    get:
+      summary: Get account transaction activities
+      description: 'This operation allows the client to fetch a paginated, aggregated feed of all
+
+        transaction activity for an account (cash deposits/payments, account-number
+
+        deposits, crypto deposits/withdrawals, internal transfers, offramp deposits),
+
+        each with type-specific details in activityData.
+
+        '
+      operationId: getAccountActivities
+      x-visibility: external
+      tags:
+      - ledger-account activity
+      parameters:
+      - $ref: '#/components/parameters/LedgerSvcaccountId'
+      - name: type
+        in: query
+        description: Filter by activity type
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransactionActivityType'
+      - name: direction
+        in: query
+        description: Filter by activity direction
+        required: false
+        schema:
+          $ref: '#/components/schemas/ActivityDirection'
+      - name: startDate
+        in: query
+        description: Filter activities occurring on or after this date-time
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: endDate
+        in: query
+        description: Filter activities occurring on or before this date-time
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - $ref: '#/components/parameters/LedgerSvcpage'
+      - $ref: '#/components/parameters/LedgerSvcsize'
+      responses:
+        '200':
+          description: Activities fetched successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionActivityList'
+        '400':
+          $ref: '#/components/responses/LedgerSvcInvalidRequest'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+        '403':
+          $ref: '#/components/responses/LedgerSvcAccessDenied'
+        default:
+          $ref: '#/components/responses/LedgerSvcServerError'
+      security:
+      - authToken: []
+  /ledger/accounts/{accountId}/activities/{activityId}:
+    x-original-path: /accounts/{accountId}/activities/{activityId}
+    get:
+      summary: Get a single transaction activity
+      description: 'This operation allows the client to fetch a specific transaction activity by its ID.
+
+        '
+      operationId: getAccountActivityById
+      x-visibility: external
+      tags:
+      - ledger-account activity
+      parameters:
+      - $ref: '#/components/parameters/LedgerSvcaccountId'
+      - $ref: '#/components/parameters/LedgerSvcactivityId'
+      responses:
+        '200':
+          description: Activity fetched successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionActivity'
+        '400':
+          $ref: '#/components/responses/LedgerSvcInvalidRequest'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+        '403':
+          $ref: '#/components/responses/LedgerSvcAccessDenied'
+        '404':
+          $ref: '#/components/responses/LedgerSvcNotFound'
+        default:
+          $ref: '#/components/responses/LedgerSvcServerError'
+      security:
+      - authToken: []
+  /ledger/subaccounts/{subAccountIdRef}/activities:
+    x-original-path: /subaccounts/{subAccountIdRef}/activities
+    get:
+      summary: Get sub-account transaction activities
+      description: 'This operation allows the client to fetch a paginated, aggregated feed of all
+
+        transaction activities for a sub-account (cash deposits/payments, account-number
+
+        deposits, crypto deposits/withdrawals, internal transfers, offramp deposits),
+
+        each with type-specific details in activityData.
+
+        '
+      operationId: getSubAccountActivities
+      x-visibility: external
+      tags:
+      - ledger-account activity
+      parameters:
+      - $ref: '#/components/parameters/LedgerSvcsubAccountIdOrRef'
+      - name: type
+        in: query
+        description: Filter by activity type
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransactionActivityType'
+      - name: direction
+        in: query
+        description: Filter by activity direction
+        required: false
+        schema:
+          $ref: '#/components/schemas/ActivityDirection'
+      - name: startDate
+        in: query
+        description: Filter activities occurring on or after this date-time
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: endDate
+        in: query
+        description: Filter activities occurring on or before this date-time
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - $ref: '#/components/parameters/LedgerSvcpage'
+      - $ref: '#/components/parameters/LedgerSvcsize'
+      responses:
+        '200':
+          description: Activities fetched successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionActivityList'
+        '400':
+          $ref: '#/components/responses/LedgerSvcInvalidRequest'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+        '403':
+          $ref: '#/components/responses/LedgerSvcAccessDenied'
+        default:
+          $ref: '#/components/responses/LedgerSvcServerError'
+      security:
+      - authToken: []
+  /ledger/subaccounts/{subAccountIdRef}/activities/{activityId}:
+    x-original-path: /subaccounts/{subAccountIdRef}/activities/{activityId}
+    get:
+      summary: Get a single sub-account transaction activity
+      description: 'This operation allows the client to fetch a specific transaction activity by its ID.
+
+        '
+      operationId: getSubAccountActivityById
+      x-visibility: external
+      tags:
+      - ledger-account activity
+      parameters:
+      - $ref: '#/components/parameters/LedgerSvcsubAccountIdOrRef'
+      - $ref: '#/components/parameters/LedgerSvcactivityId'
+      responses:
+        '200':
+          description: Activity fetched successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionActivity'
+        '400':
+          $ref: '#/components/responses/LedgerSvcInvalidRequest'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+        '403':
+          $ref: '#/components/responses/LedgerSvcAccessDenied'
+        '404':
+          $ref: '#/components/responses/LedgerSvcNotFound'
+        default:
+          $ref: '#/components/responses/LedgerSvcServerError'
+      security:
+      - authToken: []
+  /ledger/transaction-activities:
+    x-original-path: /transaction-activities
+    get:
+      summary: Get transaction activities across the business
+      description: 'This operation allows the client to fetch a paginated, aggregated feed of all
+
+        transaction activity for the authenticated business, optionally scoped to a
+
+        single account, with the same type-specific activityData as the account-scoped
+
+        activities endpoint.
+
+        '
+      operationId: getTransactionActivities
+      x-visibility: external
+      tags:
+      - ledger-account activity
+      parameters:
+      - $ref: '#/components/parameters/LedgerSvcanyAccountIdQuery'
+      - name: type
+        in: query
+        description: Filter by activity type
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransactionActivityType'
+      - name: direction
+        in: query
+        description: Filter by activity direction
+        required: false
+        schema:
+          $ref: '#/components/schemas/ActivityDirection'
+      - name: startDate
+        in: query
+        description: Filter activities occurring on or after this date-time
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: endDate
+        in: query
+        description: Filter activities occurring on or before this date-time
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - $ref: '#/components/parameters/LedgerSvcpage'
+      - $ref: '#/components/parameters/LedgerSvcsize'
+      responses:
+        '200':
+          description: Activities fetched successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionActivityList'
+        '400':
+          $ref: '#/components/responses/LedgerSvcInvalidRequest'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+        '403':
+          $ref: '#/components/responses/LedgerSvcAccessDenied'
+        default:
+          $ref: '#/components/responses/LedgerSvcServerError'
+      security:
+      - authToken: []
+components:
+  schemas:
+    TransactionActivity:
+      type: object
+      description: 'A single entry in the aggregated account activity feed. The concrete subtype is
+
+        determined by the activityType discriminator; the type field carries the
+
+        semantic category for filtering and display.
+
+        '
+      discriminator:
+        propertyName: activityType
+        mapping:
+          CashDepositActivity: '#/components/schemas/CashDepositActivity'
+          CashPaymentActivity: '#/components/schemas/CashPaymentActivity'
+          AccountNumberDepositActivity: '#/components/schemas/AccountNumberDepositActivity'
+          CryptoWithdrawalActivity: '#/components/schemas/CryptoWithdrawalActivity'
+          CryptoDepositActivity: '#/components/schemas/CryptoDepositActivity'
+          InternalTransferActivity: '#/components/schemas/InternalTransferActivity'
+          OfframpDepositActivity: '#/components/schemas/OfframpDepositActivity'
+      required:
+      - id
+      - activityType
+      - type
+      - direction
+      - amount
+      - currency
+      - status
+      - activityAt
+      - accountId
+      - accountType
+      properties:
+        id:
+          type: string
+          format: uuid
+        activityType:
+          type: string
+          description: 'Discriminator; the concrete activity model name, e.g. CashDepositActivity.
+
+            '
+        type:
+          $ref: '#/components/schemas/TransactionActivityType'
+        direction:
+          $ref: '#/components/schemas/ActivityDirection'
+        amount:
+          type: number
+          description: Always positive; see direction for credit/debit.
+          example: 100
+        currency:
+          type: string
+          example: USD
+        status:
+          $ref: '#/components/schemas/TransactionStatus'
+        reference:
+          type: string
+          description: Customer-facing reference of the source transaction.
+        accountId:
+          type: string
+          format: uuid
+        accountType:
+          $ref: '#/components/schemas/ActivityAccountType'
+        subAccountId:
+          type: string
+          format: uuid
+          description: Set when accountType is SUB_ACCOUNT.
+        accountTransactionId:
+          type: string
+          description: Identifier of the transaction on the ledger account, when available.
+        groupId:
+          type: string
+          format: uuid
+          description: 'Links related activities together, e.g. the two legs of an internal
+
+            transfer, or an offramp deposit and its refund.
+
+            '
+        narration:
+          type: string
+        activityAt:
+          type: string
+          format: date-time
+      x-source-svc: ledger
+    ErrorMessageDto:
+      description: Default error object for services. This gives consistent error object that all services may use.
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          description: Error code
+          example: UNKNOWN_ERROR
+        message:
+          type: string
+          description: Descriptive error message
+          example: Request could not be completed due to an error
+        data:
+          type: object
+          description: Additional data for this error message.
+          additionalProperties: true
+          properties: {}
+      x-common-model: ErrorMessageDto
+    TransactionActivityType:
+      type: string
+      description: Semantic category of a transaction activity feed entry.
+      enum:
+      - CASH_DEPOSIT
+      - CASH_PAYMENT
+      - ACCOUNT_NUMBER_DEPOSIT
+      - CRYPTO_WITHDRAWAL
+      - CRYPTO_DEPOSIT
+      - INTERNAL_TRANSFER
+      - OFFRAMP_DEPOSIT
+      x-source-svc: ledger
+    TransactionStatus:
+      type: string
+      description: 'Status of the transaction, indicating its current state in the processing lifecycle.
+
+        - PENDING: The transaction has been created but not yet processed.
+
+        - IN_PROGRESS: The transaction is currently being processed.
+
+        - FAILED: The transaction processing has failed.
+
+        - SUCCESS: The transaction has been successfully processed.
+
+        '
+      enum:
+      - PENDING
+      - IN_PROGRESS
+      - FAILED
+      - SUCCESS
+      x-source-svc: ledger
+    TransactionActivityList:
+      allOf:
+      - $ref: '#/components/schemas/Paging'
+      - type: object
+        properties:
+          content:
+            type: array
+            description: List of transaction activities
+            items:
+              $ref: '#/components/schemas/TransactionActivity'
+      x-source-svc: ledger
+    ActivityDirection:
+      type: string
+      enum:
+      - CREDIT
+      - DEBIT
+      x-source-svc: ledger
+    ActivityAccountType:
+      type: string
+      description: The kind of account a transaction activity occurred on.
+      enum:
+      - MAIN
+      - SUB_ACCOUNT
+      - OFFRAMP_ACCOUNT
+      x-source-svc: ledger
+    Paging:
+      description: Base object for paginated list
+      type: object
+      properties:
+        name:
+          type: string
+          description: Descriptive name for the list
+        size:
+          minimum: 0
+          type: integer
+          format: int32
+          description: Positive integer
+        totalItems:
+          minimum: 0
+          type: integer
+          format: int32
+          description: Positive integer
+        nextPage:
+          minimum: 0
+          type: integer
+          format: int32
+          description: Positive integer
+        previousPage:
+          minimum: 0
+          type: integer
+          format: int32
+          description: Positive integer
+      discriminator:
+        propertyName: name
+      x-common-model: Paging
+  parameters:
+    LedgerSvcanyAccountIdQuery:
+      name: accountId
+      description: Any account ID (could be Main account, sub-account or offramp account)
+      required: false
+      in: query
+      schema:
+        type: string
+        format: uuid
+    LedgerSvcpage:
+      in: query
+      name: page
+      required: false
+      description: Page parameter, starting from 1
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    LedgerSvcactivityId:
+      in: path
+      name: activityId
+      description: The unique transaction activity ID
+      required: true
+      schema:
+        type: string
+        format: uuid
+    LedgerSvcsubAccountIdOrRef:
+      in: path
+      name: subAccountIdRef
+      description: 'The unique onboard sub-account ID or reference
+
+        '
+      required: true
+      schema:
+        type: string
+    LedgerSvcsize:
+      in: query
+      name: size
+      required: false
+      schema:
+        type: integer
+        maximum: 100
+        minimum: 1
+        default: 20
+    LedgerSvcaccountId:
+      in: path
+      name: accountId
+      description: the unique onboard account ID
+      required: true
+      schema:
+        type: string
+        format: uuid
+  responses:
+    LedgerSvcUnauthorized:
+      description: Client is not authorized to make request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: UNAUTHORIZED
+            message: Either client security header is missing or it is not valid.
+    LedgerSvcAccessDenied:
+      description: Expected permission is not available.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: ACCESS_DENIED
+            message: Expected permission or scope is not present.
+    LedgerSvcInvalidRequest:
+      description: Request could not be validated
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: BAD_REQUEST
+            message: Request could not be validated.
+    LedgerSvcServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: INTERNAL_ERROR
+            message: An internal server error occurred.
+    LedgerSvcNotFound:
+      description: Entity was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: NOT_FOUND
+            message: Information could not be found
+  securitySchemes:
+    authSignature:
+      type: apiKey
+      name: x-signature
+      in: header
+    authToken:
+      type: apiKey
+      name: x-auth-token
+      in: header
+      description: Auth Token header for inter-service communication
+x-organization: onboard
+x-service-id: external-gateway
+x-preserve-refs:
+- '#/components/schemas/IntegrationProduct'
+- '#/components/schemas/AdAppliedEscrowBalanceDto'
+- '#/components/schemas/P2PWalletRecipient'
+- '#/components/schemas/BankAccountRecipient'
+- '#/components/schemas/MobileMoneyRecipient'
+- '#/components/schemas/OrderEvent'
+- '#/components/schemas/PaymentMethodEventAction'
+- '#/components/schemas/PaymentMethodEventPayload'
+- '#/components/schemas/TransactionServiceErrorCode'
+- '#/components/schemas/ErrorCodes'

@@ -1,0 +1,536 @@
+openapi: 3.0.3
+info:
+  version: 3.0.2
+  title: Onboard External API Gateway auth-oauth users-users API
+  description: "**Introduction**\nAPI Gateway for Onboard\n\nThis specification describes API endpoints that are available to the public internet via the API gateway. The different endpoints require different authentication schemes, see documentation for what applies to the operation you want to access.\n\n**Errors**\nUses conventional HTTP response codes to indicate success or failure. In\ngeneral:\n \n- `2xx` status codes indicate success. Codes in the\n- `4xx` range\nindicate a client error (e.g. required parameters, failed request etc.).\n- `5xx` status codes indicate a server error occurred."
+  contact:
+    name: Nestcoin TechOps
+    email: techops@nestcoin.com
+  license:
+    name: UNLICENSED
+servers:
+- url: https://external.dev.onboardpay.co
+  description: Gateway for external API on staging environment.
+tags:
+- name: users-users
+  description: User related endpoints
+paths:
+  /users/me/send-otp:
+    x-original-path: /me/send-otp
+    get:
+      tags:
+      - users-users
+      summary: Provide otp for user
+      operationId: sendOtp
+      parameters:
+      - name: purpose
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/OtpPurpose'
+      - name: verificationChannel
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/PhoneNumberVerificationChannel'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OtpSendResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '401':
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+      security:
+      - authToken: []
+      x-visibility: external
+  /users/me:
+    x-original-path: /me
+    get:
+      tags:
+      - users-users
+      summary: Get a single user by their authorization token
+      operationId: getMyProfile
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDataDto'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '401':
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+      security:
+      - authToken: []
+      x-visibility: external
+  /users/me/update-profile:
+    x-original-path: /me/update-profile
+    put:
+      tags:
+      - users-users
+      summary: Update partner's personal information
+      operationId: updateProfile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProfileRequestDto'
+        required: false
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfileDataDto'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '401':
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+      security:
+      - authToken: []
+      x-visibility: external
+      x-codegen-request-body-name: profileData
+components:
+  schemas:
+    UserTransactionLimit:
+      type: object
+      properties:
+        dailyTransactionLimit:
+          type: number
+        maxSingleTransactionLimit:
+          type: number
+        minSingleTransactionLimit:
+          type: number
+        maxLifetimeLimit:
+          type: number
+      x-source-svc: users
+    PhoneNumberVerificationChannel:
+      type: string
+      enum:
+      - SMS
+      - WHATSAPP
+      x-source-svc: users
+    OtpSendResponse:
+      type: object
+      properties:
+        sent:
+          type: boolean
+        authSessionId:
+          type: string
+      x-source-svc: users
+    ProfileDataDto:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/VerificationStatus'
+        fullname:
+          type: string
+          description: User's full name
+        country:
+          type: string
+          description: User's country
+          example: NG
+        dob:
+          type: string
+          description: User's date of birth
+          format: date
+          example: '2024-04-18T00:00:00.000Z'
+        displayName:
+          type: string
+          description: User's display name
+        proofOfAddress:
+          type: string
+          description: Proof of partner's address
+        hasBusinessBankAccount:
+          type: boolean
+          description: partner has a business account
+        businessName:
+          type: string
+        certificateOfIncorporation:
+          type: string
+        hasShareHolderList:
+          type: boolean
+        userInShareHolderList:
+          type: boolean
+        noShareHolderListEvidence:
+          type: string
+        useOfBusinessAccountApprovedByShareholders:
+          type: boolean
+        noOfLegalDirectors:
+          type: number
+        regulatoryIdsOfDirectors:
+          type: array
+          items:
+            type: string
+        depositTimeout:
+          type: number
+          example: 1200
+        approvalTimeout:
+          type: number
+          example: 1200
+        tradeHistoryDetails:
+          $ref: '#/components/schemas/ProfileTradeDto'
+      x-source-svc: users
+    ErrorMessageDto:
+      description: Default error object for services. This gives consistent error object that all services may use.
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          description: Error code
+          example: UNKNOWN_ERROR
+        message:
+          type: string
+          description: Descriptive error message
+          example: Request could not be completed due to an error
+        data:
+          type: object
+          description: Additional data for this error message.
+          additionalProperties: true
+          properties: {}
+      x-common-model: ErrorMessageDto
+    KycNameChangeHistoryDto:
+      type: object
+      properties:
+        reason:
+          type: string
+          description: Name change reason
+        actor:
+          type: string
+          description: Name of admin that initiated the change
+        previousName:
+          type: string
+          description: Previous full name
+        currentName:
+          type: string
+          description: Current full name
+        evidenceUrl:
+          type: string
+          format: url
+          description: Url link of change request evidence
+        timestamp:
+          type: string
+          format: date-time
+      required:
+      - reason
+      - actor
+      - previousName
+      - currentName
+      - timestamp
+      x-source-svc: users
+    VerificationStatus:
+      type: string
+      description: user's verification status
+      enum:
+      - VERIFIED
+      - UNVERIFIED
+      - FAILED_VERIFICATION
+      - REVIEW_REQUIRED
+      - IN_PROGRESS
+      - REJECTED
+      x-source-svc: users
+    UserProfileDataDto:
+      type: object
+      properties:
+        email:
+          type: string
+        userType:
+          $ref: '#/components/schemas/UsersSvcUserType'
+        profile:
+          $ref: '#/components/schemas/ProfileDataDto'
+      x-source-svc: users
+    KycJobStatus:
+      type: string
+      enum:
+      - VERIFIED
+      - UNVERIFIED
+      - IN_PROGRESS
+      - AWAITING_INPUT
+      - FAILED_VERIFICATION
+      - REVIEW_REQUIRED
+      - VERIFICATION_TIMEOUT
+      x-source-svc: users
+    ProfileTradeDto:
+      type: object
+      properties:
+        hasPreviousTradeHistory:
+          type: boolean
+          description: Partner have previous trading experience
+        proofOfTrade:
+          type: array
+          description: Partner's proof of previous trade history
+          items:
+            type: string
+        referee:
+          type: string
+          description: Partner's referee
+      x-source-svc: users
+    UpdateProfileRequestDto:
+      type: object
+      properties:
+        fullname:
+          type: string
+          description: User's full name
+        country:
+          type: string
+          description: User's country
+          example: NG
+        dob:
+          type: string
+          description: User's date of birth
+          format: date
+          example: '2024-04-18T00:00:00.000Z'
+        hasBusinessBankAccount:
+          type: boolean
+          description: partner has a business account
+        displayName:
+          type: string
+          description: User's display name
+        proofOfAddress:
+          type: string
+          description: Proof of partner's address
+      x-source-svc: users
+    UsersSvcUserType:
+      type: string
+      description: the type of the user
+      enum:
+      - CUSTOMER
+      - PARTNER
+      x-source-svc: users
+    UserRoles:
+      type: string
+      description: the roles a user can possess on Onboard
+      enum:
+      - CUSTOMER
+      - MERCHANT
+      - MERCHANT_NETWORK
+      x-source-svc: users
+    UserDataDto:
+      required:
+      - email
+      - userId
+      type: object
+      properties:
+        userId:
+          type: string
+          description: the user ID
+        email:
+          type: string
+          description: User's email
+        name:
+          type: string
+          description: Name of customer
+        phoneNumber:
+          type: string
+          description: User phone number
+          example: '2348100000000'
+        phoneNumberVerified:
+          type: boolean
+          description: flag indicating if user has verified their phone number
+        fullName:
+          type: string
+          description: user's kyc fullname
+        referralLink:
+          type: string
+          description: referral link
+        referralCode:
+          type: string
+          description: referral code generated for this user. Also known as onboard pass
+        userType:
+          $ref: '#/components/schemas/UsersSvcUserType'
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserRoles'
+        isCustomer:
+          type: boolean
+        isMerchant:
+          type: boolean
+        isOnboardWalletUser:
+          type: boolean
+          description: flag indicating if user is an Onboard wallet user or not. i.e user has made use of/sign in using Onboard wallet before.
+        isOpnMerchant:
+          type: boolean
+          description: Indicates if the merchant has been provisioned for OPN
+        isMerchantNetwork:
+          type: boolean
+        kycStatus:
+          $ref: '#/components/schemas/KycJobStatus'
+        kycRetryCount:
+          type: number
+          description: The number of kyc retries
+        kycRetryLimit:
+          type: number
+          description: kyc retry limit
+        kycNameHistory:
+          type: array
+          description: History of name change
+          items:
+            $ref: '#/components/schemas/KycNameChangeHistoryDto'
+        comments:
+          type: array
+          items:
+            type: object
+            properties:
+              comment:
+                type: string
+              addedBy:
+                type: string
+        includes:
+          type: object
+          properties: {}
+        supportedCurrencies:
+          type: array
+          items:
+            type: string
+        language:
+          type: string
+          description: 'Language preference (preferred or detected).
+
+            Can be just language (en) or locale (en-GB). See samples
+
+            '
+          example: en, en-US, fr-FR, pt-BR
+        availability:
+          type: boolean
+        active:
+          type: boolean
+        country:
+          type: string
+        verifiedAddress:
+          type: string
+          description: Wallet Address connected to user's account.
+          example: '0x15b8b00fb8d2bd7d76e90e70294e87fc6ba79e3b'
+        profile:
+          $ref: '#/components/schemas/ProfileDataDto'
+        transactionLimit:
+          $ref: '#/components/schemas/UserTransactionLimit'
+        authSource:
+          type: string
+          description: specifies the user's wallet source
+        createdAt:
+          type: string
+          description: Timestamp field.
+          format: date-time
+        lastActiveAt:
+          type: string
+          description: Timestamp field.
+          format: date-time
+        isTotpSetup:
+          type: boolean
+        totpSetupAt:
+          type: string
+          description: Timestamp field.
+          format: date-time
+        verifiedPhoneNumberLastUpdatedAt:
+          type: string
+          description: Timestamp field.
+          format: date-time
+      x-source-svc: users
+    OtpPurpose:
+      type: string
+      description: the purpose of an otp
+      enum:
+      - SIGN_IN
+      - DELETE_ACCOUNT
+      - ADD_PAYMENT_METHOD
+      - EDIT_PAYMENT_METHOD
+      - CEX_ORDER_CONFIRMATION
+      - PHONE_NUMBER_VERIFICATION
+      - AUTHENTICATE_ACTION
+      - WALLET_RECOVERY
+      - WALLET_RESET
+      - MFA_SETUP
+      x-source-svc: users
+  securitySchemes:
+    authSignature:
+      type: apiKey
+      name: x-signature
+      in: header
+    authToken:
+      type: apiKey
+      name: x-auth-token
+      in: header
+      description: Auth Token header for inter-service communication
+x-organization: onboard
+x-service-id: external-gateway
+x-preserve-refs:
+- '#/components/schemas/IntegrationProduct'
+- '#/components/schemas/AdAppliedEscrowBalanceDto'
+- '#/components/schemas/P2PWalletRecipient'
+- '#/components/schemas/BankAccountRecipient'
+- '#/components/schemas/MobileMoneyRecipient'
+- '#/components/schemas/OrderEvent'
+- '#/components/schemas/PaymentMethodEventAction'
+- '#/components/schemas/PaymentMethodEventPayload'
+- '#/components/schemas/TransactionServiceErrorCode'
+- '#/components/schemas/ErrorCodes'

@@ -1,0 +1,861 @@
+openapi: 3.0.3
+info:
+  version: 3.0.2
+  title: Onboard External API Gateway auth-oauth ledger-sub-accounts API
+  description: "**Introduction**\nAPI Gateway for Onboard\n\nThis specification describes API endpoints that are available to the public internet via the API gateway. The different endpoints require different authentication schemes, see documentation for what applies to the operation you want to access.\n\n**Errors**\nUses conventional HTTP response codes to indicate success or failure. In\ngeneral:\n \n- `2xx` status codes indicate success. Codes in the\n- `4xx` range\nindicate a client error (e.g. required parameters, failed request etc.).\n- `5xx` status codes indicate a server error occurred."
+  contact:
+    name: Nestcoin TechOps
+    email: techops@nestcoin.com
+  license:
+    name: UNLICENSED
+servers:
+- url: https://external.dev.onboardpay.co
+  description: Gateway for external API on staging environment.
+tags:
+- name: ledger-sub-accounts
+paths:
+  /ledger/subaccounts:
+    x-original-path: /subaccounts
+    post:
+      summary: Create sub-account for a customer.
+      operationId: createSubAccount
+      x-visibility: external
+      tags:
+      - ledger-sub-accounts
+      requestBody:
+        description: Sub-account creation request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSubAccountRequest'
+      description: 'This endpoint helps to create sub-accounts for a customer. The endpoint requires the main account ID to create a sub-account under it.
+
+        '
+      responses:
+        '201':
+          description: Sub-account created Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubAccount'
+        '400':
+          $ref: '#/components/responses/LedgerSvcInvalidRequest'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+        '403':
+          $ref: '#/components/responses/LedgerSvcAccessDenied'
+        '404':
+          $ref: '#/components/responses/LedgerSvcNotFound'
+        default:
+          $ref: '#/components/responses/LedgerSvcServerError'
+      security:
+      - authToken: []
+    get:
+      summary: Fetch all sub-accounts belonging to the customer.
+      description: 'This endpoint returns all sub-accounts
+
+        '
+      operationId: fetchSubAccounts
+      x-visibility: external
+      tags:
+      - ledger-sub-accounts
+      parameters:
+      - $ref: '#/components/parameters/LedgerSvcaccountIdQuery'
+      - $ref: '#/components/parameters/LedgerSvcsize'
+      - $ref: '#/components/parameters/LedgerSvcpage'
+      responses:
+        '200':
+          description: Sub-accounts fetched Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubAccountList'
+        '400':
+          $ref: '#/components/responses/LedgerSvcInvalidRequest'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+        '403':
+          $ref: '#/components/responses/LedgerSvcAccessDenied'
+        default:
+          $ref: '#/components/responses/LedgerSvcServerError'
+      security:
+      - authToken: []
+  /ledger/subaccounts/{subAccountIdRef}:
+    x-original-path: /subaccounts/{subAccountIdRef}
+    get:
+      summary: Fetch sub-account details by sub-account ID.
+      description: 'This endpoint returns sub-account details by sub-account ID.
+
+        '
+      operationId: fetchSubAccountById
+      x-visibility: external
+      tags:
+      - ledger-sub-accounts
+      parameters:
+      - $ref: '#/components/parameters/LedgerSvcsubAccountIdOrRef'
+      responses:
+        '200':
+          description: Sub-account fetched Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubAccount'
+        '400':
+          $ref: '#/components/responses/LedgerSvcInvalidRequest'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+        '403':
+          $ref: '#/components/responses/LedgerSvcAccessDenied'
+        '404':
+          $ref: '#/components/responses/LedgerSvcNotFound'
+        default:
+          $ref: '#/components/responses/LedgerSvcServerError'
+      security:
+      - authToken: []
+    put:
+      summary: Update sub-account details by sub-account ID.
+      description: 'This endpoint updates sub-account details by sub-account ID.
+
+        '
+      operationId: updateSubAccountById
+      x-visibility: external
+      tags:
+      - ledger-sub-accounts
+      parameters:
+      - $ref: '#/components/parameters/LedgerSvcsubAccountIdOrRef'
+      requestBody:
+        description: Sub-account update request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateSubAccountRequest'
+      responses:
+        '200':
+          description: Sub-account updated Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubAccount'
+        '400':
+          $ref: '#/components/responses/LedgerSvcInvalidRequest'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+        '403':
+          $ref: '#/components/responses/LedgerSvcAccessDenied'
+        '404':
+          $ref: '#/components/responses/LedgerSvcNotFound'
+        default:
+          $ref: '#/components/responses/LedgerSvcServerError'
+      security:
+      - authToken: []
+    delete:
+      summary: Delete sub-account by sub-account ID.
+      description: 'This endpoint deletes sub-account by sub-account ID. The sub-account must have zero balance before it can be deleted.
+
+        The endpoint will return an error if the sub-account has a non-zero balance. The funds in the sub-account must be transferred to another account before deletion.
+
+        Once an account is deleted, it cannot be recovered, and a new sub-account must be created if needed.
+
+        The address associated with the sub-account will also be deleted upon successful deletion of the sub-account.
+
+        '
+      operationId: deleteSubAccountById
+      x-visibility: external
+      tags:
+      - ledger-sub-accounts
+      parameters:
+      - $ref: '#/components/parameters/LedgerSvcsubAccountIdOrRef'
+      responses:
+        '200':
+          description: Sub-account deleted Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusDto'
+        '400':
+          $ref: '#/components/responses/LedgerSvcInvalidRequest'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+        '403':
+          $ref: '#/components/responses/LedgerSvcAccessDenied'
+        '404':
+          $ref: '#/components/responses/LedgerSvcNotFound'
+        default:
+          $ref: '#/components/responses/LedgerSvcServerError'
+      security:
+      - authToken: []
+  /ledger/subaccounts/{subAccountIdRef}/funding-address:
+    parameters:
+    - $ref: '#/components/parameters/LedgerSvcsubAccountIdOrRef'
+    - name: tokenNetworkCode
+      description: a unique code we assign to a token on a network, e.g. USDT_ETH
+      required: true
+      in: query
+      schema:
+        type: string
+    x-original-path: /subaccounts/{subAccountIdRef}/funding-address
+    get:
+      summary: Check funding address for a sub-account.
+      description: 'This operation allows the client to get the address for the sub-account if it exists
+
+        '
+      operationId: getSubAccountFundingAddress
+      x-visibility: external
+      tags:
+      - ledger-sub-accounts
+      responses:
+        '200':
+          description: Address Fetched Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FundingAddressResponse'
+        '400':
+          $ref: '#/components/responses/LedgerSvcInvalidRequest'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+        '403':
+          $ref: '#/components/responses/LedgerSvcAccessDenied'
+        default:
+          $ref: '#/components/responses/LedgerSvcServerError'
+      security:
+      - authToken: []
+    post:
+      summary: Create Funding Address for a sub-account using token network.
+      description: 'This operation allows the client to create an address for the supported token and network for a sub-account.
+
+        '
+      operationId: createSubAccountFundingAddress
+      x-visibility: external
+      parameters:
+      - $ref: '#/components/parameters/LedgerSvcsubAccountIdOrRef'
+      tags:
+      - ledger-sub-accounts
+      responses:
+        '201':
+          description: Address created Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FundingAddress'
+        '400':
+          $ref: '#/components/responses/LedgerSvcInvalidRequest'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+        '403':
+          $ref: '#/components/responses/LedgerSvcAccessDenied'
+        '409':
+          $ref: '#/components/responses/LedgerSvcEntityAlreadyExist'
+        default:
+          $ref: '#/components/responses/LedgerSvcServerError'
+      security:
+      - authToken: []
+  /ledger/subaccounts/{subAccountIdRef}/account-details:
+    parameters:
+    - $ref: '#/components/parameters/LedgerSvcsubAccountIdOrRef'
+    - $ref: '#/components/parameters/LedgerSvcaccountNumberCurrencyQuery'
+    x-original-path: /subaccounts/{subAccountIdRef}/account-details
+    get:
+      summary: Get the bank account number for a sub-account.
+      description: 'Returns the bank account number (and bank details) generated for this sub-account in the given
+
+        currency, if one exists.
+
+        '
+      operationId: getSubAccountNumber
+      x-visibility: external
+      tags:
+      - ledger-sub-accounts
+      responses:
+        '200':
+          description: Bank account number details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CashDepositPaymentDetails'
+        '400':
+          $ref: '#/components/responses/LedgerSvcInvalidRequest'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+        '403':
+          $ref: '#/components/responses/LedgerSvcAccessDenied'
+        '404':
+          $ref: '#/components/responses/LedgerSvcNotFound'
+        default:
+          $ref: '#/components/responses/LedgerSvcServerError'
+      security:
+      - authToken: []
+    post:
+      summary: Create a bank account number for a sub-account.
+      description: 'Generates a bank account number for this sub-account in the given currency through the
+
+        account-number provider. The account name must be supplied by the client.
+
+        '
+      operationId: createSubAccountNumber
+      x-visibility: external
+      tags:
+      - ledger-sub-accounts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSubAccountNumberRequest'
+      responses:
+        '201':
+          description: Bank account number created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CashDepositPaymentDetails'
+        '400':
+          $ref: '#/components/responses/LedgerSvcInvalidRequest'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+        '403':
+          $ref: '#/components/responses/LedgerSvcAccessDenied'
+        '409':
+          $ref: '#/components/responses/LedgerSvcEntityAlreadyExist'
+        default:
+          $ref: '#/components/responses/LedgerSvcServerError'
+      security:
+      - authToken: []
+components:
+  schemas:
+    ErrorMessageDto:
+      description: Default error object for services. This gives consistent error object that all services may use.
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          description: Error code
+          example: UNKNOWN_ERROR
+        message:
+          type: string
+          description: Descriptive error message
+          example: Request could not be completed due to an error
+        data:
+          type: object
+          description: Additional data for this error message.
+          additionalProperties: true
+          properties: {}
+      x-common-model: ErrorMessageDto
+    CreateSubAccountRequest:
+      type: object
+      description: 'Request to create a sub-account under a main account.
+
+        '
+      required:
+      - accountId
+      - reference
+      properties:
+        accountId:
+          type: string
+          format: uuid
+          description: The main account ID under which the sub-account will be created.
+        reference:
+          type: string
+          description: A unique reference for the sub-account. This must be unique across all sub-accounts.
+          minLength: 6
+          maxLength: 36
+          pattern: ^[a-zA-Z0-9_-]{6,36}$
+        displayName:
+          type: string
+          description: An optional name for the sub-account.
+      x-source-svc: ledger
+    SubAccount:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - accountId
+      - reference
+      - accountBalance
+      - currency
+      - frozen
+      - createdDate
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique sub-account ID
+        accountId:
+          type: string
+          format: uuid
+          description: The main account ID to which this sub-account belongs.
+        displayName:
+          type: string
+          description: An optional name for the sub-account.
+        reference:
+          type: string
+          description: A unique reference for the sub-account.
+        currency:
+          type: string
+          description: Currency of the sub-account
+          example: USD
+        accountBalance:
+          $ref: '#/components/schemas/AccountBalanceDetails'
+        frozen:
+          type: boolean
+          description: Indicates if the sub-account is frozen (locked) or not.
+          default: false
+        createdDate:
+          type: string
+          format: date-time
+          description: The date the sub-account was created.
+      x-source-svc: ledger
+    LedgerSvcBlockchainNetwork:
+      type: object
+      description: Details of blockchain network
+      required:
+      - name
+      - id
+      - blockTime
+      - confirmations
+      - coinName
+      - coinSymbol
+      properties:
+        id:
+          type: string
+          description: Simple identifier to identify the network
+          example: ETH
+        name:
+          type: string
+          description: Descriptive name for network
+          example: Ethereum
+        blockTime:
+          type: integer
+          format: int32
+          description: Average time to generate new blocks in seconds.
+          minimum: 1
+          example: 15
+        confirmations:
+          type: number
+          description: 'Minimum number of confirmations needed for a transaction to be confirmed.
+
+            Total wait time for an asset can be computed as  blockTime * confirmations.
+
+            '
+          minimum: 1
+          example: 8
+        coinName:
+          type: string
+          example: Ether
+          description: name of the network's native coin
+        coinSymbol:
+          type: string
+          description: symbol of the network's native coin
+          example: ETH
+        supportsMemo:
+          type: boolean
+          description: Indicates if the network has memo support.
+          default: 'false'
+        alias:
+          type: string
+          description: The network alias
+          example: BEP20
+        addressExplorerUrl:
+          type: string
+          format: url
+          example: https://etherscan.io/address
+          description: 'Base URL path of an address on the blockchain explorer. Full URL can be obtained by appending the address to this.
+
+            '
+        txExplorerUrl:
+          type: string
+          format: url
+          example: https://etherscan.io/tx
+          description: 'Base URL Path of a transaction on the blockchain explorer. Full URL can be obtained by appending the TX hash to this URL.
+
+            '
+      x-source-svc: ledger
+    TokenNetwork:
+      type: object
+      required:
+      - code
+      - networkInfo
+      - decimals
+      - contractAddress
+      - minimumDeposit
+      properties:
+        code:
+          type: string
+          description: 'human-readable identifier for the token on this network. Usually a combination of network code and asset symbol
+
+            '
+          example: ETH_USDC
+        decimals:
+          type: integer
+          format: int32
+          example: 6
+          minimum: 0
+          description: The number of decimals used by this token on this network.
+        contractAddress:
+          type: string
+          description: Contract address of the token on the given network.
+          example: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+        minimumDeposit:
+          type: number
+          description: Minimum amount allowed for deposits.
+          example: 5.25
+        depositAvailable:
+          type: boolean
+          description: Indicates if deposits are currently available. Address request will fail if this is false.
+          default: true
+        withdrawalAvailable:
+          type: boolean
+          description: Indicates if withdrawals are currently available. Withdrawal request will fail if this is false.
+          default: true
+        withdrawalFee:
+          type: number
+          minimum: 0
+          example: '100.01'
+          description: Transaction value. Must be positive.
+        networkInfo:
+          $ref: '#/components/schemas/LedgerSvcBlockchainNetwork'
+      x-source-svc: ledger
+    UpdateSubAccountRequest:
+      type: object
+      required:
+      - frozen
+      properties:
+        displayName:
+          type: string
+          description: An optional name for the sub-account.
+        frozen:
+          type: boolean
+          description: Indicates if the sub-account is frozen (locked) or not.
+          default: false
+      x-source-svc: ledger
+    CreateSubAccountNumberRequest:
+      type: object
+      description: Request to generate a bank account number for a sub-account.
+      required:
+      - accountName
+      properties:
+        accountName:
+          type: string
+          description: Name to assign to the generated bank account.
+          example: ACME Collections
+      x-source-svc: ledger
+    SubAccountList:
+      allOf:
+      - $ref: '#/components/schemas/Paging'
+      - type: object
+        description: Paginated list of sub-accounts belonging to a client.
+        additionalProperties: false
+        required:
+        - content
+        properties:
+          content:
+            type: array
+            description: List of sub-accounts
+            items:
+              $ref: '#/components/schemas/SubAccount'
+      x-source-svc: ledger
+    Paging:
+      description: Base object for paginated list
+      type: object
+      properties:
+        name:
+          type: string
+          description: Descriptive name for the list
+        size:
+          minimum: 0
+          type: integer
+          format: int32
+          description: Positive integer
+        totalItems:
+          minimum: 0
+          type: integer
+          format: int32
+          description: Positive integer
+        nextPage:
+          minimum: 0
+          type: integer
+          format: int32
+          description: Positive integer
+        previousPage:
+          minimum: 0
+          type: integer
+          format: int32
+          description: Positive integer
+      discriminator:
+        propertyName: name
+      x-common-model: Paging
+    FundingAddressResponse:
+      type: object
+      additionalProperties: false
+      required:
+      - available
+      properties:
+        available:
+          type: boolean
+          description: 'Indicates if the funding address has been generated and is available for use.
+
+            When false, the fundingAddress field will be null, and the client can create the address.
+
+            When true, the fundingAddress field will contain the deposit address details.
+
+            '
+          default: false
+        fundingAddress:
+          $ref: '#/components/schemas/FundingAddress'
+      x-source-svc: ledger
+    StatusDto:
+      description: Status data, check additional message field.
+      type: object
+      required:
+      - success
+      properties:
+        success:
+          description: Status can be successful or failed, a value of true indicates success.
+          type: boolean
+          example: true
+        message:
+          type: string
+          description: additional message describing status.
+        data:
+          type: object
+          additionalProperties: true
+          description: Data associated with the status, this will not always be present
+        error:
+          $ref: '#/components/schemas/ErrorMessageDto'
+      x-common-model: StatusDto
+    CashDepositPaymentDetails:
+      type: object
+      description: 'Destination account details the customer must pay into to fund the deposit. Mirrors a Beneficiary
+
+        (without an id). Carries only the account details needed to make the payment; transaction context
+
+        (amount, status, etc.) lives on the enclosing CashDepositTransaction.
+
+        '
+      required:
+      - details
+      - payinCurrency
+      properties:
+        details:
+          $ref: '#/components/schemas/CashAccountDetails'
+        payinCurrency:
+          type: string
+          description: Currency the destination account accepts for the deposit.
+          example: NGN
+      x-source-svc: ledger
+    CashAccountDetails:
+      type: object
+      required:
+      - accountInfoType
+      - accountName
+      - accountNumber
+      properties:
+        accountInfoType:
+          type: string
+          pattern: ^Cash(LocalBank|SepaBank|ACHBank|SwiftBank|MobileWallet|MultiRailBank)Account$
+          description: 'Used to determine the exact schema type.
+
+            Allowed values:
+
+            - CashLocalBankAccount
+
+            - CashSepaBankAccount
+
+            - CashACHBankAccount
+
+            - CashSwiftBankAccount
+
+            - CashMobileWalletAccount
+
+            - CashMultiRailBankAccount
+
+            '
+        accountName:
+          type: string
+          description: Name on the destination account.
+          example: John Doe
+        accountNumber:
+          type: string
+          description: 'The destination account identifier. For mobile money this is the phone number, for P2P wallet the account ID.
+
+            Where routing number or sort code is present, this would be `{routingNumber}-{accountNumber}`.
+
+            '
+          example: '230101010'
+        reference:
+          type: string
+          description: 'Reference the customer must include with the deposit so the pay-in is auto-matched.
+
+            Optional — some providers do not require one.
+
+            '
+          example: PROV123456
+      discriminator:
+        propertyName: accountInfoType
+        mapping:
+          CashLocalBankAccount: '#/components/schemas/CashLocalBankAccount'
+          CashSepaBankAccount: '#/components/schemas/CashSepaBankAccount'
+          CashACHBankAccount: '#/components/schemas/CashACHBankAccount'
+          CashSwiftBankAccount: '#/components/schemas/CashSwiftBankAccount'
+          CashMobileWalletAccount: '#/components/schemas/CashMobileWalletAccount'
+          CashMultiRailBankAccount: '#/components/schemas/CashMultiRailBankAccount'
+      x-source-svc: ledger
+    FundingAddress:
+      type: object
+      additionalProperties: false
+      required:
+      - tokenInfo
+      - address
+      properties:
+        address:
+          type: string
+          description: The deposit address
+          example: '0x43e4715ae093a4c86b5ecddb52216c4f879e9672'
+        memo:
+          type: string
+          description: Optional, for networks that support memo.
+        tokenInfo:
+          $ref: '#/components/schemas/TokenNetwork'
+      x-source-svc: ledger
+    AccountBalanceDetails:
+      type: object
+      additionalProperties: false
+      description: Account balance details
+      properties:
+        balance:
+          description: The actual ledger balance of the account
+          type: number
+          example: 1000
+        availableBalance:
+          description: The available balance for spending
+          type: number
+          example: 1000
+      x-source-svc: ledger
+  responses:
+    LedgerSvcUnauthorized:
+      description: Client is not authorized to make request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: UNAUTHORIZED
+            message: Either client security header is missing or it is not valid.
+    LedgerSvcAccessDenied:
+      description: Expected permission is not available.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: ACCESS_DENIED
+            message: Expected permission or scope is not present.
+    LedgerSvcInvalidRequest:
+      description: Request could not be validated
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: BAD_REQUEST
+            message: Request could not be validated.
+    LedgerSvcServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: INTERNAL_ERROR
+            message: An internal server error occurred.
+    LedgerSvcEntityAlreadyExist:
+      description: Entity already exist, it can not be created.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: ENTITY_ALREADY_EXIST
+            message: Entity already exist, it can not be created.
+    LedgerSvcNotFound:
+      description: Entity was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: NOT_FOUND
+            message: Information could not be found
+  parameters:
+    LedgerSvcpage:
+      in: query
+      name: page
+      required: false
+      description: Page parameter, starting from 1
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    LedgerSvcaccountIdQuery:
+      name: accountId
+      description: The ID for the main account for the request.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: uuid
+    LedgerSvcsubAccountIdOrRef:
+      in: path
+      name: subAccountIdRef
+      description: 'The unique onboard sub-account ID or reference
+
+        '
+      required: true
+      schema:
+        type: string
+    LedgerSvcsize:
+      in: query
+      name: size
+      required: false
+      schema:
+        type: integer
+        maximum: 100
+        minimum: 1
+        default: 20
+    LedgerSvcaccountNumberCurrencyQuery:
+      in: query
+      name: currency
+      description: Currency of the bank account number to generate or retrieve.
+      required: false
+      schema:
+        type: string
+        default: USD
+        example: NGN
+  securitySchemes:
+    authSignature:
+      type: apiKey
+      name: x-signature
+      in: header
+    authToken:
+      type: apiKey
+      name: x-auth-token
+      in: header
+      description: Auth Token header for inter-service communication
+x-organization: onboard
+x-service-id: external-gateway
+x-preserve-refs:
+- '#/components/schemas/IntegrationProduct'
+- '#/components/schemas/AdAppliedEscrowBalanceDto'
+- '#/components/schemas/P2PWalletRecipient'
+- '#/components/schemas/BankAccountRecipient'
+- '#/components/schemas/MobileMoneyRecipient'
+- '#/components/schemas/OrderEvent'
+- '#/components/schemas/PaymentMethodEventAction'
+- '#/components/schemas/PaymentMethodEventPayload'
+- '#/components/schemas/TransactionServiceErrorCode'
+- '#/components/schemas/ErrorCodes'

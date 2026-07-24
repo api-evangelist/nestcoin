@@ -1,0 +1,569 @@
+openapi: 3.0.3
+info:
+  version: 3.0.2
+  title: Onboard External API Gateway auth-oauth ledger-transfer API
+  description: "**Introduction**\nAPI Gateway for Onboard\n\nThis specification describes API endpoints that are available to the public internet via the API gateway. The different endpoints require different authentication schemes, see documentation for what applies to the operation you want to access.\n\n**Errors**\nUses conventional HTTP response codes to indicate success or failure. In\ngeneral:\n \n- `2xx` status codes indicate success. Codes in the\n- `4xx` range\nindicate a client error (e.g. required parameters, failed request etc.).\n- `5xx` status codes indicate a server error occurred."
+  contact:
+    name: Nestcoin TechOps
+    email: techops@nestcoin.com
+  license:
+    name: UNLICENSED
+servers:
+- url: https://external.dev.onboardpay.co
+  description: Gateway for external API on staging environment.
+tags:
+- name: ledger-transfer
+paths:
+  /ledger/internal-transfers:
+    x-original-path: /internal-transfers
+    post:
+      summary: Create internal transfer
+      description: 'This operation allows the client to create an internal transfer between subaccounts and main account.
+
+        '
+      operationId: createInternalTransfer
+      x-visibility: external
+      tags:
+      - ledger-transfer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InternalTransferRequest'
+      responses:
+        '201':
+          description: Internal transfer created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalTransfer'
+        '400':
+          $ref: '#/components/responses/LedgerSvcInvalidRequest'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+        '403':
+          $ref: '#/components/responses/LedgerSvcAccessDenied'
+        default:
+          $ref: '#/components/responses/LedgerSvcServerError'
+      security:
+      - authToken: []
+  /ledger/internal-transfers/{referenceId}:
+    x-original-path: /internal-transfers/{referenceId}
+    get:
+      summary: Get internal transfer by reference
+      description: 'This operation allows the client to fetch an internal transfer by its reference ID.
+
+        '
+      operationId: getInternalTransferByReference
+      x-visibility: external
+      tags:
+      - ledger-transfer
+      parameters:
+      - $ref: '#/components/parameters/LedgerSvcreferenceId'
+      responses:
+        '200':
+          description: Internal transfer fetched successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalTransfer'
+        '400':
+          $ref: '#/components/responses/LedgerSvcInvalidRequest'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+        '403':
+          $ref: '#/components/responses/LedgerSvcAccessDenied'
+        '404':
+          $ref: '#/components/responses/LedgerSvcNotFound'
+        default:
+          $ref: '#/components/responses/LedgerSvcServerError'
+      security:
+      - authToken: []
+  /ledger/crypto-transfer:
+    x-original-path: /crypto-transfer
+    post:
+      summary: Performs crypto transfer
+      description: 'This operations allow the client to perform crypto transfer to n external wallet.
+
+
+        N.B. The amount field is the amount after fees + fees, i.e the total amount, also send the fee in the fee field.
+
+        '
+      operationId: cryptoTransfer
+      x-visibility: external
+      tags:
+      - ledger-transfer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CryptoTransferRequest'
+      responses:
+        '201':
+          description: Request received, do 2FA
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransferResponse'
+        '400':
+          $ref: '#/components/responses/LedgerSvcInvalidRequest'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+        '403':
+          $ref: '#/components/responses/LedgerSvcAccessDenied'
+        default:
+          $ref: '#/components/responses/LedgerSvcServerError'
+      security:
+      - authToken: []
+  /ledger/crypto-transfer/{transferReference}:
+    x-original-path: /crypto-transfer/{transferReference}
+    get:
+      summary: Get crypto transfer by reference
+      description: 'This operation allows the client to fetch a specific crypto transfer by its reference ID.
+
+        '
+      operationId: getCryptoTransferByReference
+      x-visibility: external
+      tags:
+      - ledger-transfer
+      parameters:
+      - $ref: '#/components/parameters/LedgerSvctransferReference'
+      responses:
+        '200':
+          description: Crypto Transfer fetched successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountTransaction'
+        '400':
+          $ref: '#/components/responses/LedgerSvcInvalidRequest'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+        '403':
+          $ref: '#/components/responses/LedgerSvcAccessDenied'
+        '404':
+          $ref: '#/components/responses/LedgerSvcNotFound'
+        default:
+          $ref: '#/components/responses/LedgerSvcServerError'
+      security:
+      - authToken: []
+components:
+  schemas:
+    ErrorMessageDto:
+      description: Default error object for services. This gives consistent error object that all services may use.
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          description: Error code
+          example: UNKNOWN_ERROR
+        message:
+          type: string
+          description: Descriptive error message
+          example: Request could not be completed due to an error
+        data:
+          type: object
+          description: Additional data for this error message.
+          additionalProperties: true
+          properties: {}
+      x-common-model: ErrorMessageDto
+    AccountTransaction:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - reference
+      - type
+      - amount
+      - currency
+      - status
+      - createdDate
+      properties:
+        id:
+          type: string
+          description: Unique transaction ID
+          example: txn_123456
+        reference:
+          type: string
+          description: Unique transaction reference.
+          example: REF123456
+        type:
+          $ref: '#/components/schemas/TransactionType'
+        amount:
+          type: number
+          description: Transaction amount, negative for debits, positive for credits
+          example: 100
+        currency:
+          type: string
+          description: Transaction currency
+          example: USD
+        status:
+          $ref: '#/components/schemas/TransactionStatus'
+        categoryTag:
+          type: string
+          description: Category tag for the transaction
+          example: crypto-withdrawal
+        createdDate:
+          type: string
+          format: date-time
+          description: Transaction creation date
+        notes:
+          type: string
+          description: Transaction description
+          example: Conversion from USDC to IDR
+        accountId:
+          type: string
+          format: uuid
+          description: Associated account ID
+        feeAmount:
+          type: number
+          description: Fee amount associated with the transaction
+          example: 1
+        feeInclusive:
+          type: boolean
+          description: Indicates if the fee is inclusive in the transaction amount
+        subAccountId:
+          type: string
+          format: uuid
+          description: Associated sub-account ID, if applicable
+        blockchainInfo:
+          $ref: '#/components/schemas/TransactionBlockchainInfo'
+      x-source-svc: ledger
+    InternalTransferRequest:
+      type: object
+      additionalProperties: false
+      description: 'Internal request to transfer funds between two sub-accounts of between main account and sub-account.
+
+        The accounts must have the same currency.
+
+        '
+      required:
+      - sourceAccountId
+      - destinationAccountId
+      - amount
+      properties:
+        sourceAccountId:
+          type: string
+          format: uuid
+          description: Source account ID, could be the main account or another sub-account
+        destinationAccountId:
+          type: string
+          format: uuid
+          description: Destination account ID, could be the main account or another sub-account
+        reference:
+          type: string
+          description: Alpha-numeric transfer reference
+          example: ITR123456
+          pattern: ^[a-zA-Z0-9_-]{8,32}$
+          minLength: 8
+          maxLength: 32
+        amount:
+          type: number
+          description: Transfer amount
+          example: 100
+          minimum: 0
+          exclusiveMinimum: true
+        notes:
+          type: string
+          description: Transfer description
+      x-source-svc: ledger
+    TransactionType:
+      type: string
+      enum:
+      - DEPOSIT
+      - WITHDRAWAL
+      - TRANSFER
+      x-source-svc: ledger
+    TransactionStatus:
+      type: string
+      description: 'Status of the transaction, indicating its current state in the processing lifecycle.
+
+        - PENDING: The transaction has been created but not yet processed.
+
+        - IN_PROGRESS: The transaction is currently being processed.
+
+        - FAILED: The transaction processing has failed.
+
+        - SUCCESS: The transaction has been successfully processed.
+
+        '
+      enum:
+      - PENDING
+      - IN_PROGRESS
+      - FAILED
+      - SUCCESS
+      x-source-svc: ledger
+    TransactionBlockchainInfo:
+      type: object
+      description: Blockchain transaction data, present on Crypto-backed transactions.
+      required:
+      - txHash
+      - recipient
+      - value
+      - tokenSymbol
+      properties:
+        txHash:
+          type: string
+          description: Blockchain Transaction Hash
+          example: '0x093a0b443d5f698d1097368c1c05fab1ee2304e508b36c08bb72c40389c17584'
+        recipient:
+          $ref: '#/components/schemas/TransactionBlockchainAddress'
+        senderAddress:
+          type: string
+          description: The address of the sender.
+          example: '0x2b059a574a35e60b228d10d54fec2671de4928e1'
+        value:
+          type: number
+          example: '100.01'
+          minimum: 0
+          description: Quantity of tokens transferred in the transaction.
+          default: '0.0'
+        blockNumber:
+          type: integer
+          format: int64
+          example: 20564802
+        tokenSymbol:
+          example: USDT
+          description: Token symbol
+          type: string
+        timestamp:
+          type: integer
+          format: int64
+          description: Transaction block timestamp.
+        explorerUrl:
+          type: string
+          format: url
+          description: URL to view the transaction on a blockchain explorer.
+      x-source-svc: ledger
+    User2FAMethod:
+      type: string
+      enum:
+      - AUTHENTICATOR_APP
+      - EMAIL
+      - SMS
+      x-source-svc: ledger
+    TransferResponse:
+      type: object
+      additionalProperties: false
+      description: The payment initiation response
+      required:
+      - id
+      - status
+      - awaiting2fA
+      properties:
+        id:
+          type: string
+          example: P12005E1DV
+        status:
+          $ref: '#/components/schemas/TransactionStatus'
+        awaiting2fA:
+          type: boolean
+          default: false
+          description: Indicates if transfer is awaiting 2FA confirmation. This applies mostly to transaction initiated via dashboard
+        twoFaMethod:
+          type: array
+          description: List of 2fa enabled
+          items:
+            $ref: '#/components/schemas/User2FAMethod'
+      x-source-svc: ledger
+    TransactionBlockchainAddress:
+      type: object
+      description: Address data
+      required:
+      - address
+      properties:
+        address:
+          type: string
+          description: Blockchain address where deposit was received.
+          example: '0x2b059a574a35e60b228d10d54fec2671de4928e1'
+        memo:
+          type: string
+          description: Memo for blockchains where memo is required.
+          example: '1290122112'
+      x-source-svc: ledger
+    CryptoTransferDestination:
+      type: object
+      additionalProperties: false
+      description: The destination details of the transfer. Either beneficiaryId or address must be provided.
+      required:
+      - tokenNetworkCode
+      properties:
+        tokenNetworkCode:
+          type: string
+          description: The token network code for the transfer
+          example: BUSD_BSC
+        beneficiaryId:
+          type: string
+          format: uuid
+          description: The ID of the saved crypto beneficiary to which the transfer will be made.
+        address:
+          type: string
+          example: '0x7BCc5bCBa19DE3C903F062D8fB5fF8d9f818173E'
+        memo:
+          type: string
+          example: '405070'
+          description: Optional, for networks that require memo.
+      x-source-svc: ledger
+    CryptoTransferRequest:
+      description: 'Request object for crypto payment initiation request. The sourceAccountId can be a main account or sub-account.
+
+        '
+      type: object
+      additionalProperties: false
+      required:
+      - sourceAccountId
+      - amount
+      - destination
+      properties:
+        sourceAccountId:
+          type: string
+          format: uuid
+          description: The source account ID from which funds will be debited. This can be a main account or sub-account.
+        amount:
+          type: number
+          example: '100.00'
+          minimum: 0
+          description: Transaction amount, specified in the source account's currency.
+        narration:
+          type: string
+          description: Notes
+        destination:
+          $ref: '#/components/schemas/CryptoTransferDestination'
+      x-source-svc: ledger
+    InternalTransfer:
+      type: object
+      additionalProperties: false
+      required:
+      - reference
+      - sourceAccountId
+      - destinationAccountId
+      - amount
+      - currency
+      - status
+      - createdDate
+      properties:
+        reference:
+          type: string
+          description: Transfer reference
+          example: ITR123456
+        sourceAccountId:
+          type: string
+          format: uuid
+          description: Source account ID
+        sourceAccountRef:
+          type: string
+          description: The transaction reference on the source account.
+        destinationAccountId:
+          type: string
+          format: uuid
+          description: Destination account ID
+        destinationAccountRef:
+          type: string
+          description: The transaction reference on the destination account.
+        amount:
+          type: number
+          description: Transfer amount
+          example: 100
+        currency:
+          type: string
+          description: Transfer currency
+          example: USD
+        status:
+          $ref: '#/components/schemas/TransactionStatus'
+        createdDate:
+          type: string
+          format: date-time
+          description: Transfer creation date
+        description:
+          type: string
+          description: Transfer description
+      x-source-svc: ledger
+  responses:
+    LedgerSvcUnauthorized:
+      description: Client is not authorized to make request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: UNAUTHORIZED
+            message: Either client security header is missing or it is not valid.
+    LedgerSvcAccessDenied:
+      description: Expected permission is not available.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: ACCESS_DENIED
+            message: Expected permission or scope is not present.
+    LedgerSvcInvalidRequest:
+      description: Request could not be validated
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: BAD_REQUEST
+            message: Request could not be validated.
+    LedgerSvcServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: INTERNAL_ERROR
+            message: An internal server error occurred.
+    LedgerSvcNotFound:
+      description: Entity was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: NOT_FOUND
+            message: Information could not be found
+  parameters:
+    LedgerSvctransferReference:
+      in: path
+      name: transferReference
+      description: The transfer unique ID
+      required: true
+      schema:
+        type: string
+    LedgerSvcreferenceId:
+      in: path
+      name: referenceId
+      description: The transaction or transfer reference ID
+      required: true
+      schema:
+        type: string
+  securitySchemes:
+    authSignature:
+      type: apiKey
+      name: x-signature
+      in: header
+    authToken:
+      type: apiKey
+      name: x-auth-token
+      in: header
+      description: Auth Token header for inter-service communication
+x-organization: onboard
+x-service-id: external-gateway
+x-preserve-refs:
+- '#/components/schemas/IntegrationProduct'
+- '#/components/schemas/AdAppliedEscrowBalanceDto'
+- '#/components/schemas/P2PWalletRecipient'
+- '#/components/schemas/BankAccountRecipient'
+- '#/components/schemas/MobileMoneyRecipient'
+- '#/components/schemas/OrderEvent'
+- '#/components/schemas/PaymentMethodEventAction'
+- '#/components/schemas/PaymentMethodEventPayload'
+- '#/components/schemas/TransactionServiceErrorCode'
+- '#/components/schemas/ErrorCodes'

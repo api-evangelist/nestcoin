@@ -1,0 +1,182 @@
+openapi: 3.0.3
+info:
+  version: 3.0.2
+  title: Onboard External API Gateway auth-oauth payment-methods-users API
+  description: "**Introduction**\nAPI Gateway for Onboard\n\nThis specification describes API endpoints that are available to the public internet via the API gateway. The different endpoints require different authentication schemes, see documentation for what applies to the operation you want to access.\n\n**Errors**\nUses conventional HTTP response codes to indicate success or failure. In\ngeneral:\n \n- `2xx` status codes indicate success. Codes in the\n- `4xx` range\nindicate a client error (e.g. required parameters, failed request etc.).\n- `5xx` status codes indicate a server error occurred."
+  contact:
+    name: Nestcoin TechOps
+    email: techops@nestcoin.com
+  license:
+    name: UNLICENSED
+servers:
+- url: https://external.dev.onboardpay.co
+  description: Gateway for external API on staging environment.
+tags:
+- name: payment-methods-users
+paths:
+  /payment-methods/channels/payment-methods/{id}:
+    x-original-path: /channels/payment-methods/{id}
+    put:
+      tags:
+      - payment-methods-users
+      summary: 'update a payment method '
+      operationId: updatePaymentMethodById
+      parameters:
+      - name: id
+        in: path
+        description: the id of the payment method
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentMethodUpdateRequest'
+        required: false
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentMethod'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '401':
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+      security:
+      - authToken: []
+      x-visibility: external
+      x-codegen-request-body-name: updatePaymentMethodRequest
+components:
+  schemas:
+    PaymentMethod:
+      type: object
+      required:
+      - paymentMethodId
+      - userId
+      - paymentChannelId
+      - paymentChannelName
+      - paymentChannelType
+      - data
+      properties:
+        paymentMethodId:
+          type: string
+          description: Id of the payment method
+        userId:
+          type: string
+          description: Id of the owner of a payment method
+        paymentChannelId:
+          type: string
+          description: Payment Channel's id
+        paymentChannelName:
+          type: string
+          description: Payment Channel's name
+        paymentChannelType:
+          type: string
+          description: The type of the payment channel
+          example: P2P_WALLET
+        defaultCurrencyMap:
+          type: object
+          description: 'map of currencies set as default
+
+            - A payment method can belong to a channel that supports multiple currencies
+
+            - This contains a map currency symbols to boolean to indicate if method is default for the currency
+
+            '
+          additionalProperties:
+            type: boolean
+            default: false
+        data:
+          type: object
+          additionalProperties:
+            type: string
+            description: Fields
+          description: Can be used to store the required fields and their values for a payment method created by a user.
+        isBeneficiary:
+          type: boolean
+          description: 'Flag indicating if the payment method is a beneficiary account or owned by user.
+
+            Beneficiary accounts CANNOT be used to process P2P trades.
+
+            '
+      x-source-svc: payment-methods
+    ErrorMessageDto:
+      description: Default error object for services. This gives consistent error object that all services may use.
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          description: Error code
+          example: UNKNOWN_ERROR
+        message:
+          type: string
+          description: Descriptive error message
+          example: Request could not be completed due to an error
+        data:
+          type: object
+          description: Additional data for this error message.
+          additionalProperties: true
+          properties: {}
+      x-common-model: ErrorMessageDto
+    PaymentMethodUpdateRequest:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          type: object
+          additionalProperties: true
+          description: Can be used to store the required fields and their values for a payment method created by a user.
+        otp:
+          type: string
+          description: Otp code to verify if user exists
+      x-source-svc: payment-methods
+  securitySchemes:
+    authSignature:
+      type: apiKey
+      name: x-signature
+      in: header
+    authToken:
+      type: apiKey
+      name: x-auth-token
+      in: header
+      description: Auth Token header for inter-service communication
+x-organization: onboard
+x-service-id: external-gateway
+x-preserve-refs:
+- '#/components/schemas/IntegrationProduct'
+- '#/components/schemas/AdAppliedEscrowBalanceDto'
+- '#/components/schemas/P2PWalletRecipient'
+- '#/components/schemas/BankAccountRecipient'
+- '#/components/schemas/MobileMoneyRecipient'
+- '#/components/schemas/OrderEvent'
+- '#/components/schemas/PaymentMethodEventAction'
+- '#/components/schemas/PaymentMethodEventPayload'
+- '#/components/schemas/TransactionServiceErrorCode'
+- '#/components/schemas/ErrorCodes'

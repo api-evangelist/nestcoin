@@ -1,0 +1,618 @@
+openapi: 3.0.3
+info:
+  version: 3.0.2
+  title: Onboard External API Gateway auth-oauth ledger-beneficiaries API
+  description: "**Introduction**\nAPI Gateway for Onboard\n\nThis specification describes API endpoints that are available to the public internet via the API gateway. The different endpoints require different authentication schemes, see documentation for what applies to the operation you want to access.\n\n**Errors**\nUses conventional HTTP response codes to indicate success or failure. In\ngeneral:\n \n- `2xx` status codes indicate success. Codes in the\n- `4xx` range\nindicate a client error (e.g. required parameters, failed request etc.).\n- `5xx` status codes indicate a server error occurred."
+  contact:
+    name: Nestcoin TechOps
+    email: techops@nestcoin.com
+  license:
+    name: UNLICENSED
+servers:
+- url: https://external.dev.onboardpay.co
+  description: Gateway for external API on staging environment.
+tags:
+- name: ledger-beneficiaries
+paths:
+  /ledger/fiat-beneficiaries:
+    x-original-path: /fiat-beneficiaries
+    post:
+      summary: Customer beneficiary
+      description: 'This Operation allows user to save beneficiary
+
+        '
+      operationId: saveBeneficiary
+      x-visibility: external
+      tags:
+      - ledger-beneficiaries
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBeneficiaryRequest'
+      responses:
+        '201':
+          description: Beneficiary details saved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Beneficiary'
+        '400':
+          $ref: '#/components/responses/LedgerSvcInvalidRequest'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+        '403':
+          $ref: '#/components/responses/LedgerSvcAccessDenied'
+        default:
+          $ref: '#/components/responses/LedgerSvcServerError'
+      security:
+      - authToken: []
+    get:
+      summary: Fetch all bank account beneficiaries and bank transfer type
+      description: 'This operation allows the client to fetch all beneficiary by accounts and their transaction type
+
+        '
+      operationId: fetchBeneficiaries
+      x-visibility: external
+      tags:
+      - ledger-beneficiaries
+      parameters:
+      - $ref: '#/components/parameters/LedgerSvccurrencyCode'
+      - $ref: '#/components/parameters/LedgerSvcaccountHolderType'
+      - $ref: '#/components/parameters/LedgerSvcpage'
+      - $ref: '#/components/parameters/LedgerSvcsize'
+      responses:
+        '200':
+          description: Beneficiary fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeneficiaryList'
+        '400':
+          $ref: '#/components/responses/LedgerSvcInvalidRequest'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+        '403':
+          $ref: '#/components/responses/LedgerSvcAccessDenied'
+        default:
+          $ref: '#/components/responses/LedgerSvcServerError'
+      security:
+      - authToken: []
+  /ledger/fiat-beneficiaries/{beneficiaryId}:
+    x-original-path: /fiat-beneficiaries/{beneficiaryId}
+    get:
+      summary: Fetch Beneficiary by Id
+      description: 'This operation allows the client to fetch a beneficiary by its Id
+
+        '
+      operationId: getBeneficiaryById
+      x-visibility: external
+      tags:
+      - ledger-beneficiaries
+      parameters:
+      - $ref: '#/components/parameters/LedgerSvcbeneficiaryId'
+      responses:
+        '200':
+          description: Beneficiary fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Beneficiary'
+        '400':
+          $ref: '#/components/responses/LedgerSvcInvalidRequest'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+        '403':
+          $ref: '#/components/responses/LedgerSvcAccessDenied'
+        default:
+          $ref: '#/components/responses/LedgerSvcServerError'
+      security:
+      - authToken: []
+    delete:
+      summary: Delete Beneficiary by Id
+      description: 'This operation allows the client to delete a beneficiary by its Id
+
+        '
+      operationId: deleteBeneficiary
+      x-visibility: external
+      tags:
+      - ledger-beneficiaries
+      parameters:
+      - $ref: '#/components/parameters/LedgerSvcbeneficiaryId'
+      responses:
+        '200':
+          description: Beneficiary deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusDto'
+        '400':
+          $ref: '#/components/responses/LedgerSvcInvalidRequest'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+        '403':
+          $ref: '#/components/responses/LedgerSvcAccessDenied'
+        default:
+          $ref: '#/components/responses/LedgerSvcServerError'
+      security:
+      - authToken: []
+  /ledger/crypto-beneficiaries:
+    x-original-path: /crypto-beneficiaries
+    post:
+      summary: Crypto Customer beneficiary
+      description: This Operation allows crypto users to save beneficiary
+      operationId: saveCryptoBeneficiary
+      x-visibility: external
+      tags:
+      - ledger-beneficiaries
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCryptoBeneficiaryRequest'
+      responses:
+        '200':
+          description: Beneficiary details saved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusDto'
+        '400':
+          $ref: '#/components/responses/LedgerSvcInvalidRequest'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+        '403':
+          $ref: '#/components/responses/LedgerSvcAccessDenied'
+        default:
+          $ref: '#/components/responses/LedgerSvcServerError'
+      security:
+      - authToken: []
+    get:
+      summary: Fetch crypto beneficiaries
+      description: 'This operation allows the client to fetch all beneficiary by accounts
+
+        '
+      operationId: fetchCryptoBeneficiary
+      x-visibility: external
+      tags:
+      - ledger-beneficiaries
+      parameters:
+      - name: network
+        description: The crypto network code
+        in: query
+        required: false
+        schema:
+          type: string
+      - $ref: '#/components/parameters/LedgerSvcpage'
+      - $ref: '#/components/parameters/LedgerSvcsize'
+      responses:
+        '200':
+          description: Beneficiary fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CryptoBeneficiaryList'
+        '400':
+          $ref: '#/components/responses/LedgerSvcInvalidRequest'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+        '403':
+          $ref: '#/components/responses/LedgerSvcAccessDenied'
+        default:
+          $ref: '#/components/responses/LedgerSvcServerError'
+      security:
+      - authToken: []
+  /ledger/crypto-beneficiaries/{beneficiaryId}:
+    x-original-path: /crypto-beneficiaries/{beneficiaryId}
+    get:
+      summary: Fetch crypto Beneficiary by Id
+      description: 'This operation allows the client to fetch a crypto beneficiary by its Id
+
+        '
+      operationId: getCryptoBeneficiaryById
+      x-visibility: external
+      tags:
+      - ledger-beneficiaries
+      parameters:
+      - $ref: '#/components/parameters/LedgerSvcbeneficiaryId'
+      responses:
+        '200':
+          description: Beneficiary fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CryptoBeneficiary'
+        '400':
+          $ref: '#/components/responses/LedgerSvcInvalidRequest'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+        '403':
+          $ref: '#/components/responses/LedgerSvcAccessDenied'
+        default:
+          $ref: '#/components/responses/LedgerSvcServerError'
+      security:
+      - authToken: []
+    delete:
+      summary: Delete crypto Beneficiary by Id
+      description: 'This operation allows the client to delete a crypto beneficiary by its Id
+
+        '
+      operationId: deleteCryptoBeneficiary
+      x-visibility: external
+      tags:
+      - ledger-beneficiaries
+      parameters:
+      - $ref: '#/components/parameters/LedgerSvcbeneficiaryId'
+      responses:
+        '200':
+          description: Beneficiary deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusDto'
+        '400':
+          $ref: '#/components/responses/LedgerSvcInvalidRequest'
+        '401':
+          $ref: '#/components/responses/LedgerSvcUnauthorized'
+        '403':
+          $ref: '#/components/responses/LedgerSvcAccessDenied'
+        default:
+          $ref: '#/components/responses/LedgerSvcServerError'
+      security:
+      - authToken: []
+components:
+  schemas:
+    CryptoBeneficiaryList:
+      allOf:
+      - $ref: '#/components/schemas/Paging'
+      - type: object
+        additionalProperties: false
+        properties:
+          content:
+            type: array
+            description: List of Crypto Beneficiaries
+            items:
+              $ref: '#/components/schemas/CryptoBeneficiary'
+      x-source-svc: ledger
+    ErrorMessageDto:
+      description: Default error object for services. This gives consistent error object that all services may use.
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          description: Error code
+          example: UNKNOWN_ERROR
+        message:
+          type: string
+          description: Descriptive error message
+          example: Request could not be completed due to an error
+        data:
+          type: object
+          description: Additional data for this error message.
+          additionalProperties: true
+          properties: {}
+      x-common-model: ErrorMessageDto
+    CreateCryptoBeneficiaryRequest:
+      type: object
+      additionalProperties: false
+      description: create crypto beneficiary for customer
+      required:
+      - address
+      - network
+      properties:
+        address:
+          description: beneficiary crypto address
+          type: string
+        name:
+          description: beneficiary name
+          type: string
+        network:
+          description: crypto network
+          type: string
+        memo:
+          description: memo for network optional
+          type: string
+      x-source-svc: ledger
+    Beneficiary:
+      type: object
+      additionalProperties: false
+      description: Fiat beneficiary object
+      discriminator:
+        propertyName: beneficiaryType
+        mapping:
+          BeneficiaryLocalBankAccount: '#/components/schemas/BeneficiaryLocalBankAccount'
+          BeneficiarySepaBankAccount: '#/components/schemas/BeneficiarySepaBankAccount'
+          BeneficiaryACHBankAccount: '#/components/schemas/BeneficiaryACHBankAccount'
+          BeneficiarySwiftBankAccount: '#/components/schemas/BeneficiarySwiftBankAccount'
+          BeneficiaryMobileWalletAccount: '#/components/schemas/BeneficiaryMobileWalletAccount'
+      required:
+      - id
+      - accountNumber
+      - accountName
+      - currency
+      - accountHolderType
+      properties:
+        id:
+          description: Beneficiary identifier
+          type: string
+          format: uuid
+        accountNumber:
+          description: Beneficiary account number, for international payments like SEPA, this is the IBAN
+          type: string
+        accountName:
+          description: Beneficiary account name
+          type: string
+        currency:
+          type: string
+        beneficiaryType:
+          type: string
+          description: 'Discriminator value for beneficiary type. Allowed values include:
+
+            - BeneficiaryLocalBankAccount
+
+            - BeneficiarySepaBankAccount
+
+            - BeneficiaryACHBankAccount
+
+            - BeneficiarySwiftBankAccount
+
+            - BeneficiaryMobileWalletAccount
+
+            '
+        isThirdParty:
+          type: boolean
+          description: Flag to indicate if the beneficiary is a third party
+          default: false
+        accountHolderType:
+          $ref: '#/components/schemas/AccountHolderType'
+      x-source-svc: ledger
+    BeneficiaryList:
+      allOf:
+      - $ref: '#/components/schemas/Paging'
+      - type: object
+        additionalProperties: false
+        properties:
+          content:
+            type: array
+            description: List of Beneficiaries
+            items:
+              $ref: '#/components/schemas/Beneficiary'
+      x-source-svc: ledger
+    Paging:
+      description: Base object for paginated list
+      type: object
+      properties:
+        name:
+          type: string
+          description: Descriptive name for the list
+        size:
+          minimum: 0
+          type: integer
+          format: int32
+          description: Positive integer
+        totalItems:
+          minimum: 0
+          type: integer
+          format: int32
+          description: Positive integer
+        nextPage:
+          minimum: 0
+          type: integer
+          format: int32
+          description: Positive integer
+        previousPage:
+          minimum: 0
+          type: integer
+          format: int32
+          description: Positive integer
+      discriminator:
+        propertyName: name
+      x-common-model: Paging
+    CryptoBeneficiary:
+      type: object
+      additionalProperties: false
+      required:
+      - address
+      - id
+      - network
+      properties:
+        id:
+          description: Beneficiary identifier
+          type: string
+          format: uuid
+        address:
+          description: Beneficiary crypto address
+          type: string
+        network:
+          description: Beneficiary network
+          type: string
+        name:
+          description: Beneficiary name
+          type: string
+        memo:
+          description: Beneficiary network memo
+          type: string
+      x-source-svc: ledger
+    CreateBeneficiaryRequest:
+      type: object
+      additionalProperties: false
+      description: create beneficiary for customer
+      discriminator:
+        propertyName: beneficiaryType
+        mapping:
+          CreateLocalBankAccountBeneficiary: '#/components/schemas/CreateLocalBankAccountBeneficiary'
+          CreateSepaBankAccountBeneficiary: '#/components/schemas/CreateSepaBankAccountBeneficiary'
+          CreateACHBankAccountBeneficiary: '#/components/schemas/CreateACHBankAccountBeneficiary'
+          CreateSwiftBankAccountBeneficiary: '#/components/schemas/CreateSwiftBankAccountBeneficiary'
+          CreateMobileWalletAccountBeneficiary: '#/components/schemas/CreateMobileWalletAccountBeneficiary'
+      required:
+      - accountNumber
+      - accountName
+      - currency
+      - accountHolderType
+      - beneficiaryType
+      - paymentChannelId
+      properties:
+        accountNumber:
+          description: 'Beneficiary account number, for international payments like SEPA, this is the IBAN, and for Mobile Money, this is the phone number.
+
+            '
+          type: string
+        accountName:
+          description: Beneficiary account name
+          type: string
+        currency:
+          type: string
+        beneficiaryType:
+          type: string
+          pattern: ^Create(LocalBank|SepaBank|ACHBank|SwiftBank|MobileWallet)AccountBeneficiary$
+          description: "Discriminator value for beneficiary type. Possible values are:\n- CreateLocalBankAccountBeneficiary: Local bank transfer beneficiary, maps to BeneficiaryLocalBankAccount\n- CreateSepaBankAccountBeneficiary: SEPA instant and standard transfer beneficiary. Use\n    this for beneficiaries that will receive SEPA payments. Maps to BeneficiarySepaBankAccount\n- CreateACHBankAccountBeneficiary: ACH, FedWire and FedNow transfer beneficiary. Maps to BeneficiaryACHBankAccount\n- CreateSwiftBankAccountBeneficiary: SWIFT transfer beneficiary. Maps to BeneficiarySwiftBankAccount\n- CreateMobileWalletAccountBeneficiary: Use this for beneficiaries that will receive mobile wallet payments. \n   Maps to BeneficiaryMobileWalletAccount.\n"
+        isThirdParty:
+          type: boolean
+          description: Flag to indicate if the beneficiary is a third party
+          default: false
+        accountHolderType:
+          $ref: '#/components/schemas/AccountHolderType'
+        paymentChannelId:
+          type: string
+          description: 'To get the payment channels available, call the /currencies endpoint.
+
+            The payment channel ID to be used for transfer to this beneficiary. The payment channel ID and the beneficiaryType are mutually exclusive.
+
+            For example BANK_TRANSFER_NIGERIA uses CreateLocalBankAccountBeneficiary
+
+            '
+      x-source-svc: ledger
+    StatusDto:
+      description: Status data, check additional message field.
+      type: object
+      required:
+      - success
+      properties:
+        success:
+          description: Status can be successful or failed, a value of true indicates success.
+          type: boolean
+          example: true
+        message:
+          type: string
+          description: additional message describing status.
+        data:
+          type: object
+          additionalProperties: true
+          description: Data associated with the status, this will not always be present
+        error:
+          $ref: '#/components/schemas/ErrorMessageDto'
+      x-common-model: StatusDto
+    AccountHolderType:
+      type: string
+      enum:
+      - INDIVIDUAL
+      - BUSINESS
+      x-source-svc: ledger
+  responses:
+    LedgerSvcUnauthorized:
+      description: Client is not authorized to make request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: UNAUTHORIZED
+            message: Either client security header is missing or it is not valid.
+    LedgerSvcAccessDenied:
+      description: Expected permission is not available.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: ACCESS_DENIED
+            message: Expected permission or scope is not present.
+    LedgerSvcInvalidRequest:
+      description: Request could not be validated
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: BAD_REQUEST
+            message: Request could not be validated.
+    LedgerSvcServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: INTERNAL_ERROR
+            message: An internal server error occurred.
+  parameters:
+    LedgerSvcpage:
+      in: query
+      name: page
+      required: false
+      description: Page parameter, starting from 1
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    LedgerSvcsize:
+      in: query
+      name: size
+      required: false
+      schema:
+        type: integer
+        maximum: 100
+        minimum: 1
+        default: 20
+    LedgerSvcbeneficiaryId:
+      in: path
+      name: beneficiaryId
+      description: The unique ID of a beneficiary
+      required: true
+      schema:
+        type: string
+        format: uuid
+    LedgerSvccurrencyCode:
+      name: currency
+      description: The currency code for the request.
+      required: false
+      in: query
+      schema:
+        type: string
+        example: USD
+    LedgerSvcaccountHolderType:
+      name: accountHolderType
+      description: The account holder type
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/AccountHolderType'
+  securitySchemes:
+    authSignature:
+      type: apiKey
+      name: x-signature
+      in: header
+    authToken:
+      type: apiKey
+      name: x-auth-token
+      in: header
+      description: Auth Token header for inter-service communication
+x-organization: onboard
+x-service-id: external-gateway
+x-preserve-refs:
+- '#/components/schemas/IntegrationProduct'
+- '#/components/schemas/AdAppliedEscrowBalanceDto'
+- '#/components/schemas/P2PWalletRecipient'
+- '#/components/schemas/BankAccountRecipient'
+- '#/components/schemas/MobileMoneyRecipient'
+- '#/components/schemas/OrderEvent'
+- '#/components/schemas/PaymentMethodEventAction'
+- '#/components/schemas/PaymentMethodEventPayload'
+- '#/components/schemas/TransactionServiceErrorCode'
+- '#/components/schemas/ErrorCodes'

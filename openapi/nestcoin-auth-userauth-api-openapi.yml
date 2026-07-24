@@ -1,0 +1,286 @@
+openapi: 3.0.3
+info:
+  version: 3.0.2
+  title: Onboard External API Gateway auth-oauth auth-userauth API
+  description: "**Introduction**\nAPI Gateway for Onboard\n\nThis specification describes API endpoints that are available to the public internet via the API gateway. The different endpoints require different authentication schemes, see documentation for what applies to the operation you want to access.\n\n**Errors**\nUses conventional HTTP response codes to indicate success or failure. In\ngeneral:\n \n- `2xx` status codes indicate success. Codes in the\n- `4xx` range\nindicate a client error (e.g. required parameters, failed request etc.).\n- `5xx` status codes indicate a server error occurred."
+  contact:
+    name: Nestcoin TechOps
+    email: techops@nestcoin.com
+  license:
+    name: UNLICENSED
+servers:
+- url: https://external.dev.onboardpay.co
+  description: Gateway for external API on staging environment.
+tags:
+- name: auth-userauth
+paths:
+  /auth/user-auth/initiate:
+    x-original-path: /user-auth/initiate
+    post:
+      tags:
+      - auth-userauth
+      summary: Initiate authentication for a user
+      description: 'Initiate authentication for a user. If the email address is for a new user, a new onboard profile will be created
+
+        '
+      operationId: initiateUserLogin
+      x-visibility: external
+      security:
+      - authSignature: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserAuthInitRequest'
+        required: false
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserAuthInitResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '401':
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /auth/user-auth/verify-otp:
+    x-original-path: /user-auth/verify-otp
+    post:
+      tags:
+      - auth-userauth
+      summary: Verify OTP
+      operationId: verifyAuthOtp
+      x-visibility: external
+      security:
+      - authSignature: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserAuthOtpVerificationRequest'
+        required: false
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessTokenResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '401':
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+  /auth/user-auth/resend-otp:
+    x-original-path: /user-auth/resend-otp
+    post:
+      tags:
+      - auth-userauth
+      summary: Resend a new otp to a user
+      operationId: resendAuthOtp
+      x-visibility: external
+      security:
+      - authSignature: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserAuthOtpResendRequest'
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserAuthOtpResendResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '401':
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageDto'
+components:
+  schemas:
+    AccessTokenResponse:
+      properties:
+        userId:
+          type: string
+          description: Onboard unique User ID
+        accessToken:
+          $ref: '#/components/schemas/Token'
+        refreshToken:
+          $ref: '#/components/schemas/Token'
+      required:
+      - userId
+      - accessToken
+      - refreshToken
+      x-source-svc: auth
+    ErrorMessageDto:
+      description: Default error object for services. This gives consistent error object that all services may use.
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          description: Error code
+          example: UNKNOWN_ERROR
+        message:
+          type: string
+          description: Descriptive error message
+          example: Request could not be completed due to an error
+        data:
+          type: object
+          description: Additional data for this error message.
+          additionalProperties: true
+          properties: {}
+      x-common-model: ErrorMessageDto
+    UserAuthOtpVerificationRequest:
+      required:
+      - authSessionId
+      - otp
+      type: object
+      properties:
+        authSessionId:
+          type: string
+          description: The log in session ID of the user, valid for the duration of the OTP validity
+          format: uuid
+        otp:
+          type: string
+          description: The verification code sent to user (partner) email
+      x-source-svc: auth
+    Token:
+      properties:
+        token:
+          type: string
+          description: Token string (Request, Access, Refresh)
+        expiry:
+          type: string
+          format: date-time
+          description: Timestamp field.
+          x-source-svc: auth
+      required:
+      - token
+      - expiry
+      x-source-svc: auth
+    UserAuthOtpResendResponse:
+      type: object
+      properties:
+        sent:
+          type: boolean
+        authSessionId:
+          type: string
+      x-source-svc: auth
+    UserAuthOtpResendRequest:
+      type: object
+      required:
+      - authSessionId
+      properties:
+        authSessionId:
+          type: string
+          format: uuid
+      x-source-svc: auth
+    UserAuthInitResponse:
+      type: object
+      properties:
+        authSessionId:
+          type: string
+          description: The log in session ID of the user, valid for the duration of the OTP validity
+          format: uuid
+        isReturning:
+          type: boolean
+          description: Indicates if user is a returning user, i.e. previously verified
+          default: false
+      x-source-svc: auth
+    UserAuthInitRequest:
+      required:
+      - email
+      type: object
+      properties:
+        email:
+          type: string
+          description: user's email
+      x-source-svc: auth
+  securitySchemes:
+    authSignature:
+      type: apiKey
+      name: x-signature
+      in: header
+    authToken:
+      type: apiKey
+      name: x-auth-token
+      in: header
+      description: Auth Token header for inter-service communication
+x-organization: onboard
+x-service-id: external-gateway
+x-preserve-refs:
+- '#/components/schemas/IntegrationProduct'
+- '#/components/schemas/AdAppliedEscrowBalanceDto'
+- '#/components/schemas/P2PWalletRecipient'
+- '#/components/schemas/BankAccountRecipient'
+- '#/components/schemas/MobileMoneyRecipient'
+- '#/components/schemas/OrderEvent'
+- '#/components/schemas/PaymentMethodEventAction'
+- '#/components/schemas/PaymentMethodEventPayload'
+- '#/components/schemas/TransactionServiceErrorCode'
+- '#/components/schemas/ErrorCodes'
