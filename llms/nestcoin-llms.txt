@@ -1,0 +1,68 @@
+# Onboard Developer Documentation
+
+## Docs
+
+- [Authentication](https://docs.onboard.xyz/api-reference/onboard-connect/authentication.md)
+- [Introduction](https://docs.onboard.xyz/api-reference/onboard-connect/introduction.md): Welcome to the Onboard Connect API documentation!
+- [Get Matching Offers](https://docs.onboard.xyz/api-reference/onboard-connect/offers/find-matching-offer-for-trading-pair.md)
+- [Get Best Offer](https://docs.onboard.xyz/api-reference/onboard-connect/offers/get-best-offer-for-trade-parameters.md)
+- [Get Weighted Rates](https://docs.onboard.xyz/api-reference/onboard-connect/offers/get-weighted-rates.md)
+- [Cancel onramp order](https://docs.onboard.xyz/api-reference/onboard-connect/orders/cancel-order.md)
+- [Get Trade URL](https://docs.onboard.xyz/api-reference/onboard-connect/orders/fetch-trade-url.md)
+- [Initiate offramp (native API)](https://docs.onboard.xyz/api-reference/onboard-connect/orders/initiate-offramp-order.md)
+- [Initiate onramp (native API)](https://docs.onboard.xyz/api-reference/onboard-connect/orders/initiate-onramp-order.md)
+- [Mark onramp as paid](https://docs.onboard.xyz/api-reference/onboard-connect/orders/mark-order-as-paid.md)
+- [Get counterparty contact details](https://docs.onboard.xyz/api-reference/onboard-connect/orders/order-contact.md)
+- [Get Order by 3rd-party Order ID](https://docs.onboard.xyz/api-reference/onboard-connect/orders/retrieve-order-by-cex-order-id.md)
+- [Get order by transaction ID](https://docs.onboard.xyz/api-reference/onboard-connect/orders/retrieve-order-by-id.md)
+- [Get a User's Orders](https://docs.onboard.xyz/api-reference/onboard-connect/orders/retrieve-user-orders.md)
+- [Start trade (browser)](https://docs.onboard.xyz/api-reference/onboard-connect/orders/start-a-trade.md)
+- [Get Business Profile](https://docs.onboard.xyz/api-reference/onboard-connect/profile/get-cex-profile.md)
+- [Get Best Price for Trade](https://docs.onboard.xyz/api-reference/onboard-connect/trade-options/get-best-price-for-order.md)
+- [Trade Options](https://docs.onboard.xyz/api-reference/onboard-connect/trade-options/onboard-trade-options-configurations.md)
+- [Initiate user authentication](https://docs.onboard.xyz/api-reference/onboard-connect/users/api-user-creation/initiate-user-authentication.md): Initiate authentication for a user. If the email address is for a new user, a new onboard profile will be created
+- [Introduction](https://docs.onboard.xyz/api-reference/onboard-connect/users/api-user-creation/intro.md)
+- [Refresh token](https://docs.onboard.xyz/api-reference/onboard-connect/users/api-user-creation/refresh-token.md): Refresh access token by presenting previously acquired refresh token. Requires the refresh token initially acquired to be passed as x-auth-token in header
+- [Resend User Authentication OTP](https://docs.onboard.xyz/api-reference/onboard-connect/users/api-user-creation/resend-user-auth-otp.md)
+- [Verify User Authentication OTP](https://docs.onboard.xyz/api-reference/onboard-connect/users/api-user-creation/verify-user-auth-otp.md)
+- [Generate OTP for 2FA actions](https://docs.onboard.xyz/api-reference/onboard-connect/users/generate-otp-for-2fa-actions.md)
+- [Get User by Auth Token](https://docs.onboard.xyz/api-reference/onboard-connect/users/get-user-by-authorization-token.md)
+- [Update User Personal Info](https://docs.onboard.xyz/api-reference/onboard-connect/users/update-user-personal-information.md)
+- [List of Contracts](https://docs.onboard.xyz/contracts/list-of-contracts.md)
+- [Upgradeable Contracts](https://docs.onboard.xyz/contracts/upgradeable.md)
+- [Overview](https://docs.onboard.xyz/guides/overview.md)
+- [Introducing Onboard](https://docs.onboard.xyz/introduction.md): A global p2p exchange protocol that allows anyone, anywhere to get onchain.
+- [API Examples](https://docs.onboard.xyz/onboard-exchange/connect/api-examples.md): API Samples for interacting with Onboard Connect's low-code integration
+- [Integration Essentials](https://docs.onboard.xyz/onboard-exchange/connect/low-code-integration.md): Embed on/offramp functionality into your app using the low-code solution.
+- [Overview](https://docs.onboard.xyz/onboard-exchange/connect/overview.md): Build a low-code or native on/off-ramp flow hosted on Onboard
+- [Query Parameters](https://docs.onboard.xyz/onboard-exchange/connect/query-parameters.md)
+- [Quick Start Guide](https://docs.onboard.xyz/onboard-exchange/connect/quick-start-guide.md): Get up & running with Onboard Connect
+- [Webhooks](https://docs.onboard.xyz/onboard-exchange/connect/webhooks.md): Receive real-time notifications about order events and state changes
+- [How Exchange Works](https://docs.onboard.xyz/onboard-exchange/how-exchange-works.md)
+- [Introduction](https://docs.onboard.xyz/onboard-exchange/introduction.md): Welcome to the Onboard Exchange documentation.
+- [The Need for Exchange](https://docs.onboard.xyz/onboard-exchange/need-for-exchange.md)
+- [Currencies & Payment Channels](https://docs.onboard.xyz/onboard-exchange/supported-currencies-payment-channels.md)
+- [Networks & Tokens](https://docs.onboard.xyz/onboard-exchange/supported-networks-tokens.md)
+- [Technical Model](https://docs.onboard.xyz/protocol-concepts/architecture.md)
+- [Gas Costs](https://docs.onboard.xyz/protocol-concepts/cost-of-transactions.md)
+- [Fees & Fee Recipient](https://docs.onboard.xyz/protocol-concepts/features/fees.md)
+- [Gasless Transactions](https://docs.onboard.xyz/protocol-concepts/features/gasless.md)
+- [Initiation & Mediation](https://docs.onboard.xyz/protocol-concepts/features/initiator-mediator.md)
+- [How the Escrow Works](https://docs.onboard.xyz/protocol-concepts/how-it-works.md)
+- [Network Participants](https://docs.onboard.xyz/protocol-concepts/participants.md)
+- [SCEA Overview](https://docs.onboard.xyz/protocol-concepts/scea-overview.md)
+- [Protocol Overview](https://docs.onboard.xyz/the-protocol.md)
+- [Crypto & NFT Swaps](https://docs.onboard.xyz/use-cases/crypto-nft-swaps.md)
+- [Decentralized lending](https://docs.onboard.xyz/use-cases/lending.md)
+- [Marketplaces](https://docs.onboard.xyz/use-cases/marketplaces.md)
+- [Crypto-fiat on and off-ramping](https://docs.onboard.xyz/use-cases/on-off-ramps.md)
+- [Overview](https://docs.onboard.xyz/use-cases/overview.md)
+
+## OpenAPI Specs
+
+- [external-gateway](https://resources.nestechops.com/openapi/dev/onboard/external-gateway.json)
+- [openapi](https://docs.onboard.xyz/api-reference/openapi.json)
+
+## Optional
+
+- [Community](https://linktr.ee/onboardcommunity)

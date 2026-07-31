@@ -1,0 +1,26 @@
+generated: '2026-07-20'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: nestcoin.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct 17 05:11:05 2026 GMT
+  hsts: false
+- host: external.dev.onboardpay.co
+  https: true
+  tls_version: TLSv1.2
+  cert_expires: Oct  8 23:59:59 2026 GMT
+  hsts: null
+domains:
+- domain: nestcoin.com
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: quarantine
+- domain: onboardpay.co
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: false

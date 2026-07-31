@@ -1,0 +1,20 @@
+generated: '2026-07-20'
+method: searched
+source: openapi/nestcoin-external-gateway-openapi-original.json
+docs: https://docs.onboard.xyz/
+versioning:
+  scheme: document-version
+  current: '3.0.2'
+  note: Version is carried in the OpenAPI info.version (external gateway 3.0.2); no version prefix in paths.
+deprecation:
+  policy_url: null
+  sunset_header: false
+  note: No published deprecation/Sunset policy found in docs or the OpenAPI as of this pass.
+sla:
+  url: null
+status_page: null
+deprecated_operations: []
+notes: >-
+  No public status page, SLA, or deprecation policy was found for the Onboard/Nestcoin API. The
+  gateway ships a dev environment (external.dev.onboardpay.co) and a sandbox business dashboard
+  (dev.business.onboard.xyz). Absence of a status page is recorded, not fabricated.

@@ -1,0 +1,21 @@
+generated: '2026-07-20'
+method: searched
+source: https://docs.onboard.xyz/onboard-exchange/connect/quick-start-guide
+docs: https://docs.onboard.xyz/onboard-exchange/connect/quick-start-guide
+environments:
+- name: sandbox
+  business_dashboard: https://dev.business.onboard.xyz
+  gateway_host: https://external.dev.onboardpay.co
+  note: Development environment for setting up and testing an integration before go-live.
+- name: production
+  business_dashboard: null
+  gateway_host: null
+  note: Production gateway host is not published in the public docs; issued on approval.
+access:
+  request_form: https://tally.so/r/wzQYX1
+  process: >-
+    Submit the API request form with your use case; on approval you get access to the Business
+    Dashboard to generate and retrieve your API key, plus a sandbox to test the integration.
+test_values:
+  published: false
+  note: No verbatim test cards / magic identifiers / hosted test tokens are published in the public docs.

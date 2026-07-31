@@ -1,27 +1,473 @@
 aid: nestcoin
 name: Nestcoin
-description: 'Nestcoin is a company surfaced as a portfolio company of electric-capital and added to the
-  API Evangelist network as a stub for enrichment. Sector: fintech. This profile is a lead awaiting the
-  enrichment pipeline.'
+description: >-
+  Nestcoin is an African fintech company building Onboard, a digital-money platform and crypto
+  exchange for on/off-ramping between fiat and crypto. Its developer product, Onboard Connect, is
+  the SDK & API integration layer over Onboard Exchange, giving Web2 and Web3 builders access to a
+  ready-made peer-to-peer marketplace, liquidity, offers/pricing, orders, beneficiaries, and payout
+  accounts. The public Onboard External API Gateway (OpenAPI 3.0.3, v3.0.2) exposes 96 operations
+  across users/auth, offers, orders, accounts, and webhooks, secured with API keys, session tokens,
+  and HMAC-SHA256 request signing. Nestcoin is backed by Coinbase Ventures, Base Ecosystem, HashKey
+  Capital, Hashed Emergent, Distributed Global, Electric Capital, and others.
 url: https://raw.githubusercontent.com/api-evangelist/nestcoin/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
 x-backed-by:
 - electric-capital
-x-tier: stub
-x-tier-reason: portfolio-lead
+x-tier: profiled
+x-tier-reason: enriched-from-public-api
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-20'
+image: https://nestcoin.com/favicon.ico
 tags:
 - Company
 - Fintech
-apis: []
+- Crypto
+- Exchange
+- On-Off Ramp
+- Payments
+- Web3
+- Africa
+apis:
+- aid: nestcoin:nestcoin-auth-oauth-api
+  name: Nestcoin auth-oauth API
+  description: The auth-oauth API from Nestcoin — 2 operation(s) for auth-oauth.
+  humanURL: https://docs.onboard.xyz/
+  baseURL: https://external.dev.onboardpay.co
+  tags:
+  - auth-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/nestcoin-auth-oauth-api-openapi.yml
+  - type: Webhooks
+    url: asyncapi/nestcoin-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/nestcoin-problem-types.yml
+  - type: DataModel
+    url: data-model/nestcoin-data-model.yml
+- aid: nestcoin:nestcoin-auth-userauth-api
+  name: Nestcoin auth-userauth API
+  description: The auth-userauth API from Nestcoin — 3 operation(s) for auth-userauth.
+  humanURL: https://docs.onboard.xyz/
+  baseURL: https://external.dev.onboardpay.co
+  tags:
+  - auth-userauth
+  properties:
+  - type: OpenAPI
+    url: openapi/nestcoin-auth-userauth-api-openapi.yml
+  - type: Webhooks
+    url: asyncapi/nestcoin-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/nestcoin-problem-types.yml
+  - type: DataModel
+    url: data-model/nestcoin-data-model.yml
+- aid: nestcoin:nestcoin-exchange-external-api-api
+  name: Nestcoin exchange-external-api API
+  description: The exchange-external-api API from Nestcoin — 13 operation(s) for exchange-external-api.
+  humanURL: https://docs.onboard.xyz/
+  baseURL: https://external.dev.onboardpay.co
+  tags:
+  - exchange-external-api
+  properties:
+  - type: OpenAPI
+    url: openapi/nestcoin-exchange-external-api-api-openapi.yml
+  - type: Webhooks
+    url: asyncapi/nestcoin-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/nestcoin-problem-types.yml
+  - type: DataModel
+    url: data-model/nestcoin-data-model.yml
+- aid: nestcoin:nestcoin-exchange-orders-api
+  name: Nestcoin exchange-orders API
+  description: The exchange-orders API from Nestcoin — 1 operation(s) for exchange-orders.
+  humanURL: https://docs.onboard.xyz/
+  baseURL: https://external.dev.onboardpay.co
+  tags:
+  - exchange-orders
+  properties:
+  - type: OpenAPI
+    url: openapi/nestcoin-exchange-orders-api-openapi.yml
+  - type: Webhooks
+    url: asyncapi/nestcoin-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/nestcoin-problem-types.yml
+  - type: DataModel
+    url: data-model/nestcoin-data-model.yml
+- aid: nestcoin:nestcoin-ledger-account-activity-api
+  name: Nestcoin ledger-account activity API
+  description: >-
+    The ledger-account activity API from Nestcoin — 5 operation(s) for ledger-account activity.
+  humanURL: https://docs.onboard.xyz/
+  baseURL: https://external.dev.onboardpay.co
+  tags:
+  - ledger-account activity
+  properties:
+  - type: OpenAPI
+    url: openapi/nestcoin-ledger-account-activity-api-openapi.yml
+  - type: Webhooks
+    url: asyncapi/nestcoin-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/nestcoin-problem-types.yml
+  - type: DataModel
+    url: data-model/nestcoin-data-model.yml
+- aid: nestcoin:nestcoin-ledger-accounts-api
+  name: Nestcoin ledger-accounts API
+  description: The ledger-accounts API from Nestcoin — 5 operation(s) for ledger-accounts.
+  humanURL: https://docs.onboard.xyz/
+  baseURL: https://external.dev.onboardpay.co
+  tags:
+  - ledger-accounts
+  properties:
+  - type: OpenAPI
+    url: openapi/nestcoin-ledger-accounts-api-openapi.yml
+  - type: Webhooks
+    url: asyncapi/nestcoin-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/nestcoin-problem-types.yml
+  - type: DataModel
+    url: data-model/nestcoin-data-model.yml
+- aid: nestcoin:nestcoin-ledger-beneficiaries-api
+  name: Nestcoin ledger-beneficiaries API
+  description: The ledger-beneficiaries API from Nestcoin — 4 operation(s) for ledger-beneficiaries.
+  humanURL: https://docs.onboard.xyz/
+  baseURL: https://external.dev.onboardpay.co
+  tags:
+  - ledger-beneficiaries
+  properties:
+  - type: OpenAPI
+    url: openapi/nestcoin-ledger-beneficiaries-api-openapi.yml
+  - type: Webhooks
+    url: asyncapi/nestcoin-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/nestcoin-problem-types.yml
+  - type: DataModel
+    url: data-model/nestcoin-data-model.yml
+- aid: nestcoin:nestcoin-ledger-cash-deposits-api
+  name: Nestcoin ledger-cash deposits API
+  description: The ledger-cash deposits API from Nestcoin — 5 operation(s) for ledger-cash deposits.
+  humanURL: https://docs.onboard.xyz/
+  baseURL: https://external.dev.onboardpay.co
+  tags:
+  - ledger-cash deposits
+  properties:
+  - type: OpenAPI
+    url: openapi/nestcoin-ledger-cash-deposits-api-openapi.yml
+  - type: Webhooks
+    url: asyncapi/nestcoin-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/nestcoin-problem-types.yml
+  - type: DataModel
+    url: data-model/nestcoin-data-model.yml
+- aid: nestcoin:nestcoin-ledger-offramp-accounts-api
+  name: Nestcoin ledger-offramp accounts API
+  description: >-
+    The ledger-offramp accounts API from Nestcoin — 4 operation(s) for ledger-offramp accounts.
+  humanURL: https://docs.onboard.xyz/
+  baseURL: https://external.dev.onboardpay.co
+  tags:
+  - ledger-offramp accounts
+  properties:
+  - type: OpenAPI
+    url: openapi/nestcoin-ledger-offramp-accounts-api-openapi.yml
+  - type: Webhooks
+    url: asyncapi/nestcoin-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/nestcoin-problem-types.yml
+  - type: DataModel
+    url: data-model/nestcoin-data-model.yml
+- aid: nestcoin:nestcoin-ledger-payments-api
+  name: Nestcoin ledger-payments API
+  description: The ledger-payments API from Nestcoin — 5 operation(s) for ledger-payments.
+  humanURL: https://docs.onboard.xyz/
+  baseURL: https://external.dev.onboardpay.co
+  tags:
+  - ledger-payments
+  properties:
+  - type: OpenAPI
+    url: openapi/nestcoin-ledger-payments-api-openapi.yml
+  - type: Webhooks
+    url: asyncapi/nestcoin-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/nestcoin-problem-types.yml
+  - type: DataModel
+    url: data-model/nestcoin-data-model.yml
+- aid: nestcoin:nestcoin-ledger-sub-accounts-api
+  name: Nestcoin ledger-sub-accounts API
+  description: The ledger-sub-accounts API from Nestcoin — 4 operation(s) for ledger-sub-accounts.
+  humanURL: https://docs.onboard.xyz/
+  baseURL: https://external.dev.onboardpay.co
+  tags:
+  - ledger-sub-accounts
+  properties:
+  - type: OpenAPI
+    url: openapi/nestcoin-ledger-sub-accounts-api-openapi.yml
+  - type: Webhooks
+    url: asyncapi/nestcoin-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/nestcoin-problem-types.yml
+  - type: DataModel
+    url: data-model/nestcoin-data-model.yml
+- aid: nestcoin:nestcoin-ledger-transfer-api
+  name: Nestcoin ledger-transfer API
+  description: The ledger-transfer API from Nestcoin — 4 operation(s) for ledger-transfer.
+  humanURL: https://docs.onboard.xyz/
+  baseURL: https://external.dev.onboardpay.co
+  tags:
+  - ledger-transfer
+  properties:
+  - type: OpenAPI
+    url: openapi/nestcoin-ledger-transfer-api-openapi.yml
+  - type: Webhooks
+    url: asyncapi/nestcoin-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/nestcoin-problem-types.yml
+  - type: DataModel
+    url: data-model/nestcoin-data-model.yml
+- aid: nestcoin:nestcoin-offers-offers-api
+  name: Nestcoin offers-offers API
+  description: The offers-offers API from Nestcoin — 3 operation(s) for offers-offers.
+  humanURL: https://docs.onboard.xyz/
+  baseURL: https://external.dev.onboardpay.co
+  tags:
+  - offers-offers
+  properties:
+  - type: OpenAPI
+    url: openapi/nestcoin-offers-offers-api-openapi.yml
+  - type: Webhooks
+    url: asyncapi/nestcoin-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/nestcoin-problem-types.yml
+  - type: DataModel
+    url: data-model/nestcoin-data-model.yml
+- aid: nestcoin:nestcoin-offers-onboardapi-api
+  name: Nestcoin offers-onboardapi API
+  description: The offers-onboardapi API from Nestcoin — 2 operation(s) for offers-onboardapi.
+  humanURL: https://docs.onboard.xyz/
+  baseURL: https://external.dev.onboardpay.co
+  tags:
+  - offers-onboardapi
+  properties:
+  - type: OpenAPI
+    url: openapi/nestcoin-offers-onboardapi-api-openapi.yml
+  - type: Webhooks
+    url: asyncapi/nestcoin-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/nestcoin-problem-types.yml
+  - type: DataModel
+    url: data-model/nestcoin-data-model.yml
+- aid: nestcoin:nestcoin-orders-orders-api
+  name: Nestcoin orders-orders API
+  description: The orders-orders API from Nestcoin — 5 operation(s) for orders-orders.
+  humanURL: https://docs.onboard.xyz/
+  baseURL: https://external.dev.onboardpay.co
+  tags:
+  - orders-orders
+  properties:
+  - type: OpenAPI
+    url: openapi/nestcoin-orders-orders-api-openapi.yml
+  - type: Webhooks
+    url: asyncapi/nestcoin-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/nestcoin-problem-types.yml
+  - type: DataModel
+    url: data-model/nestcoin-data-model.yml
+- aid: nestcoin:nestcoin-orders-quotes-api
+  name: Nestcoin orders-quotes API
+  description: The orders-quotes API from Nestcoin — 3 operation(s) for orders-quotes.
+  humanURL: https://docs.onboard.xyz/
+  baseURL: https://external.dev.onboardpay.co
+  tags:
+  - orders-quotes
+  properties:
+  - type: OpenAPI
+    url: openapi/nestcoin-orders-quotes-api-openapi.yml
+  - type: Webhooks
+    url: asyncapi/nestcoin-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/nestcoin-problem-types.yml
+  - type: DataModel
+    url: data-model/nestcoin-data-model.yml
+- aid: nestcoin:nestcoin-payment-methods-users-api
+  name: Nestcoin payment-methods-users API
+  description: The payment-methods-users API from Nestcoin — 1 operation(s) for payment-methods-users.
+  humanURL: https://docs.onboard.xyz/
+  baseURL: https://external.dev.onboardpay.co
+  tags:
+  - payment-methods-users
+  properties:
+  - type: OpenAPI
+    url: openapi/nestcoin-payment-methods-users-api-openapi.yml
+  - type: Webhooks
+    url: asyncapi/nestcoin-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/nestcoin-problem-types.yml
+  - type: DataModel
+    url: data-model/nestcoin-data-model.yml
+- aid: nestcoin:nestcoin-transactions-offramp-api
+  name: Nestcoin transactions-offramp API
+  description: The transactions-offramp API from Nestcoin — 4 operation(s) for transactions-offramp.
+  humanURL: https://docs.onboard.xyz/
+  baseURL: https://external.dev.onboardpay.co
+  tags:
+  - transactions-offramp
+  properties:
+  - type: OpenAPI
+    url: openapi/nestcoin-transactions-offramp-api-openapi.yml
+  - type: Webhooks
+    url: asyncapi/nestcoin-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/nestcoin-problem-types.yml
+  - type: DataModel
+    url: data-model/nestcoin-data-model.yml
+- aid: nestcoin:nestcoin-transactions-onboardapi-api
+  name: Nestcoin transactions-onboardapi API
+  description: >-
+    The transactions-onboardapi API from Nestcoin — 4 operation(s) for transactions-onboardapi.
+  humanURL: https://docs.onboard.xyz/
+  baseURL: https://external.dev.onboardpay.co
+  tags:
+  - transactions-onboardapi
+  properties:
+  - type: OpenAPI
+    url: openapi/nestcoin-transactions-onboardapi-api-openapi.yml
+  - type: Webhooks
+    url: asyncapi/nestcoin-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/nestcoin-problem-types.yml
+  - type: DataModel
+    url: data-model/nestcoin-data-model.yml
+- aid: nestcoin:nestcoin-transactions-onramp-api
+  name: Nestcoin transactions-onramp API
+  description: The transactions-onramp API from Nestcoin — 3 operation(s) for transactions-onramp.
+  humanURL: https://docs.onboard.xyz/
+  baseURL: https://external.dev.onboardpay.co
+  tags:
+  - transactions-onramp
+  properties:
+  - type: OpenAPI
+    url: openapi/nestcoin-transactions-onramp-api-openapi.yml
+  - type: Webhooks
+    url: asyncapi/nestcoin-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/nestcoin-problem-types.yml
+  - type: DataModel
+    url: data-model/nestcoin-data-model.yml
+- aid: nestcoin:nestcoin-transactions-transactions-api
+  name: Nestcoin transactions-transactions API
+  description: >-
+    The transactions-transactions API from Nestcoin — 4 operation(s) for transactions-transactions.
+  humanURL: https://docs.onboard.xyz/
+  baseURL: https://external.dev.onboardpay.co
+  tags:
+  - transactions-transactions
+  properties:
+  - type: OpenAPI
+    url: openapi/nestcoin-transactions-transactions-api-openapi.yml
+  - type: Webhooks
+    url: asyncapi/nestcoin-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/nestcoin-problem-types.yml
+  - type: DataModel
+    url: data-model/nestcoin-data-model.yml
+- aid: nestcoin:nestcoin-users-onboardapi-api
+  name: Nestcoin users-onboardapi API
+  description: Endpoints available to for merchants liquidity automation
+  humanURL: https://docs.onboard.xyz/
+  baseURL: https://external.dev.onboardpay.co
+  tags:
+  - users-onboardapi
+  properties:
+  - type: OpenAPI
+    url: openapi/nestcoin-users-onboardapi-api-openapi.yml
+  - type: Webhooks
+    url: asyncapi/nestcoin-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/nestcoin-problem-types.yml
+  - type: DataModel
+    url: data-model/nestcoin-data-model.yml
+- aid: nestcoin:nestcoin-users-users-api
+  name: Nestcoin users-users API
+  description: User related endpoints
+  humanURL: https://docs.onboard.xyz/
+  baseURL: https://external.dev.onboardpay.co
+  tags:
+  - users-users
+  properties:
+  - type: OpenAPI
+    url: openapi/nestcoin-users-users-api-openapi.yml
+  - type: Webhooks
+    url: asyncapi/nestcoin-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/nestcoin-problem-types.yml
+  - type: DataModel
+    url: data-model/nestcoin-data-model.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: DeveloperPortal
+  url: https://docs.onboard.xyz/
+- type: Documentation
+  url: https://docs.onboard.xyz/
+- type: APIReference
+  url: https://docs.onboard.xyz/api-reference/onboard-connect/authentication
+- type: GettingStarted
+  url: https://docs.onboard.xyz/onboard-exchange/connect/quick-start-guide
+- type: Quickstart
+  url: https://docs.onboard.xyz/onboard-exchange/connect/quick-start-guide
+- type: Blog
+  url: https://blog.onboard.xyz
+- type: GitHubOrganization
+  url: https://github.com/nestcoin
+- type: SignUp
+  url: https://tally.so/r/wzQYX1
+- type: TermsOfService
+  url: https://onboard.xyz/terms
+- type: PrivacyPolicy
+  url: https://nestcoin.com/privacy-policy
+- type: Authentication
+  url: authentication/nestcoin-authentication.yml
+- type: Conventions
+  url: conventions/nestcoin-conventions.yml
+- type: Conformance
+  url: conformance/nestcoin-conformance.yml
+- type: Lifecycle
+  url: lifecycle/nestcoin-lifecycle.yml
+- type: Sandbox
+  url: sandbox/nestcoin-sandbox.yml
+- type: Webhooks
+  url: asyncapi/nestcoin-webhooks.yml
+- type: MCPServer
+  url: mcp/nestcoin-mcp.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: WellKnown
+  url: well-known/nestcoin-well-known.yml
+- type: LLMsTxt
+  url: llms/nestcoin-llms.txt
+- type: DomainSecurity
+  url: security/nestcoin-domain-security.yml
+- type: AgenticAccess
+  url: agentic-access/nestcoin-agentic-access.yml
 - type: Website
   url: https://nestcoin.com/
+x-enrichment:
+  date: '2026-07-20'
+  status: enriched
+  artifacts_added: 18
+  pass: local-v1

@@ -1,0 +1,12 @@
+generated: '2026-07-20'
+method: generated
+source: openapi/nestcoin-external-gateway-openapi-original.json
+skills:
+- file: nestcoin-user-authentication.md
+  name: Authenticate an Onboard Connect user
+  api: openapi/nestcoin-external-gateway-openapi-original.json
+  operations: [requestAccessToken, initiateUserLogin, verifyAuthOtp, resendAuthOtp, refreshAccessToken]
+- file: nestcoin-quote-and-trade.md
+  name: Quote and place an Onboard exchange trade
+  api: openapi/nestcoin-external-gateway-openapi-original.json
+  operations: [getTradeOptions, extFindOffers, getBestOfferExchange, getPrice, createOrder, getExchangeOrderByIdExternal]

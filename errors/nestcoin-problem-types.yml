@@ -1,0 +1,36 @@
+generated: '2026-07-20'
+method: derived
+source: openapi/nestcoin-external-gateway-openapi-original.json
+docs: https://docs.onboard.xyz/introduction
+format: http-status
+envelope: application/json
+notes: >-
+  The Onboard External API Gateway uses conventional HTTP response codes: 2xx success, 4xx client
+  error, 5xx server error. Error bodies are application/json (not RFC 9457 problem+json). Codes below
+  are derived from the OpenAPI responses aggregated across all operations.
+problems:
+- status: 400
+  title: Bad Request
+  meaning: Missing/invalid required parameters or a malformed request.
+  operations_declaring: 80
+- status: 401
+  title: Unauthorized
+  meaning: Missing or invalid authentication credentials (x-api-key / x-auth-token / x-signature).
+  operations_declaring: 96
+- status: 403
+  title: Forbidden
+  meaning: Authenticated but not permitted, or an expired/out-of-window HMAC timestamp (>30s).
+  operations_declaring: 40
+- status: 404
+  title: Not Found
+  meaning: The requested resource (order, user, beneficiary, account) does not exist.
+  operations_declaring: 32
+- status: 409
+  title: Conflict
+  meaning: Resource already exists / conflicting state (e.g. sub-account number or funding address).
+  operations_declaring: 2
+  example_operations: [createSubAccountFundingAddress, createSubAccountNumber]
+- status: 500
+  title: Internal Server Error
+  meaning: An unexpected server-side error occurred.
+  operations_declaring: 40

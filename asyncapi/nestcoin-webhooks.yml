@@ -1,0 +1,31 @@
+generated: '2026-07-20'
+method: searched
+source: https://docs.onboard.xyz/onboard-exchange/connect/webhooks
+spec_type: Webhooks
+docs: https://docs.onboard.xyz/onboard-exchange/connect/webhooks
+notes: >-
+  Onboard Connect delivers webhooks (HTTP POST) for order lifecycle events. No AsyncAPI document is
+  published; this captures the webhook catalog. Endpoints are configured in the Business portal
+  dashboard under Onboard Connect Settings and must return 200 with an empty body. Failed deliveries
+  are retried up to 3 times.
+delivery:
+  transport: http-post
+  configured_at: Business portal dashboard (Onboard Connect Settings)
+  success_response: 200 OK with empty body
+  retries: 3
+signing:
+  method: HMAC-SHA256
+  headers:
+    signature: x-signature
+    timestamp: x-timestamp
+  scheme: HMAC-SHA256 over x-timestamp + payload, keyed with the API secret from the Business dashboard.
+envelope:
+  event: string
+  data: object
+  timestamp: unix-timestamp
+events:
+- name: order.state_transition
+  description: Emitted when an order moves between states (e.g. INITIATED -> DEPOSITED).
+order_states:
+  non_terminal: [PENDING, AWAITING_ACCEPTANCE, INITIATED, DEPOSITED, CONFIRMED, IN_DISPUTE]
+  terminal: [COMPLETED, CANCELLED]

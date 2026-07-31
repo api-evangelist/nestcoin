@@ -1,0 +1,21 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Onboard External API Gateway
+  version: 1.0.0
+extends: openapi/nestcoin-external-gateway-openapi-original.json
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provider: nestcoin
+    x-apievangelist-product: Onboard Connect
+    x-apievangelist-docs: https://docs.onboard.xyz/
+    x-apievangelist-auth: api-key + session-token + hmac-signature
+    x-apievangelist-webhooks: https://docs.onboard.xyz/onboard-exchange/connect/webhooks
+- target: $.info
+  update:
+    x-apievangelist-categories:
+    - Crypto
+    - Fintech
+    - On-Off Ramp
+    - Exchange
+    - Payments

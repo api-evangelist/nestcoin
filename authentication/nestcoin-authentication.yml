@@ -1,0 +1,42 @@
+generated: '2026-07-20'
+method: searched
+source: openapi/nestcoin-external-gateway-openapi-original.json
+docs: https://docs.onboard.xyz/api-reference/onboard-connect/authentication
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - header
+  - query
+models:
+  - name: API Key
+    headers: [x-api-key]
+    query: [x-api-key]
+    detail: Identifies the third-party application. Retrieved from the Business Dashboard after onboarding.
+  - name: Session token (x-auth-token)
+    headers: [x-auth-token, 'Authorization: Bearer <token>']
+    detail: Issued to an end user after OTP login; used for authenticated user-session endpoints.
+  - name: HMAC signature (x-signature)
+    headers: [x-api-key, x-signature, x-timestamp]
+    detail: >-
+      Sensitive operations (e.g. user creation) require HMAC-SHA256 signing. The signature is
+      computed over the x-timestamp and request body using the API secret as the key. Timestamps
+      must be within 30 seconds of server time or the request is rejected with 403.
+schemes:
+- name: authSignature
+  type: apiKey
+  in: header
+  parameter: x-signature
+  sources:
+  - openapi/nestcoin-external-gateway-openapi-original.json
+- name: authToken
+  type: apiKey
+  in: header
+  parameter: x-auth-token
+  description: Auth Token header for inter-service communication
+  sources:
+  - openapi/nestcoin-external-gateway-openapi-original.json
+access_token_flow:
+  request_operation: requestAccessToken
+  refresh_operation: refreshAccessToken
+  path: /auth/oauth/access-token

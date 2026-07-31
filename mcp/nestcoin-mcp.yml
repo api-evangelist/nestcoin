@@ -1,0 +1,298 @@
+generated: '2026-07-20'
+method: derived
+status: candidate
+source: openapi/nestcoin-external-gateway-openapi-original.json
+note: Candidate MCP tool list derived one-per-operation from the Onboard External API Gateway OpenAPI. No official hosted
+  MCP server found as of this pass.
+server:
+  name: onboard
+  transport: http
+tools:
+- name: requestAccessToken
+  description: Request for access token
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#requestAccessToken
+- name: refreshAccessToken
+  description: Request for access token
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#refreshAccessToken
+- name: initiateUserLogin
+  description: Initiate authentication for a user
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#initiateUserLogin
+- name: verifyAuthOtp
+  description: Verify OTP
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#verifyAuthOtp
+- name: resendAuthOtp
+  description: Resend a new otp to a user
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#resendAuthOtp
+- name: queryMyBusinessInfo
+  description: Get CEX Profile
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#queryMyBusinessInfo
+- name: createOrder
+  description: Start a trade
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#createOrder
+- name: getTradeOptions
+  description: Trade options / configurations for onboard
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getTradeOptions
+- name: getPrice
+  description: Get best price for order
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getPrice
+- name: initTrade
+  description: Fetch trade url
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#initTrade
+- name: querySignersExternal
+  description: Query CEX signer addresses
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#querySignersExternal
+- name: queryNetworkSignerExternal
+  description: Query CEX network signer
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#queryNetworkSignerExternal
+- name: queryLiquidityPoolsExternal
+  description: Get CEX deployed liquidity pool contract data
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#queryLiquidityPoolsExternal
+- name: deployLiquidityPoolExternal
+  description: Create liquidity pool contract for CEX
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#deployLiquidityPoolExternal
+- name: fetchLiquidityPoolBalanceExternal
+  description: Get CEX token and coin balances
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#fetchLiquidityPoolBalanceExternal
+- name: getExchangeOrdersExternal
+  description: Retrieve list of exchange orders
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getExchangeOrdersExternal
+- name: getExchangeOrderByIdExternal
+  description: Retrieve an exchange order by cexOrderId
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getExchangeOrderByIdExternal
+- name: extFindOffers
+  description: Find offers using trading parameters
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#extFindOffers
+- name: getBestOfferExchange
+  description: Get best offer using trade parameters
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getBestOfferExchange
+- name: fetchCustomerAccounts
+  description: Fetch All Customer Account
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#fetchCustomerAccounts
+- name: saveBeneficiary
+  description: Customer beneficiary
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#saveBeneficiary
+- name: fetchBeneficiaries
+  description: Fetch all bank account beneficiaries and bank transfer type
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#fetchBeneficiaries
+- name: getBeneficiaryById
+  description: Fetch Beneficiary by Id
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getBeneficiaryById
+- name: deleteBeneficiary
+  description: Delete Beneficiary by Id
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#deleteBeneficiary
+- name: getAccountDetails
+  description: Fetch account details
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getAccountDetails
+- name: getAccountActivities
+  description: Get account transaction activities
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getAccountActivities
+- name: getAccountActivityById
+  description: Get a single transaction activity
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getAccountActivityById
+- name: getSubAccountActivities
+  description: Get sub-account transaction activities
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getSubAccountActivities
+- name: getSubAccountActivityById
+  description: Get a single sub-account transaction activity
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getSubAccountActivityById
+- name: getTransactionActivities
+  description: Get transaction activities across the business
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getTransactionActivities
+- name: createInternalTransfer
+  description: Create internal transfer
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#createInternalTransfer
+- name: getInternalTransferByReference
+  description: Get internal transfer by reference
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getInternalTransferByReference
+- name: getSupportedAssets
+  description: Get list of supported assets for main accounts.
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getSupportedAssets
+- name: getAssetNetworkTokens
+  description: Get stablecoin tokens supported for account.
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getAssetNetworkTokens
+- name: cryptoTransfer
+  description: Performs crypto transfer
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#cryptoTransfer
+- name: getCryptoTransferByReference
+  description: Get crypto transfer by reference
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getCryptoTransferByReference
+- name: saveCryptoBeneficiary
+  description: Crypto Customer beneficiary
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#saveCryptoBeneficiary
+- name: fetchCryptoBeneficiary
+  description: Fetch crypto beneficiaries
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#fetchCryptoBeneficiary
+- name: getCryptoBeneficiaryById
+  description: Fetch crypto Beneficiary by Id
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getCryptoBeneficiaryById
+- name: deleteCryptoBeneficiary
+  description: Delete crypto Beneficiary by Id
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#deleteCryptoBeneficiary
+- name: getAccountNumber
+  description: Get the bank account number for an account.
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getAccountNumber
+- name: createAccountNumber
+  description: Create a bank account number for an account.
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#createAccountNumber
+- name: createSubAccount
+  description: Create sub-account for a customer.
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#createSubAccount
+- name: fetchSubAccounts
+  description: Fetch all sub-accounts belonging to the customer.
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#fetchSubAccounts
+- name: fetchSubAccountById
+  description: Fetch sub-account details by sub-account ID.
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#fetchSubAccountById
+- name: updateSubAccountById
+  description: Update sub-account details by sub-account ID.
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#updateSubAccountById
+- name: deleteSubAccountById
+  description: Delete sub-account by sub-account ID.
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#deleteSubAccountById
+- name: getSubAccountFundingAddress
+  description: Check funding address for a sub-account.
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getSubAccountFundingAddress
+- name: createSubAccountFundingAddress
+  description: Create Funding Address for a sub-account using token network.
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#createSubAccountFundingAddress
+- name: getSubAccountNumber
+  description: Get the bank account number for a sub-account.
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getSubAccountNumber
+- name: createSubAccountNumber
+  description: Create a bank account number for a sub-account.
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#createSubAccountNumber
+- name: getCashPaymentRates
+  description: Get reference rate
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getCashPaymentRates
+- name: createTransferQuote
+  description: Create transfer quote
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#createTransferQuote
+- name: getCashPayments
+  description: Retrieve list of cash payments
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getCashPayments
+- name: createCashPayment
+  description: Create cash payment
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#createCashPayment
+- name: getCashPaymentByReference
+  description: Get specific cash payment
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getCashPaymentByReference
+- name: getCashPaymentPayoutCurrencies
+  description: Get supported payout currencies
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getCashPaymentPayoutCurrencies
+- name: getCashDepositRates
+  description: Get reference rate
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getCashDepositRates
+- name: createDepositQuote
+  description: Create deposit quote
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#createDepositQuote
+- name: getCashDeposits
+  description: Retrieve list of cash deposits
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getCashDeposits
+- name: createCashDeposit
+  description: Create cash deposit
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#createCashDeposit
+- name: getCashDepositByReference
+  description: Get specific cash deposit
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getCashDepositByReference
+- name: getCashDepositPayinCurrencies
+  description: Get supported pay-in currencies
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getCashDepositPayinCurrencies
+- name: getOfframpAccounts
+  description: Get a list of offramp accounts
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getOfframpAccounts
+- name: createOfframpAccount
+  description: Create offramp account
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#createOfframpAccount
+- name: getOfframpAccount
+  description: Get offramp account
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getOfframpAccount
+- name: deleteOfframpAccount
+  description: Delete offramp account
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#deleteOfframpAccount
+- name: getOfframpAccountFundingAddress
+  description: Get address for offramp account
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getOfframpAccountFundingAddress
+- name: getOfframpAccountTransactions
+  description: Get transactions for offramp account
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getOfframpAccountTransactions
+- name: getWeightedRates
+  description: get Weighted Rates
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getWeightedRates
+- name: getLimits
+  description: Find matching offer for trading pair
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getLimits
+- name: getBestOfferOffers
+  description: Get best offer for trade parameters
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getBestOfferOffers
+- name: requestQuote
+  description: Request a Quote
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#requestQuote
+- name: getRate
+  description: get base rates
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getRate
+- name: getReferenceRate
+  description: get reference rates
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getReferenceRate
+- name: createClientOrder
+  description: Create order
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#createClientOrder
+- name: getClientOrders
+  description: Get orders
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getClientOrders
+- name: createClientSellOrder
+  description: Create SELL order (alias, returns OrderResponse)
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#createClientSellOrder
+- name: createClientBuyOrder
+  description: Create BUY order (returns OrderResponse with pay-in details)
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#createClientBuyOrder
+- name: getClientOrder
+  description: Get order
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getClientOrder
+- name: cancelClientBuyOrder
+  description: Cancel a BUY order
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#cancelClientBuyOrder
+- name: updatePaymentMethodById
+  description: update a payment method
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#updatePaymentMethodById
+- name: getTransactionById
+  description: Retrieve a particular transaction
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getTransactionById
+- name: getTransactionContacts
+  description: Retrieve a particular transaction's contacts. Currently just phone numbers
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getTransactionContacts
+- name: getCustomerTransactions
+  description: Retrieve list of customer transactions
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getCustomerTransactions
+- name: getCustomerTransactionsAggregate
+  description: Retrieve list of customer transactions
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getCustomerTransactionsAggregate
+- name: initiateOnrampWithoutReservation
+  description: Initiate an onramp transaction
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#initiateOnrampWithoutReservation
+- name: onrampCustomerDeposit
+  description: Customer acknowledges transfer of fiat
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#onrampCustomerDeposit
+- name: onrampCustomerCancel
+  description: Customer cancels onramp transaction
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#onrampCustomerCancel
+- name: initiateOfframpWithoutReservation
+  description: Initiate an offramp transaction
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#initiateOfframpWithoutReservation
+- name: offrampCustomerApprove
+  description: Customer approves withdrawal from wallet
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#offrampCustomerApprove
+- name: offrampCustomerConfirm
+  description: Customer acknowledges receipt of fiat
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#offrampCustomerConfirm
+- name: offrampCustomerCancel
+  description: Customer cancels pending offramp transaction
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#offrampCustomerCancel
+- name: sendOtp
+  description: Provide otp for user
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#sendOtp
+- name: getMyProfile
+  description: Get a single user by their authorization token
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#getMyProfile
+- name: updateProfile
+  description: Update partner's personal information
+  source_operation: openapi/nestcoin-external-gateway-openapi-original.json#updateProfile

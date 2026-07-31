@@ -1,0 +1,38 @@
+generated: '2026-07-20'
+method: derived
+source: openapi/nestcoin-external-gateway-openapi-original.json
+notes: >-
+  Entity-relationship graph derived from the Onboard External API Gateway OpenAPI (234 schemas).
+  Core domains: Users/Auth, Accounts & Sub-accounts, Beneficiaries, Exchange Orders & Offers,
+  Quotes, and Transactions (on/off-ramp). Relationships below are extracted from $ref links and
+  id-reference fields on the marquee entities.
+entities:
+- name: Account
+  domain: accounts
+- name: SubAccount
+  domain: accounts
+- name: Beneficiary
+  domain: payouts
+- name: ExchangeOrderDTO
+  domain: exchange
+- name: QuoteDto
+  domain: exchange
+- name: AccountTransaction
+  domain: ledger
+- name: OfframpAccount
+  domain: offramp
+- name: CashPaymentChannel
+  domain: payments
+relationships:
+- {from: AccountTransaction, to: Account, kind: belongs_to, via: accountId}
+- {from: AccountTransaction, to: SubAccount, kind: belongs_to, via: subAccountId}
+- {from: AccountTransaction, to: TransactionType, kind: has_one, via: type}
+- {from: AccountTransaction, to: TransactionStatus, kind: has_one, via: status}
+- {from: AccountTransaction, to: TransactionBlockchainInfo, kind: has_one, via: blockchainInfo}
+- {from: Beneficiary, to: AccountHolderType, kind: has_one, via: accountHolderType}
+- {from: ExchangeOrderDTO, to: OrderOfferDTO, kind: has_one, via: offer}
+- {from: ExchangeOrderDTO, to: WalletDTO, kind: has_one, via: customerWallet}
+- {from: OfframpAccount, to: Beneficiary, kind: has_one, via: beneficiary}
+- {from: OfframpAccount, to: OfframpAccountStatus, kind: has_one, via: status}
+- {from: SubAccount, to: Account, kind: belongs_to, via: accountId}
+- {from: SubAccount, to: AccountBalanceDetails, kind: has_one, via: accountBalance}

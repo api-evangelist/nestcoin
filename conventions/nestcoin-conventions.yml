@@ -1,0 +1,34 @@
+generated: '2026-07-20'
+method: searched
+source: openapi/nestcoin-external-gateway-openapi-original.json
+docs: https://docs.onboard.xyz/onboard-exchange/connect/query-parameters
+authentication:
+  style: api-key + session-token + hmac-signature
+  headers: [x-api-key, x-auth-token, x-signature, x-timestamp]
+  see: authentication/nestcoin-authentication.yml
+idempotency:
+  supported: false
+  note: No Idempotency-Key header documented; retries on write operations are not guaranteed idempotent.
+pagination:
+  style: page-number
+  params: [page, size]
+  note: List endpoints (orders, activities, beneficiaries) accept page + size query parameters.
+versioning:
+  scheme: none-in-path
+  current: '3.0.2'
+  note: API version tracked in the OpenAPI info.version (external gateway 3.0.2); no version prefix in paths.
+error_envelope:
+  media_type: application/json
+  see: errors/nestcoin-problem-types.yml
+webhooks:
+  supported: true
+  event_envelope: '{ event, data, timestamp }'
+  signing: HMAC-SHA256 over x-timestamp + payload, verified via x-signature header
+  retries: up to 3 on non-200
+  see: asyncapi/nestcoin-webhooks.yml
+rate_limiting:
+  signaling: not documented in the OpenAPI or public docs
+cross_links:
+  errors: errors/nestcoin-problem-types.yml
+  lifecycle: lifecycle/nestcoin-lifecycle.yml
+  authentication: authentication/nestcoin-authentication.yml
