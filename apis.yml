@@ -420,6 +420,8 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: Overlay
+  url: overlays/nestcoin-external-gateway-overlay.yaml
 - type: DeveloperPortal
   url: https://docs.onboard.xyz/
 - type: Documentation
