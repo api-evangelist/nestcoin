@@ -1,0 +1,499 @@
+{
+  "item": [
+    {
+      "id": "0feeb09c-43db-4db7-b32a-133031571ac7",
+      "name": "exchange-orders",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "5e0934fd-8d70-4e3c-a202-30b8b14371ce",
+          "name": "Start a trade",
+          "request": {
+            "name": "Start a trade",
+            "description": {},
+            "url": {
+              "path": [
+                "exchange",
+                "orders",
+                "trade"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "apiKey",
+                  "value": "<string>",
+                  "description": "(Required) CEX api key"
+                },
+                {
+                  "disabled": false,
+                  "key": "product",
+                  "value": "<string>",
+                  "description": "(Required) Integration product in use e.g web3 or custodial"
+                },
+                {
+                  "disabled": false,
+                  "key": "orderId",
+                  "value": "<string>",
+                  "description": "Order ID generated for offramp trades"
+                },
+                {
+                  "disabled": false,
+                  "key": "tradeType",
+                  "value": "<string>",
+                  "description": "(Required) Type of trade"
+                },
+                {
+                  "disabled": false,
+                  "key": "fiat",
+                  "value": "<string>",
+                  "description": "(Required) Symbol of fiat currency"
+                },
+                {
+                  "disabled": false,
+                  "key": "fiatAmount",
+                  "value": "<number>",
+                  "description": "Fiat amount"
+                },
+                {
+                  "disabled": false,
+                  "key": "token",
+                  "value": "<string>",
+                  "description": "(Required) Symbol of token asset"
+                },
+                {
+                  "disabled": false,
+                  "key": "tokenAmount",
+                  "value": "<number>",
+                  "description": "Token amount"
+                },
+                {
+                  "disabled": false,
+                  "key": "networkId",
+                  "value": "<string>",
+                  "description": "Onboard blockchain network identifier or chain Id e.g Base will be `base` or `8453` or `0x2105`"
+                },
+                {
+                  "disabled": false,
+                  "key": "address",
+                  "value": "<string>",
+                  "description": "Wallet address to be debited/credited in order"
+                },
+                {
+                  "disabled": false,
+                  "key": "paymentChannel",
+                  "value": "<string>",
+                  "description": "Payment channel"
+                },
+                {
+                  "disabled": false,
+                  "key": "email",
+                  "value": "<string>",
+                  "description": "Customer's email address"
+                },
+                {
+                  "disabled": false,
+                  "key": "autoselect",
+                  "value": "true",
+                  "description": "Offer auto select flag"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d4f38ab7-0b06-4780-9db9-39b49ae66043",
+              "name": "Redirect",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "exchange",
+                    "orders",
+                    "trade"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "apiKey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "product",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "orderId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tradeType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "fiat",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "fiatAmount",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tokenAmount",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "networkId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "address",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "paymentChannel",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "email",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "autoselect",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Moved Permanently",
+              "code": 301,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "4be04892-372f-4d81-bc9b-a7db5d0ccfe3",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "exchange",
+                    "orders",
+                    "trade"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "apiKey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "product",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "orderId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tradeType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "fiat",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "fiatAmount",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tokenAmount",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "networkId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "address",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "paymentChannel",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "email",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "autoselect",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"Request could not be completed due to an error\",\n  \"data\": {\n    \"key_0\": true\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ba786c6a-c1a7-4673-aa1d-ef6076157fd9",
+              "name": "Unauthorized request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "exchange",
+                    "orders",
+                    "trade"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "apiKey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "product",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "orderId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tradeType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "fiat",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "fiatAmount",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tokenAmount",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "networkId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "address",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "paymentChannel",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "email",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "autoselect",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"Request could not be completed due to an error\",\n  \"data\": {\n    \"key_0\": true\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "338c75dd-55b5-4aa0-9713-ebe38ec511f3",
+              "name": "Server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "exchange",
+                    "orders",
+                    "trade"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "apiKey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "product",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "orderId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tradeType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "fiat",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "fiatAmount",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tokenAmount",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "networkId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "address",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "paymentChannel",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "email",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "autoselect",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"Request could not be completed due to an error\",\n  \"data\": {\n    \"key_0\": true\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://external.dev.onboardpay.co",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "c1149f4b-4d09-43bd-bbc4-301360694da4",
+    "name": "Onboard External API Gateway auth-oauth exchange-orders API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "**Introduction**\nAPI Gateway for Onboard\n\nThis specification describes API endpoints that are available to the public internet via the API gateway. The different endpoints require different authentication schemes, see documentation for what applies to the operation you want to access.\n\n**Errors**\nUses conventional HTTP response codes to indicate success or failure. In\ngeneral:\n \n- `2xx` status codes indicate success. Codes in the\n- `4xx` range\nindicate a client error (e.g. required parameters, failed request etc.).\n- `5xx` status codes indicate a server error occurred.\n\nContact Support:\n Name: Nestcoin TechOps\n Email: techops@nestcoin.com",
+      "type": "text/plain"
+    }
+  }
+}

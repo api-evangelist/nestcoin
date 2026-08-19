@@ -1,0 +1,173 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Onboard External API Gateway auth-oauth orders-orders API",
+    "version": "3.0.2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "orders-orders",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/orders/clients/orders",
+            "params": [
+              {
+                "name": "orderStatus",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Filter orders by type (BUY or SELL). When omitted, orders of both types are returned."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number of items to return"
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query",
+                "description": "Number of items to return"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get client orders"
+        },
+        {
+          "info": {
+            "name": "Create order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external.dev.onboardpay.co/orders/clients/orders",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create client order based on selected quote"
+        },
+        {
+          "info": {
+            "name": "Create SELL order (alias, returns OrderResponse)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external.dev.onboardpay.co/orders/clients/orders/sell",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Explicit SELL alias for `POST /clients/orders`. Accepts the same `CreateOrderRequest` body,\nbut returns the **full `OrderResponse`** rather than the legacy `StatusDto` — same shape as\n`POST /clients/orders/buy` and `GET /clients/orders/{orderRef}`. Use this path when the\ncaller wants the persisted order details directly; `POST /clients/orders` (no alias)\nkeeps the legacy `StatusDto` response for backward compatibility.\n"
+        },
+        {
+          "info": {
+            "name": "Create BUY order (returns OrderResponse with pay-in details)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external.dev.onboardpay.co/orders/clients/orders/buy",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Client BUY order — the buyer deposits fiat into a merchant-controlled pay-in account, and once\nthe fiat lands, the merchant-locked asset is released to the buyer's wallet. The request\ncarries `sender` (buyer identity for the pay-in) and optional `creditAccountId` (asset\ndestination — defaults to the buyer's default base-currency account). The pay-in mode\n(`DEPOSIT` / `INTERNAL_TRANSFER`) is chosen on `POST /quotes` and inherited from the\nreferenced quote; it is **not** specified here.\n\nFor `DEPO"
+        },
+        {
+          "info": {
+            "name": "Get order",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/orders/clients/orders/:orderRef",
+            "params": [
+              {
+                "name": "orderRef",
+                "value": "",
+                "type": "path",
+                "description": "the order reference"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get client order by reference"
+        },
+        {
+          "info": {
+            "name": "Cancel a BUY order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external.dev.onboardpay.co/orders/clients/orders/:orderRef/cancel",
+            "params": [
+              {
+                "name": "orderRef",
+                "value": "",
+                "type": "path",
+                "description": "the order reference"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Cancel an ongoing BUY order owned by the caller. Allowed only while the order is awaiting\nthe buyer's fiat — `PENDING_INIT`, `ASSET_LOCKED`, or `PAYMENT_INIT`. For `PAYMENT_INIT` the\npay-in is re-scanned first; if the fiat has already landed the cancel is refused and the\norder proceeds to completion. Cancellation releases the merchant's locked asset and cancels\nthe pay-in. SELL orders are not cancellable through this endpoint.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

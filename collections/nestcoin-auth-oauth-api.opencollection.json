@@ -1,0 +1,56 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Onboard External API Gateway auth-oauth API",
+    "version": "3.0.2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "auth-oauth",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Request for access token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external.dev.onboardpay.co/auth/oauth/access-token",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-signature",
+              "value": "{{x-signature}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Request for access token by presenting previously acquired request token. Requires x-signature and x-timestamp header\n"
+        },
+        {
+          "info": {
+            "name": "Request for access token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external.dev.onboardpay.co/auth/oauth/refresh-token",
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Refresh access token by presenting previously acquired refresh token. Requires the refresh token initially acquired to be passed as x-auth-token in header\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

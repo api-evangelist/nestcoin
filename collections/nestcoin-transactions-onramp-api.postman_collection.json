@@ -1,0 +1,862 @@
+{
+  "item": [
+    {
+      "id": "9811e02f-f224-4b76-b725-526fd8c20ac6",
+      "name": "transactions-onramp",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "16377565-6254-4e39-93d2-af989ac8d355",
+          "name": "Initiate an onramp transaction",
+          "request": {
+            "name": "Initiate an onramp transaction",
+            "description": {},
+            "url": {
+              "path": [
+                "transactions",
+                "v2",
+                "onramp",
+                "initiate"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-auth-token"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"offerId\": \"<string>\",\n  \"unitAmount\": \"<string>\",\n  \"offerToken\": \"<string>\",\n  \"rate\": \"<number>\",\n  \"fiatAmount\": \"<number>\",\n  \"tradeRequestBroadcastId\": \"<uuid>\",\n  \"paymentMethodId\": \"<string>\",\n  \"paymentChannelId\": \"<string>\",\n  \"buyerPaymentMethodId\": \"<string>\",\n  \"customerWallet\": {\n    \"walletAddress\": \"<string>\",\n    \"networkId\": \"<string>\",\n    \"walletName\": \"<string>\"\n  },\n  \"apiKey\": \"<string>\",\n  \"thirdPartyOrderTradeId\": \"<string>\",\n  \"cexOrderId\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2bb6f773-347e-4044-9505-1318da76508a",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transactions",
+                    "v2",
+                    "onramp",
+                    "initiate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"offerId\": \"<string>\",\n  \"unitAmount\": \"<string>\",\n  \"offerToken\": \"<string>\",\n  \"rate\": \"<number>\",\n  \"fiatAmount\": \"<number>\",\n  \"tradeRequestBroadcastId\": \"<uuid>\",\n  \"paymentMethodId\": \"<string>\",\n  \"paymentChannelId\": \"<string>\",\n  \"buyerPaymentMethodId\": \"<string>\",\n  \"customerWallet\": {\n    \"walletAddress\": \"<string>\",\n    \"networkId\": \"bsc_testnet\",\n    \"walletName\": \"My Trust Wallet\"\n  },\n  \"apiKey\": \"<string>\",\n  \"thirdPartyOrderTradeId\": \"<string>\",\n  \"cexOrderId\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"customerId\": \"c24e9f5d-b1be-60fe-94ca-117b38b5d17c\",\n  \"fee\": {\n    \"asFiat\": 1230.2057860909931,\n    \"asToken\": \"1000.0\"\n  },\n  \"id\": \"f164c0c2-1c95-5361-83b1-a1e82166da7a\",\n  \"reference\": \"string\",\n  \"status\": \"CONFIRMED\",\n  \"customerName\": \"John Doe\",\n  \"offer\": {\n    \"instantPayEnabled\": false,\n    \"networkId\": \"TRC20\",\n    \"partnerId\": \"57f96ff5-fd46-3051-7e4d-83d3d62b65f0\",\n    \"rate\": 0.32,\n    \"token\": \"USDT\",\n    \"tokenAmount\": 120.5,\n    \"transactionType\": \"ONRAMP\",\n    \"offerId\": \"38eeeb54-593a-0bed-8c71-0f16b1d8308d\",\n    \"fiatSymbol\": \"NGN\",\n    \"fiatAmount\": 120.5,\n    \"usdAmount\": 120.5,\n    \"partnerDisplayName\": \"John Doe\",\n    \"adNote\": \"Guaranteed fast payment\",\n    \"instantPayPaymentAccountId\": \"string\",\n    \"customPayinProvider\": \"string\",\n    \"tradeMode\": \"OTC\"\n  },\n  \"escrowAddress\": \"string\",\n  \"paymentChannelId\": \"BANK_TRANSFER_NIGERIA\",\n  \"paymentMethod\": {},\n  \"buyerPaymentMethod\": {},\n  \"customerWallet\": {\n    \"walletAddress\": \"<string>\",\n    \"networkId\": \"bsc_testnet\",\n    \"walletName\": \"My Trust Wallet\"\n  },\n  \"tokenAddress\": \"string\",\n  \"createdAt\": \"1987-03-05T15:34:07.320Z\",\n  \"initiatedAt\": \"1949-10-12T09:32:37.847Z\",\n  \"depositedAt\": \"1987-02-15T11:23:02.700Z\",\n  \"confirmedAt\": \"1951-12-09T09:21:37.472Z\",\n  \"completedAt\": \"1971-05-04T09:24:47.187Z\",\n  \"cancelledAt\": \"1987-10-27T01:29:00.607Z\",\n  \"cancellationReason\": \"string\",\n  \"disputeId\": \"null\",\n  \"timeout\": {\n    \"name\": \"ACKNOWLEDGE_TRANSACTION\",\n    \"startTime\": \"1954-05-19T12:55:55.758Z\",\n    \"duration\": 6908.1857334877795,\n    \"timeLeft\": 5426\n  },\n  \"lockHash\": \"null\",\n  \"confirmationHash\": \"null\",\n  \"cancellationHash\": \"null\",\n  \"isPartnerAcknowledged\": false,\n  \"defaultingParty\": \"PARTNER\",\n  \"rating\": 3,\n  \"isCexOrder\": false,\n  \"instantPayProcessingStatus\": \"PENDING_IP_REPORT\",\n  \"tradeValue\": 3668.55290691946,\n  \"merchantTokenValue\": 7120.313313945433,\n  \"customerTokenValue\": 5928.953964291526,\n  \"payableAmount\": 7143.121758941422,\n  \"thirdpartyOrderInfo\": {\n    \"businessId\": \"string\",\n    \"tradeId\": \"string\",\n    \"product\": \"string\",\n    \"blockchainOrderId\": 6087,\n    \"externalOrderReference\": \"string\"\n  },\n  \"isNoKyc\": false,\n  \"paymentReceiptUploadId\": \"null\",\n  \"suppressCustomerNotifications\": false,\n  \"chatUnavailable\": false,\n  \"tradeContext\": \"STANDARD_TRADE\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2783ab03-52fd-4fdb-b2a2-380dc840a44e",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transactions",
+                    "v2",
+                    "onramp",
+                    "initiate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"offerId\": \"<string>\",\n  \"unitAmount\": \"<string>\",\n  \"offerToken\": \"<string>\",\n  \"rate\": \"<number>\",\n  \"fiatAmount\": \"<number>\",\n  \"tradeRequestBroadcastId\": \"<uuid>\",\n  \"paymentMethodId\": \"<string>\",\n  \"paymentChannelId\": \"<string>\",\n  \"buyerPaymentMethodId\": \"<string>\",\n  \"customerWallet\": {\n    \"walletAddress\": \"<string>\",\n    \"networkId\": \"bsc_testnet\",\n    \"walletName\": \"My Trust Wallet\"\n  },\n  \"apiKey\": \"<string>\",\n  \"thirdPartyOrderTradeId\": \"<string>\",\n  \"cexOrderId\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"Request could not be completed due to an error\",\n  \"data\": {\n    \"key_0\": 2683.330987121755,\n    \"key_1\": false,\n    \"key_2\": 6441.625687396041\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "99abc677-c703-4663-84e2-9ee3f2d0cd0e",
+              "name": "Unauthorized request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transactions",
+                    "v2",
+                    "onramp",
+                    "initiate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"offerId\": \"<string>\",\n  \"unitAmount\": \"<string>\",\n  \"offerToken\": \"<string>\",\n  \"rate\": \"<number>\",\n  \"fiatAmount\": \"<number>\",\n  \"tradeRequestBroadcastId\": \"<uuid>\",\n  \"paymentMethodId\": \"<string>\",\n  \"paymentChannelId\": \"<string>\",\n  \"buyerPaymentMethodId\": \"<string>\",\n  \"customerWallet\": {\n    \"walletAddress\": \"<string>\",\n    \"networkId\": \"bsc_testnet\",\n    \"walletName\": \"My Trust Wallet\"\n  },\n  \"apiKey\": \"<string>\",\n  \"thirdPartyOrderTradeId\": \"<string>\",\n  \"cexOrderId\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"Request could not be completed due to an error\",\n  \"data\": {\n    \"key_0\": 2683.330987121755,\n    \"key_1\": false,\n    \"key_2\": 6441.625687396041\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c8747321-3640-45e7-ab63-3804fab31614",
+              "name": "Server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transactions",
+                    "v2",
+                    "onramp",
+                    "initiate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"offerId\": \"<string>\",\n  \"unitAmount\": \"<string>\",\n  \"offerToken\": \"<string>\",\n  \"rate\": \"<number>\",\n  \"fiatAmount\": \"<number>\",\n  \"tradeRequestBroadcastId\": \"<uuid>\",\n  \"paymentMethodId\": \"<string>\",\n  \"paymentChannelId\": \"<string>\",\n  \"buyerPaymentMethodId\": \"<string>\",\n  \"customerWallet\": {\n    \"walletAddress\": \"<string>\",\n    \"networkId\": \"bsc_testnet\",\n    \"walletName\": \"My Trust Wallet\"\n  },\n  \"apiKey\": \"<string>\",\n  \"thirdPartyOrderTradeId\": \"<string>\",\n  \"cexOrderId\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"Request could not be completed due to an error\",\n  \"data\": {\n    \"key_0\": 2683.330987121755,\n    \"key_1\": false,\n    \"key_2\": 6441.625687396041\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "dd351255-2f3c-4ae8-a341-a96ee4be7300",
+          "name": "Customer acknowledges transfer of fiat",
+          "request": {
+            "name": "Customer acknowledges transfer of fiat",
+            "description": {},
+            "url": {
+              "path": [
+                "transactions",
+                "onramp",
+                "customer-deposit"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-auth-token"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": \"<uuid>\",\n  \"transactionId\": \"<uuid>\",\n  \"txHash\": \"<string>\",\n  \"permitSignature\": \"<string>\",\n  \"flag\": \"<string>\",\n  \"paymentReceiptUploadId\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b8f056be-bc35-4eca-8052-9fc49ea946fe",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transactions",
+                    "onramp",
+                    "customer-deposit"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customerId\": \"<uuid>\",\n  \"transactionId\": \"<uuid>\",\n  \"txHash\": \"<string>\",\n  \"permitSignature\": \"<string>\",\n  \"flag\": \"<string>\",\n  \"paymentReceiptUploadId\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"customerId\": \"c24e9f5d-b1be-60fe-94ca-117b38b5d17c\",\n  \"fee\": {\n    \"asFiat\": 1230.2057860909931,\n    \"asToken\": \"1000.0\"\n  },\n  \"id\": \"f164c0c2-1c95-5361-83b1-a1e82166da7a\",\n  \"reference\": \"string\",\n  \"status\": \"CONFIRMED\",\n  \"customerName\": \"John Doe\",\n  \"offer\": {\n    \"instantPayEnabled\": false,\n    \"networkId\": \"TRC20\",\n    \"partnerId\": \"57f96ff5-fd46-3051-7e4d-83d3d62b65f0\",\n    \"rate\": 0.32,\n    \"token\": \"USDT\",\n    \"tokenAmount\": 120.5,\n    \"transactionType\": \"ONRAMP\",\n    \"offerId\": \"38eeeb54-593a-0bed-8c71-0f16b1d8308d\",\n    \"fiatSymbol\": \"NGN\",\n    \"fiatAmount\": 120.5,\n    \"usdAmount\": 120.5,\n    \"partnerDisplayName\": \"John Doe\",\n    \"adNote\": \"Guaranteed fast payment\",\n    \"instantPayPaymentAccountId\": \"string\",\n    \"customPayinProvider\": \"string\",\n    \"tradeMode\": \"OTC\"\n  },\n  \"escrowAddress\": \"string\",\n  \"paymentChannelId\": \"BANK_TRANSFER_NIGERIA\",\n  \"paymentMethod\": {},\n  \"buyerPaymentMethod\": {},\n  \"customerWallet\": {\n    \"walletAddress\": \"<string>\",\n    \"networkId\": \"bsc_testnet\",\n    \"walletName\": \"My Trust Wallet\"\n  },\n  \"tokenAddress\": \"string\",\n  \"createdAt\": \"1987-03-05T15:34:07.320Z\",\n  \"initiatedAt\": \"1949-10-12T09:32:37.847Z\",\n  \"depositedAt\": \"1987-02-15T11:23:02.700Z\",\n  \"confirmedAt\": \"1951-12-09T09:21:37.472Z\",\n  \"completedAt\": \"1971-05-04T09:24:47.187Z\",\n  \"cancelledAt\": \"1987-10-27T01:29:00.607Z\",\n  \"cancellationReason\": \"string\",\n  \"disputeId\": \"null\",\n  \"timeout\": {\n    \"name\": \"ACKNOWLEDGE_TRANSACTION\",\n    \"startTime\": \"1954-05-19T12:55:55.758Z\",\n    \"duration\": 6908.1857334877795,\n    \"timeLeft\": 5426\n  },\n  \"lockHash\": \"null\",\n  \"confirmationHash\": \"null\",\n  \"cancellationHash\": \"null\",\n  \"isPartnerAcknowledged\": false,\n  \"defaultingParty\": \"PARTNER\",\n  \"rating\": 3,\n  \"isCexOrder\": false,\n  \"instantPayProcessingStatus\": \"PENDING_IP_REPORT\",\n  \"tradeValue\": 3668.55290691946,\n  \"merchantTokenValue\": 7120.313313945433,\n  \"customerTokenValue\": 5928.953964291526,\n  \"payableAmount\": 7143.121758941422,\n  \"thirdpartyOrderInfo\": {\n    \"businessId\": \"string\",\n    \"tradeId\": \"string\",\n    \"product\": \"string\",\n    \"blockchainOrderId\": 6087,\n    \"externalOrderReference\": \"string\"\n  },\n  \"isNoKyc\": false,\n  \"paymentReceiptUploadId\": \"null\",\n  \"suppressCustomerNotifications\": false,\n  \"chatUnavailable\": false,\n  \"tradeContext\": \"STANDARD_TRADE\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4fcaa1f5-b931-475d-bd01-dbcf72771b61",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transactions",
+                    "onramp",
+                    "customer-deposit"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customerId\": \"<uuid>\",\n  \"transactionId\": \"<uuid>\",\n  \"txHash\": \"<string>\",\n  \"permitSignature\": \"<string>\",\n  \"flag\": \"<string>\",\n  \"paymentReceiptUploadId\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"Request could not be completed due to an error\",\n  \"data\": {\n    \"key_0\": 2683.330987121755,\n    \"key_1\": false,\n    \"key_2\": 6441.625687396041\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1ce2a002-97f0-4fbc-89bf-0680e952c101",
+              "name": "Unauthorized request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transactions",
+                    "onramp",
+                    "customer-deposit"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customerId\": \"<uuid>\",\n  \"transactionId\": \"<uuid>\",\n  \"txHash\": \"<string>\",\n  \"permitSignature\": \"<string>\",\n  \"flag\": \"<string>\",\n  \"paymentReceiptUploadId\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"Request could not be completed due to an error\",\n  \"data\": {\n    \"key_0\": 2683.330987121755,\n    \"key_1\": false,\n    \"key_2\": 6441.625687396041\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "64a1c4a3-82f4-4731-a055-b2f59a7515dd",
+              "name": "Server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transactions",
+                    "onramp",
+                    "customer-deposit"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customerId\": \"<uuid>\",\n  \"transactionId\": \"<uuid>\",\n  \"txHash\": \"<string>\",\n  \"permitSignature\": \"<string>\",\n  \"flag\": \"<string>\",\n  \"paymentReceiptUploadId\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"Request could not be completed due to an error\",\n  \"data\": {\n    \"key_0\": 2683.330987121755,\n    \"key_1\": false,\n    \"key_2\": 6441.625687396041\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b2640b5b-68b1-4245-8163-8decafa58f6b",
+          "name": "Customer cancels onramp transaction",
+          "request": {
+            "name": "Customer cancels onramp transaction",
+            "description": {},
+            "url": {
+              "path": [
+                "transactions",
+                "onramp",
+                "customer-cancel"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-auth-token"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": \"<uuid>\",\n  \"transactionId\": \"<uuid>\",\n  \"txHash\": \"<string>\",\n  \"permitSignature\": \"<string>\",\n  \"flag\": \"<string>\",\n  \"paymentReceiptUploadId\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "164b002d-c897-4490-9ec3-0aa2661fee02",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transactions",
+                    "onramp",
+                    "customer-cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customerId\": \"<uuid>\",\n  \"transactionId\": \"<uuid>\",\n  \"txHash\": \"<string>\",\n  \"permitSignature\": \"<string>\",\n  \"flag\": \"<string>\",\n  \"paymentReceiptUploadId\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"customerId\": \"c24e9f5d-b1be-60fe-94ca-117b38b5d17c\",\n  \"fee\": {\n    \"asFiat\": 1230.2057860909931,\n    \"asToken\": \"1000.0\"\n  },\n  \"id\": \"f164c0c2-1c95-5361-83b1-a1e82166da7a\",\n  \"reference\": \"string\",\n  \"status\": \"CONFIRMED\",\n  \"customerName\": \"John Doe\",\n  \"offer\": {\n    \"instantPayEnabled\": false,\n    \"networkId\": \"TRC20\",\n    \"partnerId\": \"57f96ff5-fd46-3051-7e4d-83d3d62b65f0\",\n    \"rate\": 0.32,\n    \"token\": \"USDT\",\n    \"tokenAmount\": 120.5,\n    \"transactionType\": \"ONRAMP\",\n    \"offerId\": \"38eeeb54-593a-0bed-8c71-0f16b1d8308d\",\n    \"fiatSymbol\": \"NGN\",\n    \"fiatAmount\": 120.5,\n    \"usdAmount\": 120.5,\n    \"partnerDisplayName\": \"John Doe\",\n    \"adNote\": \"Guaranteed fast payment\",\n    \"instantPayPaymentAccountId\": \"string\",\n    \"customPayinProvider\": \"string\",\n    \"tradeMode\": \"OTC\"\n  },\n  \"escrowAddress\": \"string\",\n  \"paymentChannelId\": \"BANK_TRANSFER_NIGERIA\",\n  \"paymentMethod\": {},\n  \"buyerPaymentMethod\": {},\n  \"customerWallet\": {\n    \"walletAddress\": \"<string>\",\n    \"networkId\": \"bsc_testnet\",\n    \"walletName\": \"My Trust Wallet\"\n  },\n  \"tokenAddress\": \"string\",\n  \"createdAt\": \"1987-03-05T15:34:07.320Z\",\n  \"initiatedAt\": \"1949-10-12T09:32:37.847Z\",\n  \"depositedAt\": \"1987-02-15T11:23:02.700Z\",\n  \"confirmedAt\": \"1951-12-09T09:21:37.472Z\",\n  \"completedAt\": \"1971-05-04T09:24:47.187Z\",\n  \"cancelledAt\": \"1987-10-27T01:29:00.607Z\",\n  \"cancellationReason\": \"string\",\n  \"disputeId\": \"null\",\n  \"timeout\": {\n    \"name\": \"ACKNOWLEDGE_TRANSACTION\",\n    \"startTime\": \"1954-05-19T12:55:55.758Z\",\n    \"duration\": 6908.1857334877795,\n    \"timeLeft\": 5426\n  },\n  \"lockHash\": \"null\",\n  \"confirmationHash\": \"null\",\n  \"cancellationHash\": \"null\",\n  \"isPartnerAcknowledged\": false,\n  \"defaultingParty\": \"PARTNER\",\n  \"rating\": 3,\n  \"isCexOrder\": false,\n  \"instantPayProcessingStatus\": \"PENDING_IP_REPORT\",\n  \"tradeValue\": 3668.55290691946,\n  \"merchantTokenValue\": 7120.313313945433,\n  \"customerTokenValue\": 5928.953964291526,\n  \"payableAmount\": 7143.121758941422,\n  \"thirdpartyOrderInfo\": {\n    \"businessId\": \"string\",\n    \"tradeId\": \"string\",\n    \"product\": \"string\",\n    \"blockchainOrderId\": 6087,\n    \"externalOrderReference\": \"string\"\n  },\n  \"isNoKyc\": false,\n  \"paymentReceiptUploadId\": \"null\",\n  \"suppressCustomerNotifications\": false,\n  \"chatUnavailable\": false,\n  \"tradeContext\": \"STANDARD_TRADE\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "016a5194-71b9-4c85-8cbf-1fe7830f62fb",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transactions",
+                    "onramp",
+                    "customer-cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customerId\": \"<uuid>\",\n  \"transactionId\": \"<uuid>\",\n  \"txHash\": \"<string>\",\n  \"permitSignature\": \"<string>\",\n  \"flag\": \"<string>\",\n  \"paymentReceiptUploadId\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"Request could not be completed due to an error\",\n  \"data\": {\n    \"key_0\": 2683.330987121755,\n    \"key_1\": false,\n    \"key_2\": 6441.625687396041\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ad82bf32-f00d-4230-9d41-b2fdc137d8e7",
+              "name": "Unauthorized request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transactions",
+                    "onramp",
+                    "customer-cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customerId\": \"<uuid>\",\n  \"transactionId\": \"<uuid>\",\n  \"txHash\": \"<string>\",\n  \"permitSignature\": \"<string>\",\n  \"flag\": \"<string>\",\n  \"paymentReceiptUploadId\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"Request could not be completed due to an error\",\n  \"data\": {\n    \"key_0\": 2683.330987121755,\n    \"key_1\": false,\n    \"key_2\": 6441.625687396041\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dc087a2a-8108-4a73-9bf1-9dd4eb3d9ff4",
+              "name": "Server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transactions",
+                    "onramp",
+                    "customer-cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customerId\": \"<uuid>\",\n  \"transactionId\": \"<uuid>\",\n  \"txHash\": \"<string>\",\n  \"permitSignature\": \"<string>\",\n  \"flag\": \"<string>\",\n  \"paymentReceiptUploadId\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"Request could not be completed due to an error\",\n  \"data\": {\n    \"key_0\": 2683.330987121755,\n    \"key_1\": false,\n    \"key_2\": 6441.625687396041\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://external.dev.onboardpay.co",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "401696dd-4ba7-42a1-990f-b5cd7d894d45",
+    "name": "Onboard External API Gateway auth-oauth transactions-onramp API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "**Introduction**\nAPI Gateway for Onboard\n\nThis specification describes API endpoints that are available to the public internet via the API gateway. The different endpoints require different authentication schemes, see documentation for what applies to the operation you want to access.\n\n**Errors**\nUses conventional HTTP response codes to indicate success or failure. In\ngeneral:\n \n- `2xx` status codes indicate success. Codes in the\n- `4xx` range\nindicate a client error (e.g. required parameters, failed request etc.).\n- `5xx` status codes indicate a server error occurred.\n\nContact Support:\n Name: Nestcoin TechOps\n Email: techops@nestcoin.com",
+      "type": "text/plain"
+    }
+  }
+}

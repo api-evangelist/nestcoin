@@ -1,0 +1,164 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Onboard External API Gateway auth-oauth ledger-accounts API",
+    "version": "3.0.2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "ledger-accounts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch All Customer Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/ledger/accounts",
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This operation allows the client to fetch all customer's accounts"
+        },
+        {
+          "info": {
+            "name": "Fetch account details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/ledger/accounts/:accountId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "the unique onboard account ID"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This operation allows the client to fetch account details by account id. A client can fetch only their own account details.\n"
+        },
+        {
+          "info": {
+            "name": "Get list of supported assets for main accounts.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/ledger/currency/assets",
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This operation allows the client to get the Nestcoin supported\nAssets\n"
+        },
+        {
+          "info": {
+            "name": "Get stablecoin tokens supported for account.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/ledger/assets/:assetCode/network-tokens",
+            "params": [
+              {
+                "name": "assetCode",
+                "value": "",
+                "type": "path",
+                "description": "The assets code of a crypto"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get list of stablecoin tokens supported for account by asset code.\nThe asset code is the currency code of the main account e.g USD\n"
+        },
+        {
+          "info": {
+            "name": "Get the bank account number for an account.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/ledger/accounts/:accountId/account-details",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "the unique onboard account ID"
+              },
+              {
+                "name": "currency",
+                "value": "",
+                "type": "query",
+                "description": "Currency of the bank account number to generate or retrieve."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns the bank account number (and bank details) generated for this account in the given\ncurrency, if one exists.\n"
+        },
+        {
+          "info": {
+            "name": "Create a bank account number for an account.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external.dev.onboardpay.co/ledger/accounts/:accountId/account-details",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "the unique onboard account ID"
+              },
+              {
+                "name": "currency",
+                "value": "",
+                "type": "query",
+                "description": "Currency of the bank account number to generate or retrieve."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Generates a bank account number for this account in the given currency through the account-number\nprovider. Returns the existing details if one was already generated.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

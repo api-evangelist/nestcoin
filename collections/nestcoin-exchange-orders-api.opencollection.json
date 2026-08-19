@@ -1,0 +1,109 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Onboard External API Gateway auth-oauth exchange-orders API",
+    "version": "3.0.2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "exchange-orders",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Start a trade",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/exchange/orders/trade",
+            "params": [
+              {
+                "name": "apiKey",
+                "value": "",
+                "type": "query",
+                "description": "CEX api key"
+              },
+              {
+                "name": "product",
+                "value": "",
+                "type": "query",
+                "description": "Integration product in use e.g web3 or custodial"
+              },
+              {
+                "name": "orderId",
+                "value": "",
+                "type": "query",
+                "description": "Order ID generated for offramp trades"
+              },
+              {
+                "name": "tradeType",
+                "value": "",
+                "type": "query",
+                "description": "Type of trade"
+              },
+              {
+                "name": "fiat",
+                "value": "",
+                "type": "query",
+                "description": "Symbol of fiat currency"
+              },
+              {
+                "name": "fiatAmount",
+                "value": "",
+                "type": "query",
+                "description": "Fiat amount"
+              },
+              {
+                "name": "token",
+                "value": "",
+                "type": "query",
+                "description": "Symbol of token asset"
+              },
+              {
+                "name": "tokenAmount",
+                "value": "",
+                "type": "query",
+                "description": "Token amount"
+              },
+              {
+                "name": "networkId",
+                "value": "",
+                "type": "query",
+                "description": "Onboard blockchain network identifier or chain Id e.g Base will be `base` or `8453` or `0x2105`"
+              },
+              {
+                "name": "address",
+                "value": "",
+                "type": "query",
+                "description": "Wallet address to be debited/credited in order"
+              },
+              {
+                "name": "paymentChannel",
+                "value": "",
+                "type": "query",
+                "description": "Payment channel"
+              },
+              {
+                "name": "email",
+                "value": "",
+                "type": "query",
+                "description": "Customer's email address"
+              },
+              {
+                "name": "autoselect",
+                "value": "",
+                "type": "query",
+                "description": "Offer auto select flag"
+              }
+            ]
+          },
+          "docs": "Start a trade"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,105 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Onboard External API Gateway auth-oauth transactions-onboardapi API",
+    "version": "3.0.2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "transactions-onboardapi",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve a particular transaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/transactions/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a particular transaction"
+        },
+        {
+          "info": {
+            "name": "Initiate an onramp transaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external.dev.onboardpay.co/transactions/v2/onramp/initiate",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Initiate an onramp transaction"
+        },
+        {
+          "info": {
+            "name": "Customer acknowledges transfer of fiat",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external.dev.onboardpay.co/transactions/onramp/customer-deposit",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Customer acknowledges transfer of fiat"
+        },
+        {
+          "info": {
+            "name": "Customer cancels onramp transaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external.dev.onboardpay.co/transactions/onramp/customer-cancel",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Customer cancels onramp transaction"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,238 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Onboard External API Gateway auth-oauth ledger-beneficiaries API",
+    "version": "3.0.2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "ledger-beneficiaries",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch all bank account beneficiaries and bank transfer type",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/ledger/fiat-beneficiaries",
+            "params": [
+              {
+                "name": "currency",
+                "value": "",
+                "type": "query",
+                "description": "The currency code for the request."
+              },
+              {
+                "name": "accountHolderType",
+                "value": "",
+                "type": "query",
+                "description": "The account holder type"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page parameter, starting from 1"
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This operation allows the client to fetch all beneficiary by accounts and their transaction type\n"
+        },
+        {
+          "info": {
+            "name": "Customer beneficiary",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external.dev.onboardpay.co/ledger/fiat-beneficiaries",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This Operation allows user to save beneficiary\n"
+        },
+        {
+          "info": {
+            "name": "Fetch Beneficiary by Id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/ledger/fiat-beneficiaries/:beneficiaryId",
+            "params": [
+              {
+                "name": "beneficiaryId",
+                "value": "",
+                "type": "path",
+                "description": "The unique ID of a beneficiary"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This operation allows the client to fetch a beneficiary by its Id\n"
+        },
+        {
+          "info": {
+            "name": "Delete Beneficiary by Id",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://external.dev.onboardpay.co/ledger/fiat-beneficiaries/:beneficiaryId",
+            "params": [
+              {
+                "name": "beneficiaryId",
+                "value": "",
+                "type": "path",
+                "description": "The unique ID of a beneficiary"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This operation allows the client to delete a beneficiary by its Id\n"
+        },
+        {
+          "info": {
+            "name": "Fetch crypto beneficiaries",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/ledger/crypto-beneficiaries",
+            "params": [
+              {
+                "name": "network",
+                "value": "",
+                "type": "query",
+                "description": "The crypto network code"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page parameter, starting from 1"
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This operation allows the client to fetch all beneficiary by accounts\n"
+        },
+        {
+          "info": {
+            "name": "Crypto Customer beneficiary",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external.dev.onboardpay.co/ledger/crypto-beneficiaries",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This Operation allows crypto users to save beneficiary"
+        },
+        {
+          "info": {
+            "name": "Fetch crypto Beneficiary by Id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/ledger/crypto-beneficiaries/:beneficiaryId",
+            "params": [
+              {
+                "name": "beneficiaryId",
+                "value": "",
+                "type": "path",
+                "description": "The unique ID of a beneficiary"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This operation allows the client to fetch a crypto beneficiary by its Id\n"
+        },
+        {
+          "info": {
+            "name": "Delete crypto Beneficiary by Id",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://external.dev.onboardpay.co/ledger/crypto-beneficiaries/:beneficiaryId",
+            "params": [
+              {
+                "name": "beneficiaryId",
+                "value": "",
+                "type": "path",
+                "description": "The unique ID of a beneficiary"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This operation allows the client to delete a crypto beneficiary by its Id\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

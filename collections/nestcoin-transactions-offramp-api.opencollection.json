@@ -1,0 +1,102 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Onboard External API Gateway auth-oauth transactions-offramp API",
+    "version": "3.0.2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "transactions-offramp",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Initiate an offramp transaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external.dev.onboardpay.co/transactions/v2/offramp/initiate",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Initiate an offramp transaction"
+        },
+        {
+          "info": {
+            "name": "Customer approves withdrawal from wallet",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external.dev.onboardpay.co/transactions/offramp/customer-approve",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Customer approves withdrawal from wallet"
+        },
+        {
+          "info": {
+            "name": "Customer acknowledges receipt of fiat",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external.dev.onboardpay.co/transactions/offramp/customer-confirm",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Customer acknowledges receipt of fiat"
+        },
+        {
+          "info": {
+            "name": "Customer cancels pending offramp transaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external.dev.onboardpay.co/transactions/offramp/customer-cancel",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Customer cancels pending offramp transaction"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

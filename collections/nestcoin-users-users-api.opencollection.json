@@ -1,0 +1,85 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Onboard External API Gateway auth-oauth users-users API",
+    "version": "3.0.2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "users-users",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Provide otp for user",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/users/me/send-otp",
+            "params": [
+              {
+                "name": "purpose",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "verificationChannel",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Provide otp for user"
+        },
+        {
+          "info": {
+            "name": "Get a single user by their authorization token",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/users/me",
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get a single user by their authorization token"
+        },
+        {
+          "info": {
+            "name": "Update partner's personal information",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://external.dev.onboardpay.co/users/me/update-profile",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update partner's personal information"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -2,8 +2,8 @@ generated: '2026-07-20'
 method: derived
 status: candidate
 source: openapi/nestcoin-external-gateway-openapi-original.json
-note: Candidate MCP tool list derived one-per-operation from the Onboard External API Gateway OpenAPI. No official hosted
-  MCP server found as of this pass.
+note: Candidate MCP tool list derived one-per-operation from the Onboard External API Gateway OpenAPI.
+  No official hosted MCP server found as of this pass.
 server:
   name: onboard
   transport: http
@@ -296,3 +296,9 @@ tools:
 - name: updateProfile
   description: Update partner's personal information
   source_operation: openapi/nestcoin-external-gateway-openapi-original.json#updateProfile
+deployment:
+  mode: none
+  verified: derived
+  tools: 96
+  checked: '2026-08-12'
+  source: catalog MCP census

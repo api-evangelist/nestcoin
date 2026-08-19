@@ -1,0 +1,282 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Onboard External API Gateway auth-oauth ledger-sub-accounts API",
+    "version": "3.0.2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "ledger-sub-accounts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch all sub-accounts belonging to the customer.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/ledger/subaccounts",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "query",
+                "description": "The ID for the main account for the request."
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page parameter, starting from 1"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This endpoint returns all sub-accounts\n"
+        },
+        {
+          "info": {
+            "name": "Create sub-account for a customer.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external.dev.onboardpay.co/ledger/subaccounts",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This endpoint helps to create sub-accounts for a customer. The endpoint requires the main account ID to create a sub-account under it.\n"
+        },
+        {
+          "info": {
+            "name": "Fetch sub-account details by sub-account ID.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/ledger/subaccounts/:subAccountIdRef",
+            "params": [
+              {
+                "name": "subAccountIdRef",
+                "value": "",
+                "type": "path",
+                "description": "The unique onboard sub-account ID or reference\n"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This endpoint returns sub-account details by sub-account ID.\n"
+        },
+        {
+          "info": {
+            "name": "Update sub-account details by sub-account ID.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://external.dev.onboardpay.co/ledger/subaccounts/:subAccountIdRef",
+            "params": [
+              {
+                "name": "subAccountIdRef",
+                "value": "",
+                "type": "path",
+                "description": "The unique onboard sub-account ID or reference\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This endpoint updates sub-account details by sub-account ID.\n"
+        },
+        {
+          "info": {
+            "name": "Delete sub-account by sub-account ID.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://external.dev.onboardpay.co/ledger/subaccounts/:subAccountIdRef",
+            "params": [
+              {
+                "name": "subAccountIdRef",
+                "value": "",
+                "type": "path",
+                "description": "The unique onboard sub-account ID or reference\n"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This endpoint deletes sub-account by sub-account ID. The sub-account must have zero balance before it can be deleted.\nThe endpoint will return an error if the sub-account has a non-zero balance. The funds in the sub-account must be transferred to another account before deletion.\nOnce an account is deleted, it cannot be recovered, and a new sub-account must be created if needed.\nThe address associated with the sub-account will also be deleted upon successful deletion of the sub-account.\n"
+        },
+        {
+          "info": {
+            "name": "Check funding address for a sub-account.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/ledger/subaccounts/:subAccountIdRef/funding-address",
+            "params": [
+              {
+                "name": "subAccountIdRef",
+                "value": "",
+                "type": "path",
+                "description": "The unique onboard sub-account ID or reference\n"
+              },
+              {
+                "name": "tokenNetworkCode",
+                "value": "",
+                "type": "query",
+                "description": "a unique code we assign to a token on a network, e.g. USDT_ETH"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This operation allows the client to get the address for the sub-account if it exists\n"
+        },
+        {
+          "info": {
+            "name": "Create Funding Address for a sub-account using token network.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external.dev.onboardpay.co/ledger/subaccounts/:subAccountIdRef/funding-address",
+            "params": [
+              {
+                "name": "subAccountIdRef",
+                "value": "",
+                "type": "path",
+                "description": "The unique onboard sub-account ID or reference\n"
+              },
+              {
+                "name": "tokenNetworkCode",
+                "value": "",
+                "type": "query",
+                "description": "a unique code we assign to a token on a network, e.g. USDT_ETH"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This operation allows the client to create an address for the supported token and network for a sub-account.\n"
+        },
+        {
+          "info": {
+            "name": "Get the bank account number for a sub-account.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/ledger/subaccounts/:subAccountIdRef/account-details",
+            "params": [
+              {
+                "name": "subAccountIdRef",
+                "value": "",
+                "type": "path",
+                "description": "The unique onboard sub-account ID or reference\n"
+              },
+              {
+                "name": "currency",
+                "value": "",
+                "type": "query",
+                "description": "Currency of the bank account number to generate or retrieve."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns the bank account number (and bank details) generated for this sub-account in the given\ncurrency, if one exists.\n"
+        },
+        {
+          "info": {
+            "name": "Create a bank account number for a sub-account.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external.dev.onboardpay.co/ledger/subaccounts/:subAccountIdRef/account-details",
+            "params": [
+              {
+                "name": "subAccountIdRef",
+                "value": "",
+                "type": "path",
+                "description": "The unique onboard sub-account ID or reference\n"
+              },
+              {
+                "name": "currency",
+                "value": "",
+                "type": "query",
+                "description": "Currency of the bank account number to generate or retrieve."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Generates a bank account number for this sub-account in the given currency through the\naccount-number provider. The account name must be supplied by the client.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,1266 @@
+{
+  "item": [
+    {
+      "id": "5a746880-42b4-481b-bc53-ee6eff0b8f40",
+      "name": "ledger-payments",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "4802ce2d-b0bc-479a-9c37-7e7701f8e6d0",
+          "name": "Get reference rate",
+          "request": {
+            "name": "Get reference rate",
+            "description": {
+              "content": "Get reference rate for cash payments",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "ledger",
+                "cash-payments",
+                "rates"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "accountCurrency",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "payoutCurrency",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-auth-token"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "8a264c12-2089-4100-859c-83169a938f65",
+              "name": "Rate retrieved",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ledger",
+                    "cash-payments",
+                    "rates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountCurrency",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "payoutCurrency",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"accountCurrency\": \"USD\",\n  \"cashCurrency\": \"NGN\",\n  \"rate\": 1500.5\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d2d73e8d-1622-43a1-a715-bf82c83ef6b3",
+              "name": "Request could not be validated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ledger",
+                    "cash-payments",
+                    "rates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountCurrency",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "payoutCurrency",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"BAD_REQUEST\",\n  \"message\": \"Request could not be validated.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "53dddd2d-1991-40e0-8476-24b9088cbeb8",
+              "name": "Client is not authorized to make request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ledger",
+                    "cash-payments",
+                    "rates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountCurrency",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "payoutCurrency",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNAUTHORIZED\",\n  \"message\": \"Either client security header is missing or it is not valid.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6e229826-cfca-4215-a7a1-221eeadfb81c",
+          "name": "Create transfer quote",
+          "request": {
+            "name": "Create transfer quote",
+            "description": {
+              "content": "Create quote for cash payment",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "ledger",
+                "cash-payments",
+                "quotes"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-auth-token"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"payoutCurrency\": \"<string>\",\n  \"accountCurrency\": \"<string>\",\n  \"amount\": \"<number>\",\n  \"unitCurrency\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "76efec3d-9fb1-49ee-a929-1f631dd62e6d",
+              "name": "Quote created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ledger",
+                    "cash-payments",
+                    "quotes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"payoutCurrency\": \"NGN\",\n  \"accountCurrency\": \"USD\",\n  \"amount\": 100,\n  \"unitCurrency\": \"USD\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"bba48931-9a17-9664-0f99-2227e2faeaa8\",\n  \"payoutCurrency\": \"NGN\",\n  \"accountCurrency\": \"USD\",\n  \"rate\": 1450.75,\n  \"minimumAmount\": 50,\n  \"maximumAmount\": 10000,\n  \"expiresAt\": \"1995-08-10T11:57:15.682Z\",\n  \"minimumPayoutAmount\": 72500,\n  \"maximumPayoutAmount\": 14507500\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b0d593b9-91f2-42fd-9f60-6417a45bfc3a",
+              "name": "Request could not be validated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ledger",
+                    "cash-payments",
+                    "quotes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"payoutCurrency\": \"NGN\",\n  \"accountCurrency\": \"USD\",\n  \"amount\": 100,\n  \"unitCurrency\": \"USD\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"BAD_REQUEST\",\n  \"message\": \"Request could not be validated.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a8693c89-4098-49fc-b982-46c85104d251",
+              "name": "Client is not authorized to make request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ledger",
+                    "cash-payments",
+                    "quotes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"payoutCurrency\": \"NGN\",\n  \"accountCurrency\": \"USD\",\n  \"amount\": 100,\n  \"unitCurrency\": \"USD\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNAUTHORIZED\",\n  \"message\": \"Either client security header is missing or it is not valid.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "acc751f5-97b0-400a-9f56-2fdde38ce187",
+          "name": "Retrieve list of cash payments",
+          "request": {
+            "name": "Retrieve list of cash payments",
+            "description": {
+              "content": "Retrieve a list of cash payments, can accept accountId, status",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "ledger",
+                "cash-payments"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "accountId",
+                  "value": "<uuid>",
+                  "description": "Filter by the account that was debited. Can be the main account ID or a sub-account ID."
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page parameter, starting from 1"
+                },
+                {
+                  "disabled": false,
+                  "key": "size",
+                  "value": "20"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-auth-token"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "225ea955-724c-49e5-81ad-83a7bf6a4473",
+              "name": "Cash payments list",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ledger",
+                    "cash-payments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "size",
+                      "value": "20"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"string\",\n  \"size\": 5660,\n  \"totalItems\": 2120,\n  \"nextPage\": 1767,\n  \"previousPage\": 9273,\n  \"content\": [\n    {\n      \"id\": \"fd89af8b-d34b-6dfc-833c-ca6351a6b7ce\",\n      \"reference\": \"string\",\n      \"currency\": \"USD\",\n      \"status\": \"SUCCESS\",\n      \"payoutCurrency\": \"NGN\",\n      \"amount\": 100,\n      \"rate\": 1450.75,\n      \"payoutAmount\": 145075,\n      \"createdDate\": \"1949-06-12T02:37:59.767Z\",\n      \"recipient\": {\n        \"id\": \"78d50262-6042-2cb6-6cd1-cf469265635c\",\n        \"accountName\": \"John Doe\",\n        \"beneficiaryType\": \"BeneficiaryLocalBankAccount\",\n        \"accountIdentifier\": \"230101010\",\n        \"paymentChannelId\": \"BANK_TRANSFER_NIGERIA\",\n        \"bankName\": \"Great Bank LLC\",\n        \"country\": \"IE\"\n      },\n      \"accountTransactionId\": \"string\",\n      \"providerReference\": \"PROV123456\"\n    },\n    {\n      \"id\": \"caa921e8-373b-8bbc-51a4-821321a605c6\",\n      \"reference\": \"string\",\n      \"currency\": \"USD\",\n      \"status\": \"PENDING\",\n      \"payoutCurrency\": \"NGN\",\n      \"amount\": 100,\n      \"rate\": 1450.75,\n      \"payoutAmount\": 145075,\n      \"createdDate\": \"1974-04-09T07:43:51.322Z\",\n      \"recipient\": {\n        \"id\": \"8fee249f-52fd-7347-6f46-50da9247ad1e\",\n        \"accountName\": \"John Doe\",\n        \"beneficiaryType\": \"BeneficiaryLocalBankAccount\",\n        \"accountIdentifier\": \"230101010\",\n        \"paymentChannelId\": \"BANK_TRANSFER_NIGERIA\",\n        \"bankName\": \"Great Bank LLC\",\n        \"country\": \"IE\"\n      },\n      \"accountTransactionId\": \"string\",\n      \"providerReference\": \"PROV123456\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bdf05bff-9884-4be6-838a-871a178ad461",
+              "name": "Client is not authorized to make request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ledger",
+                    "cash-payments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "size",
+                      "value": "20"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNAUTHORIZED\",\n  \"message\": \"Either client security header is missing or it is not valid.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "480e7fb1-7f10-4664-9f7a-95b01a2d02dd",
+          "name": "Create cash payment",
+          "request": {
+            "name": "Create cash payment",
+            "description": {
+              "content": "Create cash payment, using the created quote",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "ledger",
+                "cash-payments"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-auth-token"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quoteId\": \"<uuid>\",\n  \"accountId\": \"<uuid>\",\n  \"amount\": \"<number>\",\n  \"beneficiaryId\": \"<uuid>\",\n  \"reference\": \"<string>\",\n  \"paymentReason\": \"<string>\",\n  \"unitCurrency\": \"<string>\",\n  \"narration\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "5a0fafe2-ac72-4ae6-849d-84e6ec147647",
+              "name": "Cash payment created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ledger",
+                    "cash-payments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"quoteId\": \"<uuid>\",\n  \"accountId\": \"<uuid>\",\n  \"amount\": \"<number>\",\n  \"beneficiaryId\": \"<uuid>\",\n  \"reference\": \"CTR123456\",\n  \"paymentReason\": \"<string>\",\n  \"unitCurrency\": \"<string>\",\n  \"narration\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"P12005E1DV\",\n  \"status\": \"SUCCESS\",\n  \"awaiting2fA\": false,\n  \"twoFaMethod\": [\n    \"EMAIL\",\n    \"SMS\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d7579f6e-97ef-4b52-b989-18545380e2e6",
+              "name": "Request could not be validated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ledger",
+                    "cash-payments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"quoteId\": \"<uuid>\",\n  \"accountId\": \"<uuid>\",\n  \"amount\": \"<number>\",\n  \"beneficiaryId\": \"<uuid>\",\n  \"reference\": \"CTR123456\",\n  \"paymentReason\": \"<string>\",\n  \"unitCurrency\": \"<string>\",\n  \"narration\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"BAD_REQUEST\",\n  \"message\": \"Request could not be validated.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "02036a91-ceae-4655-90a3-d855ee833062",
+              "name": "Client is not authorized to make request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ledger",
+                    "cash-payments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"quoteId\": \"<uuid>\",\n  \"accountId\": \"<uuid>\",\n  \"amount\": \"<number>\",\n  \"beneficiaryId\": \"<uuid>\",\n  \"reference\": \"CTR123456\",\n  \"paymentReason\": \"<string>\",\n  \"unitCurrency\": \"<string>\",\n  \"narration\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNAUTHORIZED\",\n  \"message\": \"Either client security header is missing or it is not valid.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a0a4069d-4f09-4007-851c-a8f38846c05d",
+          "name": "Get specific cash payment",
+          "request": {
+            "name": "Get specific cash payment",
+            "description": {
+              "content": "Get specific cash payment by reference",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "ledger",
+                "cash-payments",
+                ":reference"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "reference",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-auth-token"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "89f36778-0881-49e4-808c-a0728cdc6ae2",
+              "name": "cash payment details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ledger",
+                    "cash-payments",
+                    ":reference"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "reference",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"a79bb454-4faf-1fa2-a0b6-6c181f9a06bb\",\n  \"reference\": \"string\",\n  \"currency\": \"USD\",\n  \"status\": \"IN_PROGRESS\",\n  \"payoutCurrency\": \"NGN\",\n  \"amount\": 100,\n  \"rate\": 1450.75,\n  \"payoutAmount\": 145075,\n  \"createdDate\": \"1971-05-06T22:18:10.993Z\",\n  \"recipient\": {\n    \"id\": \"6c77930f-9e09-5bb2-4501-80b6c0a7778b\",\n    \"accountName\": \"John Doe\",\n    \"beneficiaryType\": \"BeneficiaryLocalBankAccount\",\n    \"accountIdentifier\": \"230101010\",\n    \"paymentChannelId\": \"BANK_TRANSFER_NIGERIA\",\n    \"bankName\": \"Great Bank LLC\",\n    \"country\": \"IE\"\n  },\n  \"accountTransactionId\": \"string\",\n  \"providerReference\": \"PROV123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "607841ac-11d6-4e98-8a07-773949b3da04",
+              "name": "Client is not authorized to make request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ledger",
+                    "cash-payments",
+                    ":reference"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "reference",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNAUTHORIZED\",\n  \"message\": \"Either client security header is missing or it is not valid.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a7571e6d-3a96-44b2-93b7-6fb6e1e2eba3",
+              "name": "Entity was not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ledger",
+                    "cash-payments",
+                    ":reference"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "reference",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"NOT_FOUND\",\n  \"message\": \"Information could not be found\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ed4444c0-fab0-41fc-a9a4-5bde63526b74",
+          "name": "Get supported payout currencies",
+          "request": {
+            "name": "Get supported payout currencies",
+            "description": {
+              "content": "Get supported payout currencies for cash payment.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "ledger",
+                "cash-payments",
+                "currencies"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-auth-token"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "e293fad5-d662-4cbd-850a-93e7077c90da",
+              "name": "List of supported payout currencies",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ledger",
+                    "cash-payments",
+                    "currencies"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"currencies\": [\n    {\n      \"name\": \"string\",\n      \"logo\": \"string\",\n      \"code\": \"string\",\n      \"countryCode\": \"string\"\n    },\n    {\n      \"name\": \"string\",\n      \"logo\": \"string\",\n      \"code\": \"string\",\n      \"countryCode\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fb15ade2-9799-4b1f-affd-5d5b59dc135c",
+              "name": "Client is not authorized to make request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ledger",
+                    "cash-payments",
+                    "currencies"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNAUTHORIZED\",\n  \"message\": \"Either client security header is missing or it is not valid.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://external.dev.onboardpay.co",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "6ad42afc-9f89-434b-a9d5-6afeabfe3a55",
+    "name": "Onboard External API Gateway auth-oauth ledger-payments API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "**Introduction**\nAPI Gateway for Onboard\n\nThis specification describes API endpoints that are available to the public internet via the API gateway. The different endpoints require different authentication schemes, see documentation for what applies to the operation you want to access.\n\n**Errors**\nUses conventional HTTP response codes to indicate success or failure. In\ngeneral:\n \n- `2xx` status codes indicate success. Codes in the\n- `4xx` range\nindicate a client error (e.g. required parameters, failed request etc.).\n- `5xx` status codes indicate a server error occurred.\n\nContact Support:\n Name: Nestcoin TechOps\n Email: techops@nestcoin.com",
+      "type": "text/plain"
+    }
+  }
+}

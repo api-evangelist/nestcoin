@@ -1,0 +1,937 @@
+{
+  "item": [
+    {
+      "id": "0946419f-cd56-4796-8591-702b5a68906d",
+      "name": "offers-offers",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "822c1db3-081e-4368-8b9b-d9de054ef3bb",
+          "name": "get Weighted Rates",
+          "request": {
+            "name": "get Weighted Rates",
+            "description": {},
+            "url": {
+              "path": [
+                "offers",
+                "rate"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "fiatSymbol",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "tokenSymbol",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "offerType",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3922e2dc-52b4-440e-9fac-8e65350749d4",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "offers",
+                    "rate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fiatSymbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tokenSymbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "offerType",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"weightedRate\": 54000,\n  \"bestRate\": 54000\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "96708423-bf0c-4ec7-aabd-f63e3fa95217",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "offers",
+                    "rate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fiatSymbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tokenSymbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "offerType",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"Request could not be completed due to an error\",\n  \"data\": {\n    \"key_0\": false,\n    \"key_1\": 5762.456840322236,\n    \"key_2\": true,\n    \"key_3\": 1040.4204897304492\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "16840cc6-ec55-4008-a7c3-19d86ca10f44",
+              "name": "Unauthorized request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "offers",
+                    "rate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fiatSymbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tokenSymbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "offerType",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"Request could not be completed due to an error\",\n  \"data\": {\n    \"key_0\": false,\n    \"key_1\": 5762.456840322236,\n    \"key_2\": true,\n    \"key_3\": 1040.4204897304492\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "17fc275b-f19f-4fbb-8f25-d1116bc4bc11",
+              "name": "Server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "offers",
+                    "rate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fiatSymbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tokenSymbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "offerType",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"Request could not be completed due to an error\",\n  \"data\": {\n    \"key_0\": false,\n    \"key_1\": 5762.456840322236,\n    \"key_2\": true,\n    \"key_3\": 1040.4204897304492\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b6e038ff-7a66-4a9d-8592-e34da3740db1",
+          "name": "Find matching offer for trading pair",
+          "request": {
+            "name": "Find matching offer for trading pair",
+            "description": {},
+            "url": {
+              "path": [
+                "offers",
+                "limits"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "tokenSymbol",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "fiatSymbol",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "offerType",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "network",
+                  "value": "<string>",
+                  "description": "Blockchain network identifier"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d37896bb-dce1-4151-b7de-91621f1bec7d",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "offers",
+                    "limits"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "tokenSymbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "fiatSymbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "offerType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "network",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"fiatSymbol\": \"string\",\n  \"tokenSymbol\": \"string\",\n  \"minTokens\": 1745.3541510222915,\n  \"maxTokens\": 8819.913932185564,\n  \"network\": \"string\",\n  \"offerType\": \"<string>\",\n  \"minFiat\": 295.65499836296084,\n  \"maxFiat\": 7249.930427205\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "011d3e0f-da5b-4733-a67d-77d41a172493",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "offers",
+                    "limits"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "tokenSymbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "fiatSymbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "offerType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "network",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"Request could not be completed due to an error\",\n  \"data\": {\n    \"key_0\": false,\n    \"key_1\": 5762.456840322236,\n    \"key_2\": true,\n    \"key_3\": 1040.4204897304492\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4539305e-fb07-4368-aab9-ce824825c63b",
+              "name": "Unauthorized request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "offers",
+                    "limits"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "tokenSymbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "fiatSymbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "offerType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "network",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"Request could not be completed due to an error\",\n  \"data\": {\n    \"key_0\": false,\n    \"key_1\": 5762.456840322236,\n    \"key_2\": true,\n    \"key_3\": 1040.4204897304492\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e3ef43fb-07bc-47b8-943b-5665c7ed59ab",
+              "name": "Server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "offers",
+                    "limits"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "tokenSymbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "fiatSymbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "offerType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "network",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"Request could not be completed due to an error\",\n  \"data\": {\n    \"key_0\": false,\n    \"key_1\": 5762.456840322236,\n    \"key_2\": true,\n    \"key_3\": 1040.4204897304492\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f5baa202-f278-47e1-9d11-c98b44598407",
+          "name": "Get best offer for trade parameters",
+          "request": {
+            "name": "Get best offer for trade parameters",
+            "description": {},
+            "url": {
+              "path": [
+                "offers",
+                "best-offer"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "unitAmount",
+                  "value": "<number>"
+                },
+                {
+                  "disabled": false,
+                  "key": "fiatUnitAmount",
+                  "value": "<number>"
+                },
+                {
+                  "disabled": false,
+                  "key": "network",
+                  "value": "<string>",
+                  "description": "Blockchain network identifier"
+                },
+                {
+                  "disabled": false,
+                  "key": "tokenSymbol",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "fiatSymbol",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "offerType",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "paymentChannel",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "exemptedMerchants",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "exemptedMerchants",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "prioritizeIp",
+                  "value": "<boolean>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e52e9f85-70ea-46a5-8f27-e73e8ca9e0b1",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "offers",
+                    "best-offer"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "unitAmount",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "fiatUnitAmount",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "network",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tokenSymbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "fiatSymbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "offerType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "paymentChannel",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "exemptedMerchants",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "exemptedMerchants",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "prioritizeIp",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"offerId\": \"string\",\n  \"userId\": \"string\",\n  \"network\": \"string\",\n  \"tokenSymbol\": \"BNB\",\n  \"fiatSymbol\": \"USD, NGN\",\n  \"offerType\": \"<string>\",\n  \"behaviour\": \"FLEXIBLE\",\n  \"totalUnit\": 5000,\n  \"tradedUnit\": 5000,\n  \"lockedUnit\": 5000,\n  \"rate\": 500,\n  \"paymentMethods\": [\n    {\n      \"channelId\": \"string\",\n      \"channelName\": \"string\",\n      \"channelType\": \"string\",\n      \"color\": {\n        \"bg\": \"string\",\n        \"fg\": \"string\"\n      },\n      \"id\": \"string\"\n    },\n    {\n      \"channelId\": \"string\",\n      \"channelName\": \"string\",\n      \"channelType\": \"string\",\n      \"color\": {\n        \"bg\": \"string\",\n        \"fg\": \"string\"\n      },\n      \"id\": \"string\"\n    }\n  ],\n  \"status\": \"ACTIVE\",\n  \"availableUnits\": 2711.020547134586,\n  \"maxFiatLimit\": 4294.00787311531,\n  \"tradeMinimumLimit\": 8116.9168530813795,\n  \"tradeMaximumLimit\": 6695.667337861234,\n  \"createdAt\": \"1979-03-21T10:13:24.737Z\",\n  \"updatedAt\": \"1964-06-08T05:58:36.400Z\",\n  \"editedAt\": \"1960-02-15T16:15:55.090Z\",\n  \"partnerDisplayName\": \"string\",\n  \"partnerRating\": -1,\n  \"partnerLastActiveAt\": \"1957-08-25T21:40:24.621Z\",\n  \"rateCap\": 500,\n  \"paymentChannels\": [\n    {\n      \"channelId\": \"string\",\n      \"channelName\": \"string\",\n      \"channelType\": \"string\",\n      \"color\": {\n        \"bg\": \"string\",\n        \"fg\": \"string\"\n      }\n    },\n    {\n      \"channelId\": \"string\",\n      \"channelName\": \"string\",\n      \"channelType\": \"string\",\n      \"color\": {\n        \"bg\": \"string\",\n        \"fg\": \"string\"\n      }\n    }\n  ],\n  \"flexibleOfferMargin\": 10,\n  \"partnerStats\": {\n    \"partnerId\": \"2d28abe0-8a97-9c92-50ff-4d1f021792bc\",\n    \"averageRating\": 3,\n    \"totalTransactions\": 4422.441969204304,\n    \"tradeCount\": 2704.1068567960556,\n    \"completionPercentage\": 94,\n    \"averageResponseTime\": 5\n  },\n  \"statusReason\": \"string\",\n  \"previewImageUrl\": \"string\",\n  \"maxTimeout\": {\n    \"deposit\": 1440,\n    \"confirmation\": 600\n  },\n  \"feeConfig\": {\n    \"base\": 4965.693449436807,\n    \"tradePercentage\": 3114.8061697030416,\n    \"network\": \"string\",\n    \"tradeType\": \"<string>\",\n    \"tradeMode\": \"P2P\",\n    \"cap\": 2650.9682831038017\n  },\n  \"feeConfigs\": [\n    {\n      \"base\": 7834.1416323982185,\n      \"tradePercentage\": 9180.274051788105,\n      \"network\": \"string\",\n      \"tradeType\": \"<string>\",\n      \"tradeMode\": \"P2P\",\n      \"cap\": 1044.8197802761815\n    },\n    {\n      \"base\": 2309.1043406568147,\n      \"tradePercentage\": 1066.7482975892683,\n      \"network\": \"string\",\n      \"tradeType\": \"<string>\",\n      \"tradeMode\": \"OTC\",\n      \"cap\": 4600.6674380972445\n    }\n  ],\n  \"tradeCriteria\": {\n    \"verifiedKyc\": true\n  },\n  \"autoResponseMessage\": \"string\",\n  \"adNote\": \"string\",\n  \"tradeRequestBroadcastId\": \"string\",\n  \"isPrivate\": false,\n  \"isRateHidden\": false,\n  \"instantPayEnabled\": false,\n  \"instantPayLimit\": 7508.456227047653,\n  \"instantPayMinimum\": 6110.287016379057,\n  \"instantPayAccountId\": \"string\",\n  \"customPayinProvider\": \"string\",\n  \"primaryEscrowAddress\": \"string\",\n  \"fiatTradeMinimumLimit\": 98.47169945774392,\n  \"fiatTradeMaximumLimit\": 1537.6296006124712,\n  \"fulfillOrderAs\": \"BUSINESS\",\n  \"autoRefillEnabled\": false,\n  \"autoRefillConfig\": {\n    \"threshold\": 6079.915121127855,\n    \"amount\": 8225.154233282383\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "12f6da8c-472a-4f29-b57b-5614d5aa75f9",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "offers",
+                    "best-offer"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "unitAmount",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "fiatUnitAmount",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "network",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tokenSymbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "fiatSymbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "offerType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "paymentChannel",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "exemptedMerchants",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "exemptedMerchants",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "prioritizeIp",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"Request could not be completed due to an error\",\n  \"data\": {\n    \"key_0\": false,\n    \"key_1\": 5762.456840322236,\n    \"key_2\": true,\n    \"key_3\": 1040.4204897304492\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "83f638f2-91cb-4409-b94b-222a5ca49ed4",
+              "name": "Unauthorized request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "offers",
+                    "best-offer"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "unitAmount",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "fiatUnitAmount",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "network",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tokenSymbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "fiatSymbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "offerType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "paymentChannel",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "exemptedMerchants",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "exemptedMerchants",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "prioritizeIp",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"Request could not be completed due to an error\",\n  \"data\": {\n    \"key_0\": false,\n    \"key_1\": 5762.456840322236,\n    \"key_2\": true,\n    \"key_3\": 1040.4204897304492\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2db6a4be-6884-4d88-936e-7bf49e85f46e",
+              "name": "Server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "offers",
+                    "best-offer"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "unitAmount",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "fiatUnitAmount",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "network",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tokenSymbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "fiatSymbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "offerType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "paymentChannel",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "exemptedMerchants",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "exemptedMerchants",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "prioritizeIp",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"Request could not be completed due to an error\",\n  \"data\": {\n    \"key_0\": false,\n    \"key_1\": 5762.456840322236,\n    \"key_2\": true,\n    \"key_3\": 1040.4204897304492\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://external.dev.onboardpay.co",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "20503e83-41bc-4aac-8b95-7af727d3f1e5",
+    "name": "Onboard External API Gateway auth-oauth offers-offers API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "**Introduction**\nAPI Gateway for Onboard\n\nThis specification describes API endpoints that are available to the public internet via the API gateway. The different endpoints require different authentication schemes, see documentation for what applies to the operation you want to access.\n\n**Errors**\nUses conventional HTTP response codes to indicate success or failure. In\ngeneral:\n \n- `2xx` status codes indicate success. Codes in the\n- `4xx` range\nindicate a client error (e.g. required parameters, failed request etc.).\n- `5xx` status codes indicate a server error occurred.\n\nContact Support:\n Name: Nestcoin TechOps\n Email: techops@nestcoin.com",
+      "type": "text/plain"
+    }
+  }
+}

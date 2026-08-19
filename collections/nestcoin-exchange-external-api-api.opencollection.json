@@ -1,0 +1,606 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Onboard External API Gateway auth-oauth exchange-external-api API",
+    "version": "3.0.2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "exchange-external-api",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get CEX Profile",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/exchange/api/info",
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get CEX Profile"
+        },
+        {
+          "info": {
+            "name": "Start a trade",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/exchange/orders/trade",
+            "params": [
+              {
+                "name": "apiKey",
+                "value": "",
+                "type": "query",
+                "description": "CEX api key"
+              },
+              {
+                "name": "product",
+                "value": "",
+                "type": "query",
+                "description": "Integration product in use e.g web3 or custodial"
+              },
+              {
+                "name": "orderId",
+                "value": "",
+                "type": "query",
+                "description": "Order ID generated for offramp trades"
+              },
+              {
+                "name": "tradeType",
+                "value": "",
+                "type": "query",
+                "description": "Type of trade"
+              },
+              {
+                "name": "fiat",
+                "value": "",
+                "type": "query",
+                "description": "Symbol of fiat currency"
+              },
+              {
+                "name": "fiatAmount",
+                "value": "",
+                "type": "query",
+                "description": "Fiat amount"
+              },
+              {
+                "name": "token",
+                "value": "",
+                "type": "query",
+                "description": "Symbol of token asset"
+              },
+              {
+                "name": "tokenAmount",
+                "value": "",
+                "type": "query",
+                "description": "Token amount"
+              },
+              {
+                "name": "networkId",
+                "value": "",
+                "type": "query",
+                "description": "Onboard blockchain network identifier or chain Id e.g Base will be `base` or `8453` or `0x2105`"
+              },
+              {
+                "name": "address",
+                "value": "",
+                "type": "query",
+                "description": "Wallet address to be debited/credited in order"
+              },
+              {
+                "name": "paymentChannel",
+                "value": "",
+                "type": "query",
+                "description": "Payment channel"
+              },
+              {
+                "name": "email",
+                "value": "",
+                "type": "query",
+                "description": "Customer's email address"
+              },
+              {
+                "name": "autoselect",
+                "value": "",
+                "type": "query",
+                "description": "Offer auto select flag"
+              }
+            ]
+          },
+          "docs": "Start a trade"
+        },
+        {
+          "info": {
+            "name": "Trade options / configurations for onboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/exchange/api/orders/trade-options"
+          },
+          "docs": "Trade options / configurations for onboard"
+        },
+        {
+          "info": {
+            "name": "Get best price for order",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/exchange/api/orders/price",
+            "params": [
+              {
+                "name": "tradeType",
+                "value": "",
+                "type": "query",
+                "description": "Type of trade (maps to transaction type: BUY - ONRAMP, SELL - OFFRAMP)\n"
+              },
+              {
+                "name": "fiat",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "fiatAmount",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "token",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "tokenAmount",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "networkId",
+                "value": "",
+                "type": "query",
+                "description": "Onboard blockchain network identifier or chain Id e.g Base will be `base` or `8453` or `0x2105`"
+              },
+              {
+                "name": "paymentChannel",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get best price for order"
+        },
+        {
+          "info": {
+            "name": "Fetch trade url",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/exchange/api/orders/trade-url",
+            "params": [
+              {
+                "name": "apiKey",
+                "value": "",
+                "type": "query",
+                "description": "CEX api key"
+              },
+              {
+                "name": "product",
+                "value": "",
+                "type": "query",
+                "description": "Integration product in use e.g web3 or custodial"
+              },
+              {
+                "name": "orderId",
+                "value": "",
+                "type": "query",
+                "description": "Order ID generated for offramp trades"
+              },
+              {
+                "name": "tradeType",
+                "value": "",
+                "type": "query",
+                "description": "Type of trade"
+              },
+              {
+                "name": "fiat",
+                "value": "",
+                "type": "query",
+                "description": "Symbol of fiat currency"
+              },
+              {
+                "name": "fiatAmount",
+                "value": "",
+                "type": "query",
+                "description": "Fiat amount"
+              },
+              {
+                "name": "token",
+                "value": "",
+                "type": "query",
+                "description": "Symbol of token asset"
+              },
+              {
+                "name": "tokenAmount",
+                "value": "",
+                "type": "query",
+                "description": "Token amount"
+              },
+              {
+                "name": "networkId",
+                "value": "",
+                "type": "query",
+                "description": "Onboard blockchain network identifier or chain Id e.g Base will be `base` or `8453` or `0x2105`"
+              },
+              {
+                "name": "address",
+                "value": "",
+                "type": "query",
+                "description": "Wallet address to be debited/credited in order"
+              },
+              {
+                "name": "paymentChannel",
+                "value": "",
+                "type": "query",
+                "description": "Payment channel"
+              },
+              {
+                "name": "email",
+                "value": "",
+                "type": "query",
+                "description": "Customer's email address"
+              },
+              {
+                "name": "autoselect",
+                "value": "",
+                "type": "query",
+                "description": "Offer auto select flag"
+              }
+            ]
+          },
+          "docs": "Fetch trade url"
+        },
+        {
+          "info": {
+            "name": "Query CEX signer addresses",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/exchange/api/cexs/signers",
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Query CEX signer addresses"
+        },
+        {
+          "info": {
+            "name": "Query CEX network signer",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/exchange/api/cexs/signers/:networkId",
+            "params": [
+              {
+                "name": "networkId",
+                "value": "",
+                "type": "path",
+                "description": "Supported network ID"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Query CEX network signer"
+        },
+        {
+          "info": {
+            "name": "Get CEX deployed liquidity pool contract data",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/exchange/api/cexs/liquidity-pools",
+            "params": [
+              {
+                "name": "networkId",
+                "value": "",
+                "type": "query",
+                "description": "Onboard blockchain network identifier or chain Id e.g Base will be `base` or `8453` or `0x2105`"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get CEX deployed liquidity pool contract data"
+        },
+        {
+          "info": {
+            "name": "Create liquidity pool contract for CEX",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external.dev.onboardpay.co/exchange/api/cexs/liquidity-pools",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create liquidity pool contract for CEX"
+        },
+        {
+          "info": {
+            "name": "Get CEX token and coin balances",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/exchange/api/cexs/liquidity-pools/:poolAddress/balances",
+            "params": [
+              {
+                "name": "networkId",
+                "value": "",
+                "type": "query",
+                "description": "Onboard blockchain network identifier or chain Id e.g Base will be `base` or `8453` or `0x2105`"
+              },
+              {
+                "name": "poolAddress",
+                "value": "",
+                "type": "path",
+                "description": "Account address for liquidity pool"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get CEX token and coin balances"
+        },
+        {
+          "info": {
+            "name": "Retrieve list of exchange orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/exchange/api/orders",
+            "params": [
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "15-04-2022"
+              },
+              {
+                "name": "to",
+                "value": "",
+                "type": "query",
+                "description": "15-08-2022"
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "transactionType",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "statuses",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "token",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "fiat",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "network",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve list of exchange orders"
+        },
+        {
+          "info": {
+            "name": "Retrieve an exchange order by cexOrderId",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/exchange/api/business/orders/:cexOrderId",
+            "params": [
+              {
+                "name": "cexOrderId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve an exchange order by cexOrderId"
+        },
+        {
+          "info": {
+            "name": "Find offers using trading parameters",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/exchange/api/offers",
+            "params": [
+              {
+                "name": "offerType",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "token",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "fiat",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "tokenAmount",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "fiatAmount",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "networkId",
+                "value": "",
+                "type": "query",
+                "description": "Onboard blockchain network identifier or chain Id e.g Base will be `base` or `8453` or `0x2105`"
+              },
+              {
+                "name": "paymentChannel",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "paymentChannelType",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "merchantId",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Pagination limit"
+              }
+            ]
+          },
+          "docs": "Find offers using trading parameters"
+        },
+        {
+          "info": {
+            "name": "Get best offer using trade parameters",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/exchange/api/offers/best-offer",
+            "params": [
+              {
+                "name": "offerType",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "token",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "fiat",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "tokenAmount",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "fiatAmount",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "networkId",
+                "value": "",
+                "type": "query",
+                "description": "Onboard blockchain network identifier or chain Id e.g Base will be `base` or `8453` or `0x2105`"
+              },
+              {
+                "name": "paymentChannel",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get best offer using trade parameters"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

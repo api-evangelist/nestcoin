@@ -1,0 +1,171 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Onboard External API Gateway auth-oauth ledger-payments API",
+    "version": "3.0.2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "ledger-payments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get reference rate",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/ledger/cash-payments/rates",
+            "params": [
+              {
+                "name": "accountCurrency",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "payoutCurrency",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get reference rate for cash payments"
+        },
+        {
+          "info": {
+            "name": "Create transfer quote",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external.dev.onboardpay.co/ledger/cash-payments/quotes",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create quote for cash payment"
+        },
+        {
+          "info": {
+            "name": "Retrieve list of cash payments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/ledger/cash-payments",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "query",
+                "description": "Filter by the account that was debited. Can be the main account ID or a sub-account ID."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page parameter, starting from 1"
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a list of cash payments, can accept accountId, status"
+        },
+        {
+          "info": {
+            "name": "Create cash payment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external.dev.onboardpay.co/ledger/cash-payments",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create cash payment, using the created quote"
+        },
+        {
+          "info": {
+            "name": "Get specific cash payment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/ledger/cash-payments/:reference",
+            "params": [
+              {
+                "name": "reference",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get specific cash payment by reference"
+        },
+        {
+          "info": {
+            "name": "Get supported payout currencies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/ledger/cash-payments/currencies",
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get supported payout currencies for cash payment."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

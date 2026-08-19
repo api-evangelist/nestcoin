@@ -1,0 +1,1381 @@
+{
+  "item": [
+    {
+      "id": "7aebe60a-873f-4503-b51d-011899ff6754",
+      "name": "ledger-offramp accounts",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "ef8e4088-c949-4ea2-a3c1-702268944c1e",
+          "name": "Get a list of offramp accounts",
+          "request": {
+            "name": "Get a list of offramp accounts",
+            "description": {
+              "content": "Get a list of offramp accounts, with pagination and payout currency",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "ledger",
+                "offramp-accounts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "payoutCurrency",
+                  "value": "<string>",
+                  "description": "Filter by payout currency"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page parameter, starting from 1"
+                },
+                {
+                  "disabled": false,
+                  "key": "size",
+                  "value": "20"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-auth-token"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "78d67654-e65f-4867-a59f-c0dc359c5d44",
+              "name": "List of offramp accounts",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ledger",
+                    "offramp-accounts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "payoutCurrency",
+                      "value": "IDR"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "size",
+                      "value": "20"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"content\": [\n    {\n      \"id\": \"2af82adf-3503-9098-8f47-53ab0680581d\",\n      \"beneficiary\": {\n        \"id\": \"7167c355-2715-d82f-b7d6-85775352958c\",\n        \"accountNumber\": \"string\",\n        \"accountName\": \"string\",\n        \"currency\": \"string\",\n        \"accountHolderType\": \"BUSINESS\",\n        \"beneficiaryType\": \"string\",\n        \"isThirdParty\": false\n      },\n      \"payoutCurrency\": \"KES\",\n      \"status\": \"SUSPENDED\",\n      \"createdDate\": \"1958-04-26T21:12:02.816Z\"\n    },\n    {\n      \"id\": \"92397a85-0d46-b61a-9012-20bc15986e41\",\n      \"beneficiary\": {\n        \"id\": \"bef3f14a-7caf-2d8a-769b-6fba8f813ca4\",\n        \"accountNumber\": \"string\",\n        \"accountName\": \"string\",\n        \"currency\": \"string\",\n        \"accountHolderType\": \"INDIVIDUAL\",\n        \"beneficiaryType\": \"string\",\n        \"isThirdParty\": false\n      },\n      \"payoutCurrency\": \"KES\",\n      \"status\": \"ACTIVE\",\n      \"createdDate\": \"1994-01-13T08:54:55.413Z\"\n    }\n  ],\n  \"name\": \"string\",\n  \"size\": 1029,\n  \"totalItems\": 2997,\n  \"nextPage\": 7176,\n  \"previousPage\": 9212\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "00e9c47b-2b33-4eaa-ab55-8a100d5b572c",
+              "name": "Client is not authorized to make request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ledger",
+                    "offramp-accounts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "payoutCurrency",
+                      "value": "IDR"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "size",
+                      "value": "20"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNAUTHORIZED\",\n  \"message\": \"Either client security header is missing or it is not valid.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ea0c2df0-0093-4946-9405-ab534a51ac48",
+          "name": "Create offramp account",
+          "request": {
+            "name": "Create offramp account",
+            "description": {
+              "content": "Create offramp account with beneficiary id.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "ledger",
+                "offramp-accounts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-auth-token"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"beneficiaryId\": \"<uuid>\",\n  \"payoutCurrency\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b0b7d449-0fa7-4b6c-8600-7f0091b255e7",
+              "name": "Offramp account created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ledger",
+                    "offramp-accounts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"beneficiaryId\": \"<uuid>\",\n  \"payoutCurrency\": \"KES\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"4edd23a4-b6bf-5212-9e56-9273944a71c2\",\n  \"beneficiary\": {\n    \"id\": \"494476ca-72a0-a7c0-0f35-2b865a9fdb70\",\n    \"accountNumber\": \"string\",\n    \"accountName\": \"string\",\n    \"currency\": \"string\",\n    \"accountHolderType\": \"INDIVIDUAL\",\n    \"beneficiaryType\": \"string\",\n    \"isThirdParty\": false\n  },\n  \"payoutCurrency\": \"KES\",\n  \"status\": \"INACTIVE\",\n  \"createdDate\": \"2019-10-10T02:34:29.334Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6bdaf045-4e17-45fe-99c0-d528b05da8e2",
+              "name": "Request could not be validated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ledger",
+                    "offramp-accounts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"beneficiaryId\": \"<uuid>\",\n  \"payoutCurrency\": \"KES\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"BAD_REQUEST\",\n  \"message\": \"Request could not be validated.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1ebe0942-97dc-42f7-b75f-5d6e8af5e53b",
+              "name": "Client is not authorized to make request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ledger",
+                    "offramp-accounts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"beneficiaryId\": \"<uuid>\",\n  \"payoutCurrency\": \"KES\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNAUTHORIZED\",\n  \"message\": \"Either client security header is missing or it is not valid.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5020e91b-9509-410c-8263-9868b5d5614d",
+          "name": "Get offramp account",
+          "request": {
+            "name": "Get offramp account",
+            "description": {
+              "content": "Get offramp account by offrampAccountId",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "ledger",
+                "offramp-accounts",
+                ":offrampAccountId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "offrampAccountId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-auth-token"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "2e7c900e-c7bc-4f92-b9cb-8acae0a701c6",
+              "name": "Offramp account details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ledger",
+                    "offramp-accounts",
+                    ":offrampAccountId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "offrampAccountId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"4edd23a4-b6bf-5212-9e56-9273944a71c2\",\n  \"beneficiary\": {\n    \"id\": \"494476ca-72a0-a7c0-0f35-2b865a9fdb70\",\n    \"accountNumber\": \"string\",\n    \"accountName\": \"string\",\n    \"currency\": \"string\",\n    \"accountHolderType\": \"INDIVIDUAL\",\n    \"beneficiaryType\": \"string\",\n    \"isThirdParty\": false\n  },\n  \"payoutCurrency\": \"KES\",\n  \"status\": \"INACTIVE\",\n  \"createdDate\": \"2019-10-10T02:34:29.334Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "eb2971d0-1ec8-4470-8122-6084aec07046",
+              "name": "Client is not authorized to make request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ledger",
+                    "offramp-accounts",
+                    ":offrampAccountId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "offrampAccountId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNAUTHORIZED\",\n  \"message\": \"Either client security header is missing or it is not valid.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "722a473d-2f42-4701-80d2-41018588b472",
+              "name": "Entity was not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ledger",
+                    "offramp-accounts",
+                    ":offrampAccountId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "offrampAccountId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"NOT_FOUND\",\n  \"message\": \"Information could not be found\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a869f833-34d5-4c66-a6b8-e8381a27953c",
+          "name": "Delete offramp account",
+          "request": {
+            "name": "Delete offramp account",
+            "description": {
+              "content": "Delete offramp account and automatically disable address assigned.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "ledger",
+                "offramp-accounts",
+                ":offrampAccountId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "offrampAccountId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-auth-token"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "24ce3d5a-33a5-46db-93a6-b1289a7efb60",
+              "name": "Offramp account deleted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ledger",
+                    "offramp-accounts",
+                    ":offrampAccountId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "offrampAccountId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "730e040b-cbab-45fa-bc5a-bef2d7d34df4",
+              "name": "Client is not authorized to make request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ledger",
+                    "offramp-accounts",
+                    ":offrampAccountId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "offrampAccountId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNAUTHORIZED\",\n  \"message\": \"Either client security header is missing or it is not valid.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1eb49fa4-9a47-4df3-aeba-a08036247578",
+              "name": "Entity was not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ledger",
+                    "offramp-accounts",
+                    ":offrampAccountId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "offrampAccountId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"NOT_FOUND\",\n  \"message\": \"Information could not be found\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "642cad9c-8658-4b40-ab3c-b7b86a598dc9",
+          "name": "Get address for offramp account",
+          "request": {
+            "name": "Get address for offramp account",
+            "description": {
+              "content": "Get address for offramp account, response should include the list of TokenAssetNetwork supported for the address.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "ledger",
+                "offramp-accounts",
+                ":id",
+                "funding-address"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "network",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-auth-token"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "dba1a163-5a44-47d3-ae4d-25971aca4d8b",
+              "name": "Offramp account funding address",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ledger",
+                    "offramp-accounts",
+                    ":id",
+                    "funding-address"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "network",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"address\": \"0x43e4715ae093a4c86b5ecddb52216c4f879e9672\",\n  \"network\": {\n    \"name\": \"Ethereum\",\n    \"id\": \"ETH\",\n    \"blockTime\": 15,\n    \"confirmations\": 8,\n    \"coinName\": \"Ether\",\n    \"coinSymbol\": \"ETH\",\n    \"supportsMemo\": \"false\",\n    \"alias\": \"BEP20\",\n    \"addressExplorerUrl\": \"https://etherscan.io/address\",\n    \"txExplorerUrl\": \"https://etherscan.io/tx\"\n  },\n  \"supportedTokens\": [\n    {\n      \"symbol\": \"USDC\",\n      \"name\": \"USD Coin\",\n      \"logoUrl\": \"https://etherscan.io/token/images/centre-usdc_28.png\",\n      \"supportedNetworks\": [\n        {\n          \"code\": \"ETH_USDC\",\n          \"networkInfo\": {\n            \"name\": \"Ethereum\",\n            \"id\": \"ETH\",\n            \"blockTime\": 15,\n            \"confirmations\": 8,\n            \"coinName\": \"Ether\",\n            \"coinSymbol\": \"ETH\",\n            \"supportsMemo\": \"false\",\n            \"alias\": \"BEP20\",\n            \"addressExplorerUrl\": \"https://etherscan.io/address\",\n            \"txExplorerUrl\": \"https://etherscan.io/tx\"\n          },\n          \"decimals\": 6,\n          \"contractAddress\": \"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48\",\n          \"minimumDeposit\": 5.25,\n          \"depositAvailable\": true,\n          \"withdrawalAvailable\": true,\n          \"withdrawalFee\": 1033.2500460670558\n        }\n      ]\n    },\n    {\n      \"symbol\": \"USDC\",\n      \"name\": \"USD Coin\",\n      \"logoUrl\": \"https://etherscan.io/token/images/centre-usdc_28.png\",\n      \"supportedNetworks\": [\n        {\n          \"code\": \"ETH_USDC\",\n          \"networkInfo\": {\n            \"name\": \"Ethereum\",\n            \"id\": \"ETH\",\n            \"blockTime\": 15,\n            \"confirmations\": 8,\n            \"coinName\": \"Ether\",\n            \"coinSymbol\": \"ETH\",\n            \"supportsMemo\": \"false\",\n            \"alias\": \"BEP20\",\n            \"addressExplorerUrl\": \"https://etherscan.io/address\",\n            \"txExplorerUrl\": \"https://etherscan.io/tx\"\n          },\n          \"decimals\": 6,\n          \"contractAddress\": \"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48\",\n          \"minimumDeposit\": 5.25,\n          \"depositAvailable\": true,\n          \"withdrawalAvailable\": true,\n          \"withdrawalFee\": 1410.269763995259\n        }\n      ]\n    }\n  ],\n  \"memo\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4b8f5140-83d3-450e-b48b-256ba14234ff",
+              "name": "Client is not authorized to make request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ledger",
+                    "offramp-accounts",
+                    ":id",
+                    "funding-address"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "network",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNAUTHORIZED\",\n  \"message\": \"Either client security header is missing or it is not valid.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b77448db-76b1-45fc-b03c-8f1414537d85",
+              "name": "Entity was not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ledger",
+                    "offramp-accounts",
+                    ":id",
+                    "funding-address"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "network",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"NOT_FOUND\",\n  \"message\": \"Information could not be found\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "088dc104-571c-42c4-a2d2-d0198f8261dc",
+          "name": "Get transactions for offramp account",
+          "request": {
+            "name": "Get transactions for offramp account",
+            "description": {
+              "content": "Get a paginated list of transactions proccessed by offramp accounts",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "ledger",
+                "offramp-accounts",
+                ":id",
+                "transactions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page parameter, starting from 1"
+                },
+                {
+                  "disabled": false,
+                  "key": "size",
+                  "value": "20"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-auth-token"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "27b82b94-1deb-4c5a-8ee2-2b0b35c50f01",
+              "name": "List of transactions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ledger",
+                    "offramp-accounts",
+                    ":id",
+                    "transactions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "size",
+                      "value": "20"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"content\": [\n    {\n      \"id\": \"a7d756e8-c00d-22c6-3864-8ac321a512bc\",\n      \"reference\": \"string\",\n      \"currency\": \"USD\",\n      \"status\": \"PENDING\",\n      \"payoutCurrency\": \"NGN\",\n      \"amount\": 100,\n      \"rate\": 1450.75,\n      \"payoutAmount\": 145075,\n      \"createdDate\": \"1953-01-04T22:16:04.227Z\",\n      \"recipient\": {\n        \"id\": \"a96a7536-daf0-6eb9-38fd-023908f4ed88\",\n        \"accountName\": \"John Doe\",\n        \"beneficiaryType\": \"BeneficiaryLocalBankAccount\",\n        \"accountIdentifier\": \"230101010\",\n        \"paymentChannelId\": \"BANK_TRANSFER_NIGERIA\",\n        \"bankName\": \"Great Bank LLC\",\n        \"country\": \"IE\"\n      },\n      \"accountTransactionId\": \"string\",\n      \"providerReference\": \"PROV123456\",\n      \"offrampAccountId\": \"55849fe1-765d-29ff-ba41-7aff4ebaf5fb\",\n      \"blockchainInfo\": {\n        \"txHash\": \"0x093a0b443d5f698d1097368c1c05fab1ee2304e508b36c08bb72c40389c17584\",\n        \"recipient\": {\n          \"address\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"memo\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"value\": \"0.0\",\n        \"tokenSymbol\": \"USDT\",\n        \"senderAddress\": \"0x2b059a574a35e60b228d10d54fec2671de4928e1\",\n        \"blockNumber\": 20564802,\n        \"timestamp\": 4312,\n        \"explorerUrl\": \"string\"\n      }\n    },\n    {\n      \"id\": \"ec0d4c12-e5b0-a587-fb77-eacfcae95965\",\n      \"reference\": \"string\",\n      \"currency\": \"USD\",\n      \"status\": \"FAILED\",\n      \"payoutCurrency\": \"NGN\",\n      \"amount\": 100,\n      \"rate\": 1450.75,\n      \"payoutAmount\": 145075,\n      \"createdDate\": \"1958-07-31T01:18:10.913Z\",\n      \"recipient\": {\n        \"id\": \"4f309038-7cbc-4304-971f-3ddf318b50c9\",\n        \"accountName\": \"John Doe\",\n        \"beneficiaryType\": \"BeneficiaryLocalBankAccount\",\n        \"accountIdentifier\": \"230101010\",\n        \"paymentChannelId\": \"BANK_TRANSFER_NIGERIA\",\n        \"bankName\": \"Great Bank LLC\",\n        \"country\": \"IE\"\n      },\n      \"accountTransactionId\": \"string\",\n      \"providerReference\": \"PROV123456\",\n      \"offrampAccountId\": \"14bdb37c-fa99-6525-370c-adaae70ddf21\",\n      \"blockchainInfo\": {\n        \"txHash\": \"0x093a0b443d5f698d1097368c1c05fab1ee2304e508b36c08bb72c40389c17584\",\n        \"recipient\": {\n          \"address\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"memo\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"value\": \"0.0\",\n        \"tokenSymbol\": \"USDT\",\n        \"senderAddress\": \"0x2b059a574a35e60b228d10d54fec2671de4928e1\",\n        \"blockNumber\": 20564802,\n        \"timestamp\": 8359,\n        \"explorerUrl\": \"string\"\n      }\n    }\n  ],\n  \"name\": \"string\",\n  \"size\": 4656,\n  \"totalItems\": 5688,\n  \"nextPage\": 9553,\n  \"previousPage\": 3405\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7b98fdb1-f4f6-4d11-853f-f3ee194fccee",
+              "name": "Client is not authorized to make request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ledger",
+                    "offramp-accounts",
+                    ":id",
+                    "transactions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "size",
+                      "value": "20"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNAUTHORIZED\",\n  \"message\": \"Either client security header is missing or it is not valid.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8c403f1d-e131-4749-adeb-d1c24bffcfed",
+              "name": "Entity was not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ledger",
+                    "offramp-accounts",
+                    ":id",
+                    "transactions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "size",
+                      "value": "20"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"NOT_FOUND\",\n  \"message\": \"Information could not be found\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://external.dev.onboardpay.co",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "f76b3f89-ca5d-42a1-9079-77c34c9ef84c",
+    "name": "Onboard External API Gateway auth-oauth ledger-offramp accounts API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "**Introduction**\nAPI Gateway for Onboard\n\nThis specification describes API endpoints that are available to the public internet via the API gateway. The different endpoints require different authentication schemes, see documentation for what applies to the operation you want to access.\n\n**Errors**\nUses conventional HTTP response codes to indicate success or failure. In\ngeneral:\n \n- `2xx` status codes indicate success. Codes in the\n- `4xx` range\nindicate a client error (e.g. required parameters, failed request etc.).\n- `5xx` status codes indicate a server error occurred.\n\nContact Support:\n Name: Nestcoin TechOps\n Email: techops@nestcoin.com",
+      "type": "text/plain"
+    }
+  }
+}

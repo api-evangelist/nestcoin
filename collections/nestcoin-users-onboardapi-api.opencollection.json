@@ -1,0 +1,35 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Onboard External API Gateway auth-oauth users-onboardapi API",
+    "version": "3.0.2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "users-onboardapi",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get a single user by their authorization token",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/users/me",
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get a single user by their authorization token"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

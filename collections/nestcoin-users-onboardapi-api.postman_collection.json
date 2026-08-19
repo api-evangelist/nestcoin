@@ -1,0 +1,301 @@
+{
+  "item": [
+    {
+      "id": "ab12b5e2-ae47-4c5e-813b-d006df63ab30",
+      "name": "users-onboardapi",
+      "description": {
+        "content": "Endpoints available to for merchants liquidity automation",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "60784e68-743b-42da-afa1-a77020b44f86",
+          "name": "Get a single user by their authorization token",
+          "request": {
+            "name": "Get a single user by their authorization token",
+            "description": {},
+            "url": {
+              "path": [
+                "users",
+                "me"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-auth-token"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "a41def0d-11c3-488a-9410-df4b9d9ea3bc",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "me"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"email\": \"string\",\n  \"userId\": \"string\",\n  \"name\": \"string\",\n  \"phoneNumber\": \"2348100000000\",\n  \"phoneNumberVerified\": true,\n  \"fullName\": \"string\",\n  \"referralLink\": \"string\",\n  \"referralCode\": \"string\",\n  \"userType\": \"PARTNER\",\n  \"roles\": [\n    \"MERCHANT\",\n    \"MERCHANT_NETWORK\"\n  ],\n  \"isCustomer\": true,\n  \"isMerchant\": false,\n  \"isOnboardWalletUser\": true,\n  \"isOpnMerchant\": true,\n  \"isMerchantNetwork\": true,\n  \"kycStatus\": \"IN_PROGRESS\",\n  \"kycRetryCount\": 6790.30625498503,\n  \"kycRetryLimit\": 8894.803875296173,\n  \"kycNameHistory\": [\n    {\n      \"reason\": \"string\",\n      \"actor\": \"string\",\n      \"previousName\": \"string\",\n      \"currentName\": \"string\",\n      \"timestamp\": \"2026-04-30T00:14:26.781Z\",\n      \"evidenceUrl\": \"string\"\n    },\n    {\n      \"reason\": \"string\",\n      \"actor\": \"string\",\n      \"previousName\": \"string\",\n      \"currentName\": \"string\",\n      \"timestamp\": \"2024-02-03T16:23:58.322Z\",\n      \"evidenceUrl\": \"string\"\n    }\n  ],\n  \"comments\": [\n    {\n      \"comment\": \"string\",\n      \"addedBy\": \"string\"\n    },\n    {\n      \"comment\": \"string\",\n      \"addedBy\": \"string\"\n    }\n  ],\n  \"includes\": {},\n  \"supportedCurrencies\": [\n    \"string\",\n    \"string\"\n  ],\n  \"language\": \"en, en-US, fr-FR, pt-BR\",\n  \"availability\": false,\n  \"active\": false,\n  \"country\": \"string\",\n  \"verifiedAddress\": \"0x15b8b00fb8d2bd7d76e90e70294e87fc6ba79e3b\",\n  \"profile\": {\n    \"status\": \"IN_PROGRESS\",\n    \"fullname\": \"string\",\n    \"country\": \"NG\",\n    \"dob\": \"1983-06-06\",\n    \"displayName\": \"string\",\n    \"proofOfAddress\": \"string\",\n    \"hasBusinessBankAccount\": false,\n    \"businessName\": \"string\",\n    \"certificateOfIncorporation\": \"string\",\n    \"hasShareHolderList\": true,\n    \"userInShareHolderList\": false,\n    \"noShareHolderListEvidence\": \"string\",\n    \"useOfBusinessAccountApprovedByShareholders\": true,\n    \"noOfLegalDirectors\": 5524.470964315943,\n    \"regulatoryIdsOfDirectors\": [\n      \"string\",\n      \"string\"\n    ],\n    \"depositTimeout\": 1200,\n    \"approvalTimeout\": 1200,\n    \"tradeHistoryDetails\": {\n      \"hasPreviousTradeHistory\": true,\n      \"proofOfTrade\": [\n        \"string\",\n        \"string\"\n      ],\n      \"referee\": \"string\"\n    }\n  },\n  \"transactionLimit\": {\n    \"dailyTransactionLimit\": 7799.181045922585,\n    \"maxSingleTransactionLimit\": 7663.968627386047,\n    \"minSingleTransactionLimit\": 2405.806879908581,\n    \"maxLifetimeLimit\": 2618.2454189498008\n  },\n  \"authSource\": \"string\",\n  \"createdAt\": \"1961-12-11T00:44:07.863Z\",\n  \"lastActiveAt\": \"1985-11-25T07:55:25.281Z\",\n  \"isTotpSetup\": true,\n  \"totpSetupAt\": \"1969-08-11T11:32:10.551Z\",\n  \"verifiedPhoneNumberLastUpdatedAt\": \"2026-07-12T02:57:17.919Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c436d557-7b1c-470b-a717-73f78a09acd9",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "me"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"Request could not be completed due to an error\",\n  \"data\": {\n    \"key_0\": false,\n    \"key_1\": 5512.935887179249\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bd208027-fd1c-4b8b-b0e9-13f580b90a59",
+              "name": "Unauthorized request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "me"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"Request could not be completed due to an error\",\n  \"data\": {\n    \"key_0\": false,\n    \"key_1\": 5512.935887179249\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "aff0bb28-92c8-466d-9900-bcb606f2875d",
+              "name": "Not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "me"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"Request could not be completed due to an error\",\n  \"data\": {\n    \"key_0\": false,\n    \"key_1\": 5512.935887179249\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9bc0fedc-75b0-43df-8acc-0d0f79ed6ffe",
+              "name": "Server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "me"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"Request could not be completed due to an error\",\n  \"data\": {\n    \"key_0\": false,\n    \"key_1\": 5512.935887179249\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://external.dev.onboardpay.co",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "ce6b2c01-99cb-4363-adef-fa465eaa8069",
+    "name": "Onboard External API Gateway auth-oauth users-onboardapi API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "**Introduction**\nAPI Gateway for Onboard\n\nThis specification describes API endpoints that are available to the public internet via the API gateway. The different endpoints require different authentication schemes, see documentation for what applies to the operation you want to access.\n\n**Errors**\nUses conventional HTTP response codes to indicate success or failure. In\ngeneral:\n \n- `2xx` status codes indicate success. Codes in the\n- `4xx` range\nindicate a client error (e.g. required parameters, failed request etc.).\n- `5xx` status codes indicate a server error occurred.\n\nContact Support:\n Name: Nestcoin TechOps\n Email: techops@nestcoin.com",
+      "type": "text/plain"
+    }
+  }
+}

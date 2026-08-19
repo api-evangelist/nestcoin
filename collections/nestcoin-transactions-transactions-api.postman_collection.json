@@ -1,0 +1,1656 @@
+{
+  "item": [
+    {
+      "id": "8fde6071-bda8-4952-9830-47b8fa14f162",
+      "name": "transactions-transactions",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "22ef3913-c594-42b5-8adb-f45f0cec46fb",
+          "name": "Retrieve a particular transaction",
+          "request": {
+            "name": "Retrieve a particular transaction",
+            "description": {},
+            "url": {
+              "path": [
+                "transactions",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-auth-token"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "cde456a8-5c18-4b71-8389-9c1b2d40d948",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transactions",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"customerId\": \"679ec74e-0b32-c981-66e5-2651cd1db6c4\",\n  \"fee\": {\n    \"asFiat\": 7076.620973912539,\n    \"asToken\": \"1000.0\"\n  },\n  \"id\": \"b0712b14-0c69-8d07-f0f9-516e19c11971\",\n  \"reference\": \"string\",\n  \"status\": \"CANCELLED\",\n  \"customerName\": \"John Doe\",\n  \"offer\": {\n    \"instantPayEnabled\": false,\n    \"networkId\": \"TRC20\",\n    \"partnerId\": \"97a6be77-e0ec-0759-aa8a-c180e6f917ee\",\n    \"rate\": 0.32,\n    \"token\": \"USDT\",\n    \"tokenAmount\": 120.5,\n    \"transactionType\": \"OFFRAMP\",\n    \"offerId\": \"ef7169e6-ffc3-b46d-aa95-664cdd601ca7\",\n    \"fiatSymbol\": \"NGN\",\n    \"fiatAmount\": 120.5,\n    \"usdAmount\": 120.5,\n    \"partnerDisplayName\": \"John Doe\",\n    \"adNote\": \"Guaranteed fast payment\",\n    \"instantPayPaymentAccountId\": \"string\",\n    \"customPayinProvider\": \"string\",\n    \"tradeMode\": \"OTC\"\n  },\n  \"escrowAddress\": \"string\",\n  \"paymentChannelId\": \"BANK_TRANSFER_NIGERIA\",\n  \"paymentMethod\": {},\n  \"buyerPaymentMethod\": {},\n  \"customerWallet\": {\n    \"walletAddress\": \"string\",\n    \"networkId\": \"bsc_testnet\",\n    \"walletName\": \"My Trust Wallet\"\n  },\n  \"tokenAddress\": \"string\",\n  \"createdAt\": \"1969-01-28T20:42:48.530Z\",\n  \"initiatedAt\": \"2007-08-25T05:43:53.767Z\",\n  \"depositedAt\": \"1969-01-10T00:55:27.792Z\",\n  \"confirmedAt\": \"1977-07-11T02:57:17.066Z\",\n  \"completedAt\": \"1963-06-04T23:02:43.819Z\",\n  \"cancelledAt\": \"1978-07-31T16:13:06.209Z\",\n  \"cancellationReason\": \"string\",\n  \"disputeId\": \"null\",\n  \"timeout\": {\n    \"name\": \"CONFIRM_DEPOSIT\",\n    \"startTime\": \"1979-11-17T19:05:38.352Z\",\n    \"duration\": 2122.371673027196,\n    \"timeLeft\": 1573\n  },\n  \"lockHash\": \"null\",\n  \"confirmationHash\": \"null\",\n  \"cancellationHash\": \"null\",\n  \"isPartnerAcknowledged\": false,\n  \"defaultingParty\": \"PARTNER\",\n  \"rating\": 3,\n  \"isCexOrder\": false,\n  \"instantPayProcessingStatus\": \"IN_PROGRESS\",\n  \"tradeValue\": 7897.9678746699465,\n  \"merchantTokenValue\": 4464.366186051881,\n  \"customerTokenValue\": 7760.632754831059,\n  \"payableAmount\": 8419.53524918257,\n  \"thirdpartyOrderInfo\": {\n    \"businessId\": \"string\",\n    \"tradeId\": \"string\",\n    \"product\": \"string\",\n    \"blockchainOrderId\": 1795,\n    \"externalOrderReference\": \"string\"\n  },\n  \"isNoKyc\": true,\n  \"paymentReceiptUploadId\": \"null\",\n  \"suppressCustomerNotifications\": false,\n  \"chatUnavailable\": false,\n  \"tradeContext\": \"STANDARD_TRADE\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "56be9f06-7e46-475a-b8e7-3bc232874916",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transactions",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"Request could not be completed due to an error\",\n  \"data\": {\n    \"key_0\": \"string\",\n    \"key_1\": 1923.800461256574\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2181ee3a-e757-429a-b60d-41ffe24dd709",
+              "name": "Unauthorized request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transactions",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"Request could not be completed due to an error\",\n  \"data\": {\n    \"key_0\": \"string\",\n    \"key_1\": 1923.800461256574\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1fdb52c7-876d-4288-85f5-4706b8e52b16",
+              "name": "Server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transactions",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"Request could not be completed due to an error\",\n  \"data\": {\n    \"key_0\": \"string\",\n    \"key_1\": 1923.800461256574\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f2c154ed-ef0b-4fa9-8e81-5d069b7dfd39",
+          "name": "Retrieve a particular transaction's contacts. Currently just phone numbers",
+          "request": {
+            "name": "Retrieve a particular transaction's contacts. Currently just phone numbers",
+            "description": {},
+            "url": {
+              "path": [
+                "transactions",
+                ":id",
+                "contacts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-auth-token"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "5c8ade46-3fda-4cd8-975c-5085e6d37da6",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transactions",
+                    ":id",
+                    "contacts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"customerPhoneNumber\": \"23408100000000\",\n  \"merchantPhoneNumber\": \"23408100000001\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "66e895e8-5480-4ee9-a9da-3e74dd24df44",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transactions",
+                    ":id",
+                    "contacts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"Request could not be completed due to an error\",\n  \"data\": {\n    \"key_0\": \"string\",\n    \"key_1\": 1923.800461256574\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d7061859-9fa5-44c7-9075-514c5660cbac",
+              "name": "Unauthorized request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transactions",
+                    ":id",
+                    "contacts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"Request could not be completed due to an error\",\n  \"data\": {\n    \"key_0\": \"string\",\n    \"key_1\": 1923.800461256574\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a69001a1-ddba-4ce4-a753-d965a9ed4980",
+              "name": "Server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transactions",
+                    ":id",
+                    "contacts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"Request could not be completed due to an error\",\n  \"data\": {\n    \"key_0\": \"string\",\n    \"key_1\": 1923.800461256574\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "83320b35-89b4-43fe-a1c7-e436c9f33905",
+          "name": "Retrieve list of customer transactions",
+          "request": {
+            "name": "Retrieve list of customer transactions",
+            "description": {},
+            "url": {
+              "path": [
+                "transactions",
+                "customers",
+                ":id",
+                "history"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "transactionType",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "from",
+                  "value": "<string>",
+                  "description": "15-04-2022"
+                },
+                {
+                  "disabled": false,
+                  "key": "to",
+                  "value": "<string>",
+                  "description": "15-08-2022"
+                },
+                {
+                  "disabled": false,
+                  "key": "size",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "statuses",
+                  "value": "<string>,<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "token",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "fiat",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "network",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "paymentChannel",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "reference",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "otherPartyId",
+                  "value": "<uuid>"
+                },
+                {
+                  "disabled": false,
+                  "key": "tradeRequestBroadcastId",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "isTradeRequestBroadcast",
+                  "value": "<boolean>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) userId"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-auth-token"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "f8088d36-8004-409e-a7e4-5fa7f023d91b",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transactions",
+                    "customers",
+                    ":id",
+                    "history"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "transactionType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "from",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "to",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "size",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "statuses",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "fiat",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "network",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "paymentChannel",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "reference",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "otherPartyId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "tradeRequestBroadcastId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "isTradeRequestBroadcast",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) userId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"transactions\": [\n    {\n      \"customerId\": \"08da1a90-d023-ff2c-5fb5-249eee1b9593\",\n      \"fee\": {\n        \"asFiat\": 419.261820830299,\n        \"asToken\": \"1000.0\"\n      },\n      \"id\": \"44282d5d-635b-81b3-f995-718f6f72c0a2\",\n      \"reference\": \"string\",\n      \"status\": \"<string>\",\n      \"customerName\": \"John Doe\",\n      \"offer\": {\n        \"instantPayEnabled\": false,\n        \"networkId\": \"TRC20\",\n        \"partnerId\": \"e07b32ee-fb41-c71b-5212-cc653d503f6a\",\n        \"rate\": 0.32,\n        \"token\": \"USDT\",\n        \"tokenAmount\": 120.5,\n        \"transactionType\": \"<string>\",\n        \"offerId\": \"ffd36aab-f1c5-cc73-f8f6-186893b9daa4\",\n        \"fiatSymbol\": \"NGN\",\n        \"fiatAmount\": 120.5,\n        \"usdAmount\": 120.5,\n        \"partnerDisplayName\": \"John Doe\",\n        \"adNote\": \"Guaranteed fast payment\",\n        \"instantPayPaymentAccountId\": \"string\",\n        \"customPayinProvider\": \"string\",\n        \"tradeMode\": \"OTC\"\n      },\n      \"escrowAddress\": \"string\",\n      \"paymentChannelId\": \"BANK_TRANSFER_NIGERIA\",\n      \"paymentMethod\": {},\n      \"buyerPaymentMethod\": {},\n      \"customerWallet\": {\n        \"walletAddress\": \"string\",\n        \"networkId\": \"bsc_testnet\",\n        \"walletName\": \"My Trust Wallet\"\n      },\n      \"tokenAddress\": \"string\",\n      \"createdAt\": \"1953-10-14T09:23:09.151Z\",\n      \"initiatedAt\": \"1999-08-26T10:22:37.908Z\",\n      \"depositedAt\": \"1992-03-28T08:47:37.574Z\",\n      \"confirmedAt\": \"1964-05-18T07:12:02.464Z\",\n      \"completedAt\": \"1969-06-04T15:36:39.844Z\",\n      \"cancelledAt\": \"1966-08-12T01:28:00.795Z\",\n      \"cancellationReason\": \"string\",\n      \"disputeId\": \"null\",\n      \"timeout\": {\n        \"name\": \"ACKNOWLEDGE_TRANSACTION\",\n        \"startTime\": \"1952-01-04T22:59:37.279Z\",\n        \"duration\": 9287.159843578233,\n        \"timeLeft\": 1750\n      },\n      \"lockHash\": \"null\",\n      \"confirmationHash\": \"null\",\n      \"cancellationHash\": \"null\",\n      \"isPartnerAcknowledged\": false,\n      \"defaultingParty\": \"PARTNER\",\n      \"rating\": 3,\n      \"isCexOrder\": false,\n      \"instantPayProcessingStatus\": \"FAILURE\",\n      \"tradeValue\": 4733.458193507792,\n      \"merchantTokenValue\": 3714.4995887051837,\n      \"customerTokenValue\": 6734.875448659334,\n      \"payableAmount\": 7254.095949122923,\n      \"thirdpartyOrderInfo\": {\n        \"businessId\": \"string\",\n        \"tradeId\": \"string\",\n        \"product\": \"string\",\n        \"blockchainOrderId\": 1910,\n        \"externalOrderReference\": \"string\"\n      },\n      \"isNoKyc\": true,\n      \"paymentReceiptUploadId\": \"null\",\n      \"suppressCustomerNotifications\": false,\n      \"chatUnavailable\": false,\n      \"tradeContext\": \"INTERNAL_RAIL\"\n    },\n    {\n      \"customerId\": \"8ba2dee7-af3c-786b-cf10-c75ab1e43448\",\n      \"fee\": {\n        \"asFiat\": 1653.6269516644197,\n        \"asToken\": \"1000.0\"\n      },\n      \"id\": \"f1dc253c-d164-4b55-578e-f746488e5685\",\n      \"reference\": \"string\",\n      \"status\": \"<string>\",\n      \"customerName\": \"John Doe\",\n      \"offer\": {\n        \"instantPayEnabled\": true,\n        \"networkId\": \"TRC20\",\n        \"partnerId\": \"4285e4a4-3f82-7c65-66a5-1138ae40fe9d\",\n        \"rate\": 0.32,\n        \"token\": \"USDT\",\n        \"tokenAmount\": 120.5,\n        \"transactionType\": \"<string>\",\n        \"offerId\": \"ecc41b34-f6f7-7e85-159a-435cc7c937a2\",\n        \"fiatSymbol\": \"NGN\",\n        \"fiatAmount\": 120.5,\n        \"usdAmount\": 120.5,\n        \"partnerDisplayName\": \"John Doe\",\n        \"adNote\": \"Guaranteed fast payment\",\n        \"instantPayPaymentAccountId\": \"string\",\n        \"customPayinProvider\": \"string\",\n        \"tradeMode\": \"P2P\"\n      },\n      \"escrowAddress\": \"string\",\n      \"paymentChannelId\": \"BANK_TRANSFER_NIGERIA\",\n      \"paymentMethod\": {},\n      \"buyerPaymentMethod\": {},\n      \"customerWallet\": {\n        \"walletAddress\": \"string\",\n        \"networkId\": \"bsc_testnet\",\n        \"walletName\": \"My Trust Wallet\"\n      },\n      \"tokenAddress\": \"string\",\n      \"createdAt\": \"1958-02-25T07:03:55.166Z\",\n      \"initiatedAt\": \"1959-07-06T15:24:59.929Z\",\n      \"depositedAt\": \"2006-06-22T02:41:24.759Z\",\n      \"confirmedAt\": \"1972-08-31T19:24:24.178Z\",\n      \"completedAt\": \"1980-10-29T18:51:43.746Z\",\n      \"cancelledAt\": \"1952-07-19T04:50:57.360Z\",\n      \"cancellationReason\": \"string\",\n      \"disputeId\": \"null\",\n      \"timeout\": {\n        \"name\": \"APPROVE_TRANSACTION\",\n        \"startTime\": \"1984-04-12T23:21:50.573Z\",\n        \"duration\": 6706.709603343754,\n        \"timeLeft\": 4641\n      },\n      \"lockHash\": \"null\",\n      \"confirmationHash\": \"null\",\n      \"cancellationHash\": \"null\",\n      \"isPartnerAcknowledged\": false,\n      \"defaultingParty\": \"PARTNER\",\n      \"rating\": 3,\n      \"isCexOrder\": false,\n      \"instantPayProcessingStatus\": \"SUCCESS\",\n      \"tradeValue\": 7683.5413679314015,\n      \"merchantTokenValue\": 6106.94880130703,\n      \"customerTokenValue\": 341.58616254204463,\n      \"payableAmount\": 6361.188999755915,\n      \"thirdpartyOrderInfo\": {\n        \"businessId\": \"string\",\n        \"tradeId\": \"string\",\n        \"product\": \"string\",\n        \"blockchainOrderId\": 1176,\n        \"externalOrderReference\": \"string\"\n      },\n      \"isNoKyc\": true,\n      \"paymentReceiptUploadId\": \"null\",\n      \"suppressCustomerNotifications\": false,\n      \"chatUnavailable\": false,\n      \"tradeContext\": \"INTERNAL_RAIL\"\n    }\n  ],\n  \"pageNumber\": 8589,\n  \"pageSize\": 451,\n  \"totalPages\": 1199,\n  \"totalTransactions\": 1188\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5ad3cec0-5cda-4c42-b401-b8ba7e0d1eaa",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transactions",
+                    "customers",
+                    ":id",
+                    "history"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "transactionType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "from",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "to",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "size",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "statuses",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "fiat",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "network",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "paymentChannel",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "reference",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "otherPartyId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "tradeRequestBroadcastId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "isTradeRequestBroadcast",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) userId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"Request could not be completed due to an error\",\n  \"data\": {\n    \"key_0\": \"string\",\n    \"key_1\": 1923.800461256574\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "130e7651-6547-4337-9ff5-9c2854b67539",
+              "name": "Unauthorized request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transactions",
+                    "customers",
+                    ":id",
+                    "history"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "transactionType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "from",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "to",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "size",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "statuses",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "fiat",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "network",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "paymentChannel",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "reference",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "otherPartyId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "tradeRequestBroadcastId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "isTradeRequestBroadcast",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) userId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"Request could not be completed due to an error\",\n  \"data\": {\n    \"key_0\": \"string\",\n    \"key_1\": 1923.800461256574\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4d2e4cae-08f1-4e76-82d6-0e853e592a01",
+              "name": "Server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transactions",
+                    "customers",
+                    ":id",
+                    "history"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "transactionType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "from",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "to",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "size",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "statuses",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "fiat",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "network",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "paymentChannel",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "reference",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "otherPartyId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "tradeRequestBroadcastId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "isTradeRequestBroadcast",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) userId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"Request could not be completed due to an error\",\n  \"data\": {\n    \"key_0\": \"string\",\n    \"key_1\": 1923.800461256574\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3992e93b-7055-4f3e-9c2f-902eddc760e7",
+          "name": "Retrieve list of customer transactions",
+          "request": {
+            "name": "Retrieve list of customer transactions",
+            "description": {},
+            "url": {
+              "path": [
+                "transactions",
+                "customers",
+                ":id",
+                "history-aggregate"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "transactionType",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "from",
+                  "value": "<string>",
+                  "description": "15-04-2022"
+                },
+                {
+                  "disabled": false,
+                  "key": "to",
+                  "value": "<string>",
+                  "description": "15-08-2022"
+                },
+                {
+                  "disabled": false,
+                  "key": "statuses",
+                  "value": "<string>,<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "token",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "fiat",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "network",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "paymentChannel",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "reference",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "otherPartyId",
+                  "value": "<uuid>"
+                },
+                {
+                  "disabled": false,
+                  "key": "isTradeRequestBroadcast",
+                  "value": "<boolean>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) userId"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-auth-token"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "3b2bd9bc-b2cf-47e3-9583-41ce2eb08b64",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transactions",
+                    "customers",
+                    ":id",
+                    "history-aggregate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "transactionType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "from",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "to",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "statuses",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "fiat",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "network",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "paymentChannel",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "reference",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "otherPartyId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "isTradeRequestBroadcast",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) userId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tradeCount\": 7804,\n  \"tradeUsdTotal\": 3849594.1,\n  \"userId\": \"7cc3ce8c-0b74-40db-0c03-d910734faade\",\n  \"fiatTotal\": 1245.92,\n  \"tokenTotal\": 245.73\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "014b082f-d2c0-4834-a9ef-496841eaf230",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transactions",
+                    "customers",
+                    ":id",
+                    "history-aggregate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "transactionType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "from",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "to",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "statuses",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "fiat",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "network",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "paymentChannel",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "reference",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "otherPartyId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "isTradeRequestBroadcast",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) userId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"Request could not be completed due to an error\",\n  \"data\": {\n    \"key_0\": \"string\",\n    \"key_1\": 1923.800461256574\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "311fbab9-29a8-47bd-913b-84b4c843e0d7",
+              "name": "Unauthorized request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transactions",
+                    "customers",
+                    ":id",
+                    "history-aggregate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "transactionType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "from",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "to",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "statuses",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "fiat",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "network",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "paymentChannel",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "reference",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "otherPartyId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "isTradeRequestBroadcast",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) userId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"Request could not be completed due to an error\",\n  \"data\": {\n    \"key_0\": \"string\",\n    \"key_1\": 1923.800461256574\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "619f1a19-f033-4598-88a2-0ffd60cf0983",
+              "name": "Server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transactions",
+                    "customers",
+                    ":id",
+                    "history-aggregate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "transactionType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "from",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "to",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "statuses",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "fiat",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "network",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "paymentChannel",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "reference",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "otherPartyId",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "isTradeRequestBroadcast",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) userId"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-auth-token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"UNKNOWN_ERROR\",\n  \"message\": \"Request could not be completed due to an error\",\n  \"data\": {\n    \"key_0\": \"string\",\n    \"key_1\": 1923.800461256574\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://external.dev.onboardpay.co",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "ef0057d5-218b-4fd8-ac2b-bfa8427d5d91",
+    "name": "Onboard External API Gateway auth-oauth transactions-transactions API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "**Introduction**\nAPI Gateway for Onboard\n\nThis specification describes API endpoints that are available to the public internet via the API gateway. The different endpoints require different authentication schemes, see documentation for what applies to the operation you want to access.\n\n**Errors**\nUses conventional HTTP response codes to indicate success or failure. In\ngeneral:\n \n- `2xx` status codes indicate success. Codes in the\n- `4xx` range\nindicate a client error (e.g. required parameters, failed request etc.).\n- `5xx` status codes indicate a server error occurred.\n\nContact Support:\n Name: Nestcoin TechOps\n Email: techops@nestcoin.com",
+      "type": "text/plain"
+    }
+  }
+}

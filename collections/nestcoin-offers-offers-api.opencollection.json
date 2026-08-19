@@ -1,0 +1,139 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Onboard External API Gateway auth-oauth offers-offers API",
+    "version": "3.0.2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "offers-offers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "get Weighted Rates",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/offers/rate",
+            "params": [
+              {
+                "name": "fiatSymbol",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "tokenSymbol",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offerType",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "get Weighted Rates"
+        },
+        {
+          "info": {
+            "name": "Find matching offer for trading pair",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/offers/limits",
+            "params": [
+              {
+                "name": "tokenSymbol",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "fiatSymbol",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offerType",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "network",
+                "value": "",
+                "type": "query",
+                "description": "Blockchain network identifier"
+              }
+            ]
+          },
+          "docs": "Find matching offer for trading pair"
+        },
+        {
+          "info": {
+            "name": "Get best offer for trade parameters",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/offers/best-offer",
+            "params": [
+              {
+                "name": "unitAmount",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "fiatUnitAmount",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "network",
+                "value": "",
+                "type": "query",
+                "description": "Blockchain network identifier"
+              },
+              {
+                "name": "tokenSymbol",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "fiatSymbol",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offerType",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "paymentChannel",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "exemptedMerchants",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "prioritizeIp",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get best offer for trade parameters"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

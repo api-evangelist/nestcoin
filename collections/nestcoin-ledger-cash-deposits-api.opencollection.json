@@ -1,0 +1,171 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Onboard External API Gateway auth-oauth ledger-cash deposits API",
+    "version": "3.0.2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "ledger-cash deposits",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get reference rate",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/ledger/cash-deposits/rates",
+            "params": [
+              {
+                "name": "accountCurrency",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "payinCurrency",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get reference rate for cash deposits, from the pay-in currency to the account currency."
+        },
+        {
+          "info": {
+            "name": "Create deposit quote",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external.dev.onboardpay.co/ledger/cash-deposits/quotes",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create quote for cash deposit"
+        },
+        {
+          "info": {
+            "name": "Retrieve list of cash deposits",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/ledger/cash-deposits",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "query",
+                "description": "Filter by the account that was credited. Can be the main account ID or a sub-account ID."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page parameter, starting from 1"
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve a list of cash deposits, can accept accountId, status"
+        },
+        {
+          "info": {
+            "name": "Create cash deposit",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external.dev.onboardpay.co/ledger/cash-deposits",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create cash deposit, using the created quote. Returns the deposit transaction, including the payment details the customer must pay into."
+        },
+        {
+          "info": {
+            "name": "Get specific cash deposit",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/ledger/cash-deposits/:reference",
+            "params": [
+              {
+                "name": "reference",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get specific cash deposit by reference"
+        },
+        {
+          "info": {
+            "name": "Get supported pay-in currencies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/ledger/cash-deposits/currencies",
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get supported pay-in currencies for cash deposit. Only whitelisted pay-in currencies are returned."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

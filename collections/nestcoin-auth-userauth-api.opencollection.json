@@ -1,0 +1,81 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Onboard External API Gateway auth-oauth auth-userauth API",
+    "version": "3.0.2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "auth-userauth",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Initiate authentication for a user",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external.dev.onboardpay.co/auth/user-auth/initiate",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-signature",
+              "value": "{{x-signature}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Initiate authentication for a user. If the email address is for a new user, a new onboard profile will be created\n"
+        },
+        {
+          "info": {
+            "name": "Verify OTP",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external.dev.onboardpay.co/auth/user-auth/verify-otp",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-signature",
+              "value": "{{x-signature}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Verify OTP"
+        },
+        {
+          "info": {
+            "name": "Resend a new otp to a user",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external.dev.onboardpay.co/auth/user-auth/resend-otp",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-signature",
+              "value": "{{x-signature}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Resend a new otp to a user"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

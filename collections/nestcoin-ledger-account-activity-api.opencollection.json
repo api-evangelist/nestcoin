@@ -1,0 +1,260 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Onboard External API Gateway auth-oauth ledger-account activity API",
+    "version": "3.0.2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "ledger-account activity",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get account transaction activities",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/ledger/accounts/:accountId/activities",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "the unique onboard account ID"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by activity type"
+              },
+              {
+                "name": "direction",
+                "value": "",
+                "type": "query",
+                "description": "Filter by activity direction"
+              },
+              {
+                "name": "startDate",
+                "value": "",
+                "type": "query",
+                "description": "Filter activities occurring on or after this date-time"
+              },
+              {
+                "name": "endDate",
+                "value": "",
+                "type": "query",
+                "description": "Filter activities occurring on or before this date-time"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page parameter, starting from 1"
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This operation allows the client to fetch a paginated, aggregated feed of all\ntransaction activity for an account (cash deposits/payments, account-number\ndeposits, crypto deposits/withdrawals, internal transfers, offramp deposits),\neach with type-specific details in activityData.\n"
+        },
+        {
+          "info": {
+            "name": "Get a single transaction activity",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/ledger/accounts/:accountId/activities/:activityId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "the unique onboard account ID"
+              },
+              {
+                "name": "activityId",
+                "value": "",
+                "type": "path",
+                "description": "The unique transaction activity ID"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This operation allows the client to fetch a specific transaction activity by its ID.\n"
+        },
+        {
+          "info": {
+            "name": "Get sub-account transaction activities",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/ledger/subaccounts/:subAccountIdRef/activities",
+            "params": [
+              {
+                "name": "subAccountIdRef",
+                "value": "",
+                "type": "path",
+                "description": "The unique onboard sub-account ID or reference\n"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by activity type"
+              },
+              {
+                "name": "direction",
+                "value": "",
+                "type": "query",
+                "description": "Filter by activity direction"
+              },
+              {
+                "name": "startDate",
+                "value": "",
+                "type": "query",
+                "description": "Filter activities occurring on or after this date-time"
+              },
+              {
+                "name": "endDate",
+                "value": "",
+                "type": "query",
+                "description": "Filter activities occurring on or before this date-time"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page parameter, starting from 1"
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This operation allows the client to fetch a paginated, aggregated feed of all\ntransaction activities for a sub-account (cash deposits/payments, account-number\ndeposits, crypto deposits/withdrawals, internal transfers, offramp deposits),\neach with type-specific details in activityData.\n"
+        },
+        {
+          "info": {
+            "name": "Get a single sub-account transaction activity",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/ledger/subaccounts/:subAccountIdRef/activities/:activityId",
+            "params": [
+              {
+                "name": "subAccountIdRef",
+                "value": "",
+                "type": "path",
+                "description": "The unique onboard sub-account ID or reference\n"
+              },
+              {
+                "name": "activityId",
+                "value": "",
+                "type": "path",
+                "description": "The unique transaction activity ID"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This operation allows the client to fetch a specific transaction activity by its ID.\n"
+        },
+        {
+          "info": {
+            "name": "Get transaction activities across the business",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external.dev.onboardpay.co/ledger/transaction-activities",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "query",
+                "description": "Any account ID (could be Main account, sub-account or offramp account)"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by activity type"
+              },
+              {
+                "name": "direction",
+                "value": "",
+                "type": "query",
+                "description": "Filter by activity direction"
+              },
+              {
+                "name": "startDate",
+                "value": "",
+                "type": "query",
+                "description": "Filter activities occurring on or after this date-time"
+              },
+              {
+                "name": "endDate",
+                "value": "",
+                "type": "query",
+                "description": "Filter activities occurring on or before this date-time"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page parameter, starting from 1"
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-auth-token",
+              "value": "{{x-auth-token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This operation allows the client to fetch a paginated, aggregated feed of all\ntransaction activity for the authenticated business, optionally scoped to a\nsingle account, with the same type-specific activityData as the account-scoped\nactivities endpoint.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
