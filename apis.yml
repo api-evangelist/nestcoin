@@ -96,6 +96,8 @@ apis:
   humanURL: https://docs.onboard.xyz/
   baseURL: https://external.dev.onboardpay.co
   tags:
+  - Exchange - Orders
+  tags_raw:
   - exchange-orders
   properties:
   - type: OpenAPI
@@ -129,6 +131,8 @@ apis:
   humanURL: https://docs.onboard.xyz/
   baseURL: https://external.dev.onboardpay.co
   tags:
+  - Ledger Accounts
+  tags_raw:
   - ledger-accounts
   properties:
   - type: OpenAPI
