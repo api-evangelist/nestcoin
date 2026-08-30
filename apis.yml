@@ -108,7 +108,7 @@ apis:
   humanURL: https://docs.onboard.xyz/
   baseURL: https://external.dev.onboardpay.co
   tags:
-  - Exchange - Orders
+  - exchange-orders
   tags_raw:
   - exchange-orders
   properties:
@@ -143,7 +143,7 @@ apis:
   humanURL: https://docs.onboard.xyz/
   baseURL: https://external.dev.onboardpay.co
   tags:
-  - Ledger Accounts
+  - ledger-accounts
   tags_raw:
   - ledger-accounts
   properties:
