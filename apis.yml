@@ -1,14 +1,13 @@
 aid: nestcoin
 name: Nestcoin
-description: >-
-  Nestcoin is an African fintech company building Onboard, a digital-money platform and crypto
-  exchange for on/off-ramping between fiat and crypto. Its developer product, Onboard Connect, is
-  the SDK & API integration layer over Onboard Exchange, giving Web2 and Web3 builders access to a
-  ready-made peer-to-peer marketplace, liquidity, offers/pricing, orders, beneficiaries, and payout
-  accounts. The public Onboard External API Gateway (OpenAPI 3.0.3, v3.0.2) exposes 96 operations
-  across users/auth, offers, orders, accounts, and webhooks, secured with API keys, session tokens,
-  and HMAC-SHA256 request signing. Nestcoin is backed by Coinbase Ventures, Base Ecosystem, HashKey
-  Capital, Hashed Emergent, Distributed Global, Electric Capital, and others.
+description: Nestcoin is an African fintech company building Onboard, a digital-money platform and crypto
+  exchange for on/off-ramping between fiat and crypto. Its developer product, Onboard Connect, is the
+  SDK & API integration layer over Onboard Exchange, giving Web2 and Web3 builders access to a ready-made
+  peer-to-peer marketplace, liquidity, offers/pricing, orders, beneficiaries, and payout accounts. The
+  public Onboard External API Gateway (OpenAPI 3.0.3, v3.0.2) exposes 96 operations across users/auth,
+  offers, orders, accounts, and webhooks, secured with API keys, session tokens, and HMAC-SHA256 request
+  signing. Nestcoin is backed by Coinbase Ventures, Base Ecosystem, HashKey Capital, Hashed Emergent,
+  Distributed Global, Electric Capital, and others.
 url: https://raw.githubusercontent.com/api-evangelist/nestcoin/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -44,7 +43,7 @@ accessModel:
   method: derived
 specificationVersion: '0.23'
 created: '2026-07-17'
-modified: '2026-07-20'
+modified: '2026-09-16'
 image: https://nestcoin.com/favicon.ico
 tags:
 - Company
@@ -89,7 +88,7 @@ apis:
   - type: DataModel
     url: data-model/nestcoin-data-model.yml
 - aid: nestcoin:nestcoin-exchange-external-api-api
-  name: Nestcoin exchange-external-api API
+  name: Nestcoin exchange-external-api
   description: The exchange-external-api API from Nestcoin — 13 operation(s) for exchange-external-api.
   humanURL: https://docs.onboard.xyz/
   baseURL: https://external.dev.onboardpay.co
@@ -124,8 +123,7 @@ apis:
     url: data-model/nestcoin-data-model.yml
 - aid: nestcoin:nestcoin-ledger-account-activity-api
   name: Nestcoin ledger-account activity API
-  description: >-
-    The ledger-account activity API from Nestcoin — 5 operation(s) for ledger-account activity.
+  description: The ledger-account activity API from Nestcoin — 5 operation(s) for ledger-account activity.
   humanURL: https://docs.onboard.xyz/
   baseURL: https://external.dev.onboardpay.co
   tags:
@@ -191,8 +189,7 @@ apis:
     url: data-model/nestcoin-data-model.yml
 - aid: nestcoin:nestcoin-ledger-offramp-accounts-api
   name: Nestcoin ledger-offramp accounts API
-  description: >-
-    The ledger-offramp accounts API from Nestcoin — 4 operation(s) for ledger-offramp accounts.
+  description: The ledger-offramp accounts API from Nestcoin — 4 operation(s) for ledger-offramp accounts.
   humanURL: https://docs.onboard.xyz/
   baseURL: https://external.dev.onboardpay.co
   tags:
@@ -352,8 +349,7 @@ apis:
     url: data-model/nestcoin-data-model.yml
 - aid: nestcoin:nestcoin-transactions-onboardapi-api
   name: Nestcoin transactions-onboardapi API
-  description: >-
-    The transactions-onboardapi API from Nestcoin — 4 operation(s) for transactions-onboardapi.
+  description: The transactions-onboardapi API from Nestcoin — 4 operation(s) for transactions-onboardapi.
   humanURL: https://docs.onboard.xyz/
   baseURL: https://external.dev.onboardpay.co
   tags:
@@ -385,8 +381,7 @@ apis:
     url: data-model/nestcoin-data-model.yml
 - aid: nestcoin:nestcoin-transactions-transactions-api
   name: Nestcoin transactions-transactions API
-  description: >-
-    The transactions-transactions API from Nestcoin — 4 operation(s) for transactions-transactions.
+  description: The transactions-transactions API from Nestcoin — 4 operation(s) for transactions-transactions.
   humanURL: https://docs.onboard.xyz/
   baseURL: https://external.dev.onboardpay.co
   tags:
@@ -474,7 +469,10 @@ common:
   url: asyncapi/nestcoin-webhooks.yml
 - type: X-MCPServerCandidate
   url: mcp/nestcoin-mcp.yml
-  note: 'Renamed from MCPServer 2026-09-03 (roadmap#247): the manifest self-describes as status: candidate — a tool list derived from the published API contracts, not an existing server. The scorer already read the manifest and reported mcp_server correctly; the MCPServer type was crediting the artifact-type surfaces with a server that does not exist.'
+  note: 'Renamed from MCPServer 2026-09-03 (roadmap#247): the manifest self-describes as status: candidate
+    — a tool list derived from the published API contracts, not an existing server. The scorer already
+    read the manifest and reported mcp_server correctly; the MCPServer type was crediting the artifact-type
+    surfaces with a server that does not exist.'
 - type: AgentSkill
   url: skills/_index.yml
 - type: WellKnown
