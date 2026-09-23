@@ -1,8 +1,13 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   version: 3.0.2
-  title: Onboard External API Gateway auth-oauth offers-onboardapi API
-  description: "**Introduction**\nAPI Gateway for Onboard\n\nThis specification describes API endpoints that are available to the public internet via the API gateway. The different endpoints require different authentication schemes, see documentation for what applies to the operation you want to access.\n\n**Errors**\nUses conventional HTTP response codes to indicate success or failure. In\ngeneral:\n \n- `2xx` status codes indicate success. Codes in the\n- `4xx` range\nindicate a client error (e.g. required parameters, failed request etc.).\n- `5xx` status codes indicate a server error occurred."
+  title: Onboard External API Gateway Offers Onboardapi API
+  description: '**Introduction**
+
+    API Gateway for Onboard
+
+
+    This specification describes API endpoints that are available to the public internet via the API gateway.'
   contact:
     name: Nestcoin TechOps
     email: techops@nestcoin.com
@@ -99,48 +104,18 @@ paths:
       security: []
 components:
   schemas:
-    ErrorMessageDto:
-      description: Default error object for services. This gives consistent error object that all services may use.
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          description: Error code
-          example: UNKNOWN_ERROR
-        message:
-          type: string
-          description: Descriptive error message
-          example: Request could not be completed due to an error
-        data:
-          type: object
-          description: Additional data for this error message.
-          additionalProperties: true
-          properties: {}
-      x-common-model: ErrorMessageDto
-    OffersSvcPartnerStats:
+    OffersSvcOfferBehavior:
+      type: string
+      description: Offer rate behavior
+      enum:
+      - FIXED
+      - FLEXIBLE
+      x-source-svc: offers
+    OffersSvcTradeCriteria:
       type: object
       properties:
-        partnerId:
-          type: string
-          format: uuid
-        averageRating:
-          type: number
-          example: 3
-        totalTransactions:
-          type: number
-        tradeCount:
-          type: number
-        completionPercentage:
-          type: number
-          format: double
-          example: 94
-        averageResponseTime:
-          type: number
-          format: double
-          example: 5
+        verifiedKyc:
+          type: boolean
       x-source-svc: offers
     OfferLimitsDto:
       type: object
@@ -167,16 +142,39 @@ components:
         maxFiat:
           type: number
       x-source-svc: offers
-    OffersSvcOfferPaymentChannelColor:
+    OffersSvcPartnerStats:
       type: object
       properties:
-        bg:
+        partnerId:
           type: string
-        fg:
+          format: uuid
+        averageRating:
+          type: number
+          example: 3
+        totalTransactions:
+          type: number
+        tradeCount:
+          type: number
+        completionPercentage:
+          type: number
+          format: double
+          example: 94
+        averageResponseTime:
+          type: number
+          format: double
+          example: 5
+      x-source-svc: offers
+    OffersSvcOfferPaymentChannel:
+      type: object
+      properties:
+        channelId:
           type: string
-      required:
-      - bg
-      - fg
+        channelName:
+          type: string
+        channelType:
+          type: string
+        color:
+          $ref: '#/components/schemas/OffersSvcOfferPaymentChannelColor'
       x-source-svc: offers
     OffersSvcAutoRefillConfig:
       type: object
@@ -191,22 +189,6 @@ components:
           type: number
           description: The token amount to refill the ad with
       x-source-svc: offers
-    OffersSvcTradeMode:
-      type: string
-      enum:
-      - P2P
-      - IP
-      - OTC
-      x-source-svc: offers
-    OffersSvcOfferPaymentMethod:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/OffersSvcOfferPaymentChannel'
-      - type: object
-        properties:
-          id:
-            type: string
-      x-source-svc: offers
     OffersSvcOfferType:
       type: string
       enum:
@@ -219,34 +201,14 @@ components:
       - BUSINESS
       - PERSONAL
       x-source-svc: offers
-    OffersSvcTradeCriteria:
+    OffersSvcOfferPaymentMethod:
       type: object
-      properties:
-        verifiedKyc:
-          type: boolean
-      x-source-svc: offers
-    OffersSvcOfferPaymentChannel:
-      type: object
-      properties:
-        channelId:
-          type: string
-        channelName:
-          type: string
-        channelType:
-          type: string
-        color:
-          $ref: '#/components/schemas/OffersSvcOfferPaymentChannelColor'
-      x-source-svc: offers
-    OffersSvcOfferStatus:
-      type: string
-      description: the current offer status
-      default: ACTIVE
-      enum:
-      - PENDING
-      - ACTIVE
-      - OFFLINE
-      - LOW_BALANCE
-      - LIMIT_REACHED
+      allOf:
+      - $ref: '#/components/schemas/OffersSvcOfferPaymentChannel'
+      - type: object
+        properties:
+          id:
+            type: string
       x-source-svc: offers
     OffersSvcOfferDto:
       type: object
@@ -436,13 +398,49 @@ components:
       - partnerRating
       - partnerLastActiveAt
       x-source-svc: offers
-    OffersSvcOfferBehavior:
-      type: string
-      description: Offer rate behavior
-      enum:
-      - FIXED
-      - FLEXIBLE
+    OffersSvcOfferPaymentChannelColor:
+      type: object
+      properties:
+        bg:
+          type: string
+        fg:
+          type: string
+      required:
+      - bg
+      - fg
       x-source-svc: offers
+    OffersSvcOfferStatus:
+      type: string
+      description: the current offer status
+      default: ACTIVE
+      enum:
+      - PENDING
+      - ACTIVE
+      - OFFLINE
+      - LOW_BALANCE
+      - LIMIT_REACHED
+      x-source-svc: offers
+    ErrorMessageDto:
+      description: Default error object for services. This gives consistent error object that all services may use.
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          description: Error code
+          example: UNKNOWN_ERROR
+        message:
+          type: string
+          description: Descriptive error message
+          example: Request could not be completed due to an error
+        data:
+          type: object
+          description: Additional data for this error message.
+          additionalProperties: true
+          properties: {}
+      x-common-model: ErrorMessageDto
     OffersSvcFeeConfig:
       type: object
       properties:
@@ -471,36 +469,37 @@ components:
       - tradePercentage
       - network
       x-source-svc: offers
+    OffersSvcTradeMode:
+      type: string
+      enum:
+      - P2P
+      - IP
+      - OTC
+      x-source-svc: offers
   parameters:
-    OffersSvcprioritizeIpQueryParam:
-      name: prioritizeIp
-      in: query
-      required: false
-      schema:
-        type: boolean
-    OffersSvcfiatSymbolQueryParam:
-      name: fiatSymbol
-      in: query
-      schema:
-        type: string
-      required: false
     OffersSvcfiatUnitAmountQueryParam:
       name: fiatUnitAmount
       in: query
       schema:
         type: number
+    OffersSvcpaymentChannelQueryParam:
+      name: paymentChannel
+      in: query
+      schema:
+        type: string
     OffersSvctokenSymbolQueryParam:
       name: tokenSymbol
       in: query
       schema:
         type: string
       required: false
-    OffersSvcofferTypeQueryParam:
-      name: offerType
+    OffersSvcnetworkQueryParam:
       in: query
-      schema:
-        $ref: '#/components/schemas/OffersSvcOfferType'
+      name: network
       required: false
+      schema:
+        type: string
+      description: Blockchain network identifier
     OffersSvcmerchantBlackListQueryParam:
       name: exemptedMerchants
       in: query
@@ -514,18 +513,24 @@ components:
       in: query
       schema:
         type: number
-    OffersSvcnetworkQueryParam:
+    OffersSvcfiatSymbolQueryParam:
+      name: fiatSymbol
       in: query
-      name: network
+      schema:
+        type: string
+      required: false
+    OffersSvcofferTypeQueryParam:
+      name: offerType
+      in: query
+      schema:
+        $ref: '#/components/schemas/OffersSvcOfferType'
+      required: false
+    OffersSvcprioritizeIpQueryParam:
+      name: prioritizeIp
+      in: query
       required: false
       schema:
-        type: string
-      description: Blockchain network identifier
-    OffersSvcpaymentChannelQueryParam:
-      name: paymentChannel
-      in: query
-      schema:
-        type: string
+        type: boolean
   securitySchemes:
     authSignature:
       type: apiKey

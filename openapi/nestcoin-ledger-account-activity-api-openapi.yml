@@ -1,8 +1,13 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   version: 3.0.2
-  title: Onboard External API Gateway auth-oauth ledger-account activity API
-  description: "**Introduction**\nAPI Gateway for Onboard\n\nThis specification describes API endpoints that are available to the public internet via the API gateway. The different endpoints require different authentication schemes, see documentation for what applies to the operation you want to access.\n\n**Errors**\nUses conventional HTTP response codes to indicate success or failure. In\ngeneral:\n \n- `2xx` status codes indicate success. Codes in the\n- `4xx` range\nindicate a client error (e.g. required parameters, failed request etc.).\n- `5xx` status codes indicate a server error occurred."
+  title: Onboard External API Gateway ledger-account activity API
+  description: '**Introduction**
+
+    API Gateway for Onboard
+
+
+    This specification describes API endpoints that are available to the public internet via the API gateway.'
   contact:
     name: Nestcoin TechOps
     email: techops@nestcoin.com
@@ -24,9 +29,7 @@ paths:
 
         deposits, crypto deposits/withdrawals, internal transfers, offramp deposits),
 
-        each with type-specific details in activityData.
-
-        '
+        each with type-specific details in activityData.'
       operationId: getAccountActivities
       x-visibility: external
       tags:
@@ -84,9 +87,7 @@ paths:
     x-original-path: /accounts/{accountId}/activities/{activityId}
     get:
       summary: Get a single transaction activity
-      description: 'This operation allows the client to fetch a specific transaction activity by its ID.
-
-        '
+      description: This operation allows the client to fetch a specific transaction activity by its ID.
       operationId: getAccountActivityById
       x-visibility: external
       tags:
@@ -123,9 +124,7 @@ paths:
 
         deposits, crypto deposits/withdrawals, internal transfers, offramp deposits),
 
-        each with type-specific details in activityData.
-
-        '
+        each with type-specific details in activityData.'
       operationId: getSubAccountActivities
       x-visibility: external
       tags:
@@ -183,9 +182,7 @@ paths:
     x-original-path: /subaccounts/{subAccountIdRef}/activities/{activityId}
     get:
       summary: Get a single sub-account transaction activity
-      description: 'This operation allows the client to fetch a specific transaction activity by its ID.
-
-        '
+      description: This operation allows the client to fetch a specific transaction activity by its ID.
       operationId: getSubAccountActivityById
       x-visibility: external
       tags:
@@ -222,9 +219,7 @@ paths:
 
         single account, with the same type-specific activityData as the account-scoped
 
-        activities endpoint.
-
-        '
+        activities endpoint.'
       operationId: getTransactionActivities
       x-visibility: external
       tags:
@@ -280,6 +275,81 @@ paths:
       - authToken: []
 components:
   schemas:
+    TransactionActivityType:
+      type: string
+      description: Semantic category of a transaction activity feed entry.
+      enum:
+      - CASH_DEPOSIT
+      - CASH_PAYMENT
+      - ACCOUNT_NUMBER_DEPOSIT
+      - CRYPTO_WITHDRAWAL
+      - CRYPTO_DEPOSIT
+      - INTERNAL_TRANSFER
+      - OFFRAMP_DEPOSIT
+      x-source-svc: ledger
+    Paging:
+      description: Base object for paginated list
+      type: object
+      properties:
+        name:
+          type: string
+          description: Descriptive name for the list
+        size:
+          minimum: 0
+          type: integer
+          format: int32
+          description: Positive integer
+        totalItems:
+          minimum: 0
+          type: integer
+          format: int32
+          description: Positive integer
+        nextPage:
+          minimum: 0
+          type: integer
+          format: int32
+          description: Positive integer
+        previousPage:
+          minimum: 0
+          type: integer
+          format: int32
+          description: Positive integer
+      discriminator:
+        propertyName: name
+      x-common-model: Paging
+    ActivityDirection:
+      type: string
+      enum:
+      - CREDIT
+      - DEBIT
+      x-source-svc: ledger
+    ActivityAccountType:
+      type: string
+      description: The kind of account a transaction activity occurred on.
+      enum:
+      - MAIN
+      - SUB_ACCOUNT
+      - OFFRAMP_ACCOUNT
+      x-source-svc: ledger
+    TransactionStatus:
+      type: string
+      description: 'Status of the transaction, indicating its current state in the processing lifecycle.
+
+        - PENDING: The transaction has been created but not yet processed.
+
+        - IN_PROGRESS: The transaction is currently being processed.
+
+        - FAILED: The transaction processing has failed.
+
+        - SUCCESS: The transaction has been successfully processed.
+
+        '
+      enum:
+      - PENDING
+      - IN_PROGRESS
+      - FAILED
+      - SUCCESS
+      x-source-svc: ledger
     TransactionActivity:
       type: object
       description: 'A single entry in the aggregated account activity feed. The concrete subtype is
@@ -382,37 +452,6 @@ components:
           additionalProperties: true
           properties: {}
       x-common-model: ErrorMessageDto
-    TransactionActivityType:
-      type: string
-      description: Semantic category of a transaction activity feed entry.
-      enum:
-      - CASH_DEPOSIT
-      - CASH_PAYMENT
-      - ACCOUNT_NUMBER_DEPOSIT
-      - CRYPTO_WITHDRAWAL
-      - CRYPTO_DEPOSIT
-      - INTERNAL_TRANSFER
-      - OFFRAMP_DEPOSIT
-      x-source-svc: ledger
-    TransactionStatus:
-      type: string
-      description: 'Status of the transaction, indicating its current state in the processing lifecycle.
-
-        - PENDING: The transaction has been created but not yet processed.
-
-        - IN_PROGRESS: The transaction is currently being processed.
-
-        - FAILED: The transaction processing has failed.
-
-        - SUCCESS: The transaction has been successfully processed.
-
-        '
-      enum:
-      - PENDING
-      - IN_PROGRESS
-      - FAILED
-      - SUCCESS
-      x-source-svc: ledger
     TransactionActivityList:
       allOf:
       - $ref: '#/components/schemas/Paging'
@@ -424,51 +463,16 @@ components:
             items:
               $ref: '#/components/schemas/TransactionActivity'
       x-source-svc: ledger
-    ActivityDirection:
-      type: string
-      enum:
-      - CREDIT
-      - DEBIT
-      x-source-svc: ledger
-    ActivityAccountType:
-      type: string
-      description: The kind of account a transaction activity occurred on.
-      enum:
-      - MAIN
-      - SUB_ACCOUNT
-      - OFFRAMP_ACCOUNT
-      x-source-svc: ledger
-    Paging:
-      description: Base object for paginated list
-      type: object
-      properties:
-        name:
-          type: string
-          description: Descriptive name for the list
-        size:
-          minimum: 0
-          type: integer
-          format: int32
-          description: Positive integer
-        totalItems:
-          minimum: 0
-          type: integer
-          format: int32
-          description: Positive integer
-        nextPage:
-          minimum: 0
-          type: integer
-          format: int32
-          description: Positive integer
-        previousPage:
-          minimum: 0
-          type: integer
-          format: int32
-          description: Positive integer
-      discriminator:
-        propertyName: name
-      x-common-model: Paging
   parameters:
+    LedgerSvcsubAccountIdOrRef:
+      in: path
+      name: subAccountIdRef
+      description: 'The unique onboard sub-account ID or reference
+
+        '
+      required: true
+      schema:
+        type: string
     LedgerSvcanyAccountIdQuery:
       name: accountId
       description: Any account ID (could be Main account, sub-account or offramp account)
@@ -494,15 +498,14 @@ components:
       schema:
         type: string
         format: uuid
-    LedgerSvcsubAccountIdOrRef:
+    LedgerSvcaccountId:
       in: path
-      name: subAccountIdRef
-      description: 'The unique onboard sub-account ID or reference
-
-        '
+      name: accountId
+      description: the unique onboard account ID
       required: true
       schema:
         type: string
+        format: uuid
     LedgerSvcsize:
       in: query
       name: size
@@ -512,14 +515,6 @@ components:
         maximum: 100
         minimum: 1
         default: 20
-    LedgerSvcaccountId:
-      in: path
-      name: accountId
-      description: the unique onboard account ID
-      required: true
-      schema:
-        type: string
-        format: uuid
   responses:
     LedgerSvcUnauthorized:
       description: Client is not authorized to make request
@@ -530,33 +525,6 @@ components:
           example:
             code: UNAUTHORIZED
             message: Either client security header is missing or it is not valid.
-    LedgerSvcAccessDenied:
-      description: Expected permission is not available.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessageDto'
-          example:
-            code: ACCESS_DENIED
-            message: Expected permission or scope is not present.
-    LedgerSvcInvalidRequest:
-      description: Request could not be validated
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessageDto'
-          example:
-            code: BAD_REQUEST
-            message: Request could not be validated.
-    LedgerSvcServerError:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessageDto'
-          example:
-            code: INTERNAL_ERROR
-            message: An internal server error occurred.
     LedgerSvcNotFound:
       description: Entity was not found
       content:
@@ -566,6 +534,33 @@ components:
           example:
             code: NOT_FOUND
             message: Information could not be found
+    LedgerSvcAccessDenied:
+      description: Expected permission is not available.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: ACCESS_DENIED
+            message: Expected permission or scope is not present.
+    LedgerSvcServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: INTERNAL_ERROR
+            message: An internal server error occurred.
+    LedgerSvcInvalidRequest:
+      description: Request could not be validated
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: BAD_REQUEST
+            message: Request could not be validated.
   securitySchemes:
     authSignature:
       type: apiKey

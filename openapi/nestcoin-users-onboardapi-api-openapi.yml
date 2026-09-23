@@ -1,8 +1,13 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   version: 3.0.2
-  title: Onboard External API Gateway auth-oauth users-onboardapi API
-  description: "**Introduction**\nAPI Gateway for Onboard\n\nThis specification describes API endpoints that are available to the public internet via the API gateway. The different endpoints require different authentication schemes, see documentation for what applies to the operation you want to access.\n\n**Errors**\nUses conventional HTTP response codes to indicate success or failure. In\ngeneral:\n \n- `2xx` status codes indicate success. Codes in the\n- `4xx` range\nindicate a client error (e.g. required parameters, failed request etc.).\n- `5xx` status codes indicate a server error occurred."
+  title: Onboard External API Gateway Users Onboardapi API
+  description: '**Introduction**
+
+    API Gateway for Onboard
+
+
+    This specification describes API endpoints that are available to the public internet via the API gateway.'
   contact:
     name: Nestcoin TechOps
     email: techops@nestcoin.com
@@ -58,18 +63,6 @@ paths:
       x-visibility: external
 components:
   schemas:
-    UserTransactionLimit:
-      type: object
-      properties:
-        dailyTransactionLimit:
-          type: number
-        maxSingleTransactionLimit:
-          type: number
-        minSingleTransactionLimit:
-          type: number
-        maxLifetimeLimit:
-          type: number
-      x-source-svc: users
     ProfileDataDto:
       type: object
       properties:
@@ -144,6 +137,39 @@ components:
           additionalProperties: true
           properties: {}
       x-common-model: ErrorMessageDto
+    ProfileTradeDto:
+      type: object
+      properties:
+        hasPreviousTradeHistory:
+          type: boolean
+          description: Partner have previous trading experience
+        proofOfTrade:
+          type: array
+          description: Partner's proof of previous trade history
+          items:
+            type: string
+        referee:
+          type: string
+          description: Partner's referee
+      x-source-svc: users
+    UsersSvcUserType:
+      type: string
+      description: the type of the user
+      enum:
+      - CUSTOMER
+      - PARTNER
+      x-source-svc: users
+    VerificationStatus:
+      type: string
+      description: user's verification status
+      enum:
+      - VERIFIED
+      - UNVERIFIED
+      - FAILED_VERIFICATION
+      - REVIEW_REQUIRED
+      - IN_PROGRESS
+      - REJECTED
+      x-source-svc: users
     KycNameChangeHistoryDto:
       type: object
       properties:
@@ -173,16 +199,17 @@ components:
       - currentName
       - timestamp
       x-source-svc: users
-    VerificationStatus:
-      type: string
-      description: user's verification status
-      enum:
-      - VERIFIED
-      - UNVERIFIED
-      - FAILED_VERIFICATION
-      - REVIEW_REQUIRED
-      - IN_PROGRESS
-      - REJECTED
+    UserTransactionLimit:
+      type: object
+      properties:
+        dailyTransactionLimit:
+          type: number
+        maxSingleTransactionLimit:
+          type: number
+        minSingleTransactionLimit:
+          type: number
+        maxLifetimeLimit:
+          type: number
       x-source-svc: users
     KycJobStatus:
       type: string
@@ -194,36 +221,6 @@ components:
       - FAILED_VERIFICATION
       - REVIEW_REQUIRED
       - VERIFICATION_TIMEOUT
-      x-source-svc: users
-    ProfileTradeDto:
-      type: object
-      properties:
-        hasPreviousTradeHistory:
-          type: boolean
-          description: Partner have previous trading experience
-        proofOfTrade:
-          type: array
-          description: Partner's proof of previous trade history
-          items:
-            type: string
-        referee:
-          type: string
-          description: Partner's referee
-      x-source-svc: users
-    UsersSvcUserType:
-      type: string
-      description: the type of the user
-      enum:
-      - CUSTOMER
-      - PARTNER
-      x-source-svc: users
-    UserRoles:
-      type: string
-      description: the roles a user can possess on Onboard
-      enum:
-      - CUSTOMER
-      - MERCHANT
-      - MERCHANT_NETWORK
       x-source-svc: users
     UserDataDto:
       required:
@@ -346,6 +343,14 @@ components:
           type: string
           description: Timestamp field.
           format: date-time
+      x-source-svc: users
+    UserRoles:
+      type: string
+      description: the roles a user can possess on Onboard
+      enum:
+      - CUSTOMER
+      - MERCHANT
+      - MERCHANT_NETWORK
       x-source-svc: users
   securitySchemes:
     authSignature:

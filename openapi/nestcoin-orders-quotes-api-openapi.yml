@@ -1,8 +1,13 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   version: 3.0.2
-  title: Onboard External API Gateway auth-oauth orders-quotes API
-  description: "**Introduction**\nAPI Gateway for Onboard\n\nThis specification describes API endpoints that are available to the public internet via the API gateway. The different endpoints require different authentication schemes, see documentation for what applies to the operation you want to access.\n\n**Errors**\nUses conventional HTTP response codes to indicate success or failure. In\ngeneral:\n \n- `2xx` status codes indicate success. Codes in the\n- `4xx` range\nindicate a client error (e.g. required parameters, failed request etc.).\n- `5xx` status codes indicate a server error occurred."
+  title: Onboard External API Gateway Orders Quotes API
+  description: '**Introduction**
+
+    API Gateway for Onboard
+
+
+    This specification describes API endpoints that are available to the public internet via the API gateway.'
   contact:
     name: Nestcoin TechOps
     email: techops@nestcoin.com
@@ -168,6 +173,14 @@ paths:
       security: []
 components:
   schemas:
+    ProviderPaymentChannel:
+      type: string
+      description: Payment channel a provider is used for
+      enum:
+      - BANK_TRANSFER
+      - MOBILE_MONEY
+      - P2P_WALLET
+      x-source-svc: orders
     RateDto:
       title: RateDto
       type: object
@@ -201,6 +214,59 @@ components:
           additionalProperties: true
           properties: {}
       x-common-model: ErrorMessageDto
+    QuoteDto:
+      title: QuoteDto
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        adId:
+          type: string
+          format: uuid
+        payoutCurrency:
+          type: string
+        rate:
+          type: number
+        minimumAmount:
+          type: number
+        maximumAmount:
+          type: number
+        expiresAt:
+          type: string
+          format: date-time
+          description: Timestamp field.
+        paymentMode:
+          description: 'BUY-only. Echoes the paymentMode persisted on the quote so the client can confirm which
+
+            mode this quote was issued under. Null for SELL quotes.
+
+            '
+          allOf:
+          - $ref: '#/components/schemas/PaymentMode'
+      x-source-svc: orders
+    OrderType:
+      type: string
+      enum:
+      - BUY
+      - SELL
+      x-source-svc: orders
+    QuoteResponseDto:
+      type: object
+      properties:
+        quote:
+          $ref: '#/components/schemas/QuoteDto'
+        fallbackQuote:
+          $ref: '#/components/schemas/QuoteDto'
+      x-source-svc: orders
+    PaymentMode:
+      type: string
+      default: DEPOSIT
+      description: "How the buyer is paying fiat for a BUY order. Chosen at quote time on `POST /quotes` and\npersisted on the resulting quote; the BUY order then inherits the value when it references\nthe quote. Clients do not (and cannot) re-specify it on the order request — the quote is\nthe binding contract.\n\n- `DEPOSIT` — buyer transfers fiat from an external bank account into the merchant's\n  pay-in account. Every payouts provider supports this and it is the default when the\n  field is omitted.\n- `INTERNAL_TRANSFER` — buyer pays via an internal transfer routed through a configured\n  override provider (currently `onb-nuban` for merchants on `onb-nuban-collections`).\n  Quote generation filters out merchants whose payment account doesn't have\n  `providerDetails.supportsCustomPayin=true`, or whose provider has no configured\n  internal-transfer override on the order service. If no merchant satisfies the request,\n  quote generation returns `NoMatchingQuoteException` rather than producing a quote that\n  would later fail at order placement.\n"
+      enum:
+      - DEPOSIT
+      - INTERNAL_TRANSFER
+      x-source-svc: orders
     QuoteRequestDto:
       title: QuoteRequestDto
       required:
@@ -250,67 +316,6 @@ components:
             '
           allOf:
           - $ref: '#/components/schemas/PaymentMode'
-      x-source-svc: orders
-    OrderType:
-      type: string
-      enum:
-      - BUY
-      - SELL
-      x-source-svc: orders
-    ProviderPaymentChannel:
-      type: string
-      description: Payment channel a provider is used for
-      enum:
-      - BANK_TRANSFER
-      - MOBILE_MONEY
-      - P2P_WALLET
-      x-source-svc: orders
-    QuoteDto:
-      title: QuoteDto
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        adId:
-          type: string
-          format: uuid
-        payoutCurrency:
-          type: string
-        rate:
-          type: number
-        minimumAmount:
-          type: number
-        maximumAmount:
-          type: number
-        expiresAt:
-          type: string
-          format: date-time
-          description: Timestamp field.
-        paymentMode:
-          description: 'BUY-only. Echoes the paymentMode persisted on the quote so the client can confirm which
-
-            mode this quote was issued under. Null for SELL quotes.
-
-            '
-          allOf:
-          - $ref: '#/components/schemas/PaymentMode'
-      x-source-svc: orders
-    QuoteResponseDto:
-      type: object
-      properties:
-        quote:
-          $ref: '#/components/schemas/QuoteDto'
-        fallbackQuote:
-          $ref: '#/components/schemas/QuoteDto'
-      x-source-svc: orders
-    PaymentMode:
-      type: string
-      default: DEPOSIT
-      description: "How the buyer is paying fiat for a BUY order. Chosen at quote time on `POST /quotes` and\npersisted on the resulting quote; the BUY order then inherits the value when it references\nthe quote. Clients do not (and cannot) re-specify it on the order request — the quote is\nthe binding contract.\n\n- `DEPOSIT` — buyer transfers fiat from an external bank account into the merchant's\n  pay-in account. Every payouts provider supports this and it is the default when the\n  field is omitted.\n- `INTERNAL_TRANSFER` — buyer pays via an internal transfer routed through a configured\n  override provider (currently `onb-nuban` for merchants on `onb-nuban-collections`).\n  Quote generation filters out merchants whose payment account doesn't have\n  `providerDetails.supportsCustomPayin=true`, or whose provider has no configured\n  internal-transfer override on the order service. If no merchant satisfies the request,\n  quote generation returns `NoMatchingQuoteException` rather than producing a quote that\n  would later fail at order placement.\n"
-      enum:
-      - DEPOSIT
-      - INTERNAL_TRANSFER
       x-source-svc: orders
   securitySchemes:
     authSignature:

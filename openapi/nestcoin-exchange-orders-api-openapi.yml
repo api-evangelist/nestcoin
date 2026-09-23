@@ -1,8 +1,13 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   version: 3.0.2
-  title: Onboard External API Gateway auth-oauth exchange-orders API
-  description: "**Introduction**\nAPI Gateway for Onboard\n\nThis specification describes API endpoints that are available to the public internet via the API gateway. The different endpoints require different authentication schemes, see documentation for what applies to the operation you want to access.\n\n**Errors**\nUses conventional HTTP response codes to indicate success or failure. In\ngeneral:\n \n- `2xx` status codes indicate success. Codes in the\n- `4xx` range\nindicate a client error (e.g. required parameters, failed request etc.).\n- `5xx` status codes indicate a server error occurred."
+  title: Onboard External API Gateway Exchange Orders API
+  description: '**Introduction**
+
+    API Gateway for Onboard
+
+
+    This specification describes API endpoints that are available to the public internet via the API gateway.'
   contact:
     name: Nestcoin TechOps
     email: techops@nestcoin.com
@@ -12,13 +17,13 @@ servers:
 - url: https://external.dev.onboardpay.co
   description: Gateway for external API on staging environment.
 tags:
-- name: exchange-orders
+- name: Exchange Orders
 paths:
   /exchange/orders/trade:
     x-original-path: /orders/trade
     get:
       tags:
-      - exchange-orders
+      - Exchange Orders
       summary: Start a trade
       operationId: createOrder
       parameters:
@@ -119,12 +124,6 @@ paths:
       x-visibility: external
 components:
   schemas:
-    CreateOrderTradeTypeEnum:
-      type: string
-      enum:
-      - BUY
-      - SELL
-      x-source-svc: exchange
     ErrorMessageDto:
       description: Default error object for services. This gives consistent error object that all services may use.
       type: object
@@ -146,6 +145,12 @@ components:
           additionalProperties: true
           properties: {}
       x-common-model: ErrorMessageDto
+    CreateOrderTradeTypeEnum:
+      type: string
+      enum:
+      - BUY
+      - SELL
+      x-source-svc: exchange
     CreateOrderProductEnum:
       type: string
       enum:
