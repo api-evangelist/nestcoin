@@ -196,157 +196,82 @@ paths:
       - authToken: []
       x-visibility: external
 components:
-  parameters:
-    TransactionsSvcpageParam:
-      name: page
-      in: query
-      schema:
-        type: integer
-    TransactionsSvcsizeParam:
-      name: size
-      in: query
-      schema:
-        type: integer
-    TransactionsSvctokenQueryParam:
-      name: token
-      in: query
-      schema:
-        type: string
-    TransactionsSvcidPathVariableForUserId:
-      name: id
-      in: path
-      description: userId
-      required: true
-      schema:
-        type: string
-        format: uuid
-    TransactionsSvcfromDateParam:
-      name: from
-      in: query
-      description: 15-04-2022
-      schema:
-        type: string
-        pattern: \d{2}-\d{2}-\d{4}
-    TransactionsSvcstatusesParam:
-      name: statuses
-      in: query
-      style: form
-      explode: false
-      schema:
-        type: array
-        items:
-          $ref: '#/components/schemas/TransactionOrderStatus'
-    TransactionsSvcotherPartyQueryParam:
-      name: otherPartyId
-      in: query
-      schema:
-        type: string
-        format: uuid
-    TransactionsSvcisTradeRequestBroadcastQueryParam:
-      name: isTradeRequestBroadcast
-      in: query
-      schema:
-        type: boolean
-    TransactionsSvcnetworkQueryParam:
-      name: network
-      in: query
-      schema:
-        type: string
-    TransactionsSvctoDateParam:
-      name: to
-      in: query
-      description: 15-08-2022
-      schema:
-        type: string
-        pattern: \d{2}-\d{2}-\d{4}
-    TransactionsSvcpaymentChannelQueryParam:
-      name: paymentChannel
-      in: query
-      schema:
-        type: string
-    TransactionsSvcreferenceQueryParam:
-      name: reference
-      in: query
-      schema:
-        type: string
-    TransactionsSvcfiatQueryParam:
-      name: fiat
-      in: query
-      schema:
-        type: string
-    TransactionsSvctransactionTypeParam:
-      name: transactionType
-      in: query
-      schema:
-        $ref: '#/components/schemas/TransactionsSvcTransactionType'
-    TransactionsSvcidPathVariable:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: string
-        format: uuid
   schemas:
-    TransactionOrderStatus:
-      type: string
-      description: Order transaction status
-      enum:
-      - INITIATED
-      - DEPOSITED
-      - CONFIRMED
-      - COMPLETED
-      - PENDING
-      - CANCELLED
-      - IN_DISPUTE
-      - AWAITING_ACCEPTANCE
-      x-source-svc: transactions
-    TradeContext:
-      type: string
-      enum:
-      - STANDARD_TRADE
-      - INTERNAL_RAIL
-      x-source-svc: transactions
-    TransactionsSvcTradeMode:
-      type: string
-      enum:
-      - P2P
-      - IP
-      - OTC
-      x-source-svc: transactions
-    UserType:
-      type: string
-      description: Type of user/role of user in transaction
-      enum:
-      - CUSTOMER
-      - PARTNER
-      x-source-svc: transactions
-    TimeoutDTO:
+    TransactionsSvcWalletDTO:
       type: object
       properties:
-        name:
+        walletAddress:
           type: string
-          enum:
-          - APPROVE_TRANSACTION
-          - MAKE_DEPOSIT
-          - CONFIRM_DEPOSIT
-          - FLAG_DISPUTE
-          - ACKNOWLEDGE_TRANSACTION
-        startTime:
+          example: 0
+        networkId:
           type: string
-          format: date-time
-          x-faker: date.recent
-        duration:
-          type: number
-        timeLeft:
-          type: integer
-          format: int64
+          example: bsc_testnet
+        walletName:
+          type: string
+          example: My Trust Wallet
       x-source-svc: transactions
-    TransactionsSvcTransactionType:
+    InstantPayProcessingStatus:
       type: string
-      description: Transaction order type, can be ONRAMP or OFFRAMP
       enum:
-      - ONRAMP
-      - OFFRAMP
+      - PENDING_IP_REPORT
+      - IN_PROGRESS
+      - FAILURE
+      - SUCCESS
+      x-source-svc: transactions
+    TransactionsSvcOfferDTO:
+      required:
+      - instantPayEnabled
+      - networkId
+      - partnerId
+      - rate
+      - token
+      - tokenAmount
+      - transactionType
+      type: object
+      properties:
+        offerId:
+          type: string
+          format: uuid
+        partnerId:
+          type: string
+          format: uuid
+        transactionType:
+          $ref: '#/components/schemas/TransactionsSvcTransactionType'
+        rate:
+          type: number
+          example: 0.32
+        networkId:
+          type: string
+          example: TRC20
+        fiatSymbol:
+          type: string
+          example: NGN
+        fiatAmount:
+          type: number
+          example: 120.5
+        token:
+          type: string
+          example: USDT
+        tokenAmount:
+          type: number
+          example: 120.5
+        usdAmount:
+          type: number
+          example: 120.5
+        partnerDisplayName:
+          type: string
+          example: John Doe
+        adNote:
+          type: string
+          example: Guaranteed fast payment
+        instantPayEnabled:
+          type: boolean
+        instantPayPaymentAccountId:
+          type: string
+        customPayinProvider:
+          type: string
+        tradeMode:
+          $ref: '#/components/schemas/TransactionsSvcTradeMode'
       x-source-svc: transactions
     Fee:
       required:
@@ -360,35 +285,6 @@ components:
           example: '1000.0'
         asFiat:
           type: number
-      x-source-svc: transactions
-    TransactionsResponse:
-      type: object
-      properties:
-        transactions:
-          type: array
-          items:
-            $ref: '#/components/schemas/TransactionDTO'
-        pageNumber:
-          type: integer
-        pageSize:
-          type: integer
-        totalPages:
-          type: integer
-        totalTransactions:
-          type: integer
-      x-source-svc: transactions
-    TransactionsSvcWalletDTO:
-      type: object
-      properties:
-        walletAddress:
-          type: string
-          example: 0
-        networkId:
-          type: string
-          example: bsc_testnet
-        walletName:
-          type: string
-          example: My Trust Wallet
       x-source-svc: transactions
     TransactionHistoryAggregate:
       type: object
@@ -411,33 +307,12 @@ components:
           type: number
           example: 245.73
       x-source-svc: transactions
-    TransactionContactsDTO:
-      type: object
-      properties:
-        customerPhoneNumber:
-          type: string
-          example: '23408100000000'
-        merchantPhoneNumber:
-          type: string
-          example: '23408100000001'
-      x-source-svc: transactions
-    ThirdpartyOrderInfoDTO:
-      required:
-      - businessId
-      properties:
-        businessId:
-          type: string
-          description: The thirdparty business the customer is trading via
-        tradeId:
-          type: string
-          description: Tracking trade Id
-        product:
-          type: string
-          description: Product name, typically custodial or web
-        blockchainOrderId:
-          type: integer
-        externalOrderReference:
-          type: string
+    TransactionsSvcTransactionType:
+      type: string
+      description: Transaction order type, can be ONRAMP or OFFRAMP
+      enum:
+      - ONRAMP
+      - OFFRAMP
       x-source-svc: transactions
     ErrorMessageDto:
       description: Default error object for services. This gives consistent error object that all services may use.
@@ -460,6 +335,63 @@ components:
           additionalProperties: true
           properties: {}
       x-common-model: ErrorMessageDto
+    UserType:
+      type: string
+      description: Type of user/role of user in transaction
+      enum:
+      - CUSTOMER
+      - PARTNER
+      x-source-svc: transactions
+    TransactionsResponse:
+      type: object
+      properties:
+        transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransactionDTO'
+        pageNumber:
+          type: integer
+        pageSize:
+          type: integer
+        totalPages:
+          type: integer
+        totalTransactions:
+          type: integer
+      x-source-svc: transactions
+    ThirdpartyOrderInfoDTO:
+      required:
+      - businessId
+      properties:
+        businessId:
+          type: string
+          description: The thirdparty business the customer is trading via
+        tradeId:
+          type: string
+          description: Tracking trade Id
+        product:
+          type: string
+          description: Product name, typically custodial or web
+        blockchainOrderId:
+          type: integer
+        externalOrderReference:
+          type: string
+      x-source-svc: transactions
+    TransactionContactsDTO:
+      type: object
+      properties:
+        customerPhoneNumber:
+          type: string
+          example: '23408100000000'
+        merchantPhoneNumber:
+          type: string
+          example: '23408100000001'
+      x-source-svc: transactions
+    TradeContext:
+      type: string
+      enum:
+      - STANDARD_TRADE
+      - INTERNAL_RAIL
+      x-source-svc: transactions
     TransactionDTO:
       required:
       - customerId
@@ -591,69 +523,137 @@ components:
         tradeContext:
           $ref: '#/components/schemas/TradeContext'
       x-source-svc: transactions
-    TransactionsSvcOfferDTO:
-      required:
-      - instantPayEnabled
-      - networkId
-      - partnerId
-      - rate
-      - token
-      - tokenAmount
-      - transactionType
+    TransactionOrderStatus:
+      type: string
+      description: Order transaction status
+      enum:
+      - INITIATED
+      - DEPOSITED
+      - CONFIRMED
+      - COMPLETED
+      - PENDING
+      - CANCELLED
+      - IN_DISPUTE
+      - AWAITING_ACCEPTANCE
+      x-source-svc: transactions
+    TimeoutDTO:
       type: object
       properties:
-        offerId:
+        name:
           type: string
-          format: uuid
-        partnerId:
+          enum:
+          - APPROVE_TRANSACTION
+          - MAKE_DEPOSIT
+          - CONFIRM_DEPOSIT
+          - FLAG_DISPUTE
+          - ACKNOWLEDGE_TRANSACTION
+        startTime:
           type: string
-          format: uuid
-        transactionType:
-          $ref: '#/components/schemas/TransactionsSvcTransactionType'
-        rate:
+          format: date-time
+          x-faker: date.recent
+        duration:
           type: number
-          example: 0.32
-        networkId:
-          type: string
-          example: TRC20
-        fiatSymbol:
-          type: string
-          example: NGN
-        fiatAmount:
-          type: number
-          example: 120.5
-        token:
-          type: string
-          example: USDT
-        tokenAmount:
-          type: number
-          example: 120.5
-        usdAmount:
-          type: number
-          example: 120.5
-        partnerDisplayName:
-          type: string
-          example: John Doe
-        adNote:
-          type: string
-          example: Guaranteed fast payment
-        instantPayEnabled:
-          type: boolean
-        instantPayPaymentAccountId:
-          type: string
-        customPayinProvider:
-          type: string
-        tradeMode:
-          $ref: '#/components/schemas/TransactionsSvcTradeMode'
+        timeLeft:
+          type: integer
+          format: int64
       x-source-svc: transactions
-    InstantPayProcessingStatus:
+    TransactionsSvcTradeMode:
       type: string
       enum:
-      - PENDING_IP_REPORT
-      - IN_PROGRESS
-      - FAILURE
-      - SUCCESS
+      - P2P
+      - IP
+      - OTC
       x-source-svc: transactions
+  parameters:
+    TransactionsSvcsizeParam:
+      name: size
+      in: query
+      schema:
+        type: integer
+    TransactionsSvcpageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+    TransactionsSvcfiatQueryParam:
+      name: fiat
+      in: query
+      schema:
+        type: string
+    TransactionsSvcidPathVariable:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    TransactionsSvctoDateParam:
+      name: to
+      in: query
+      description: 15-08-2022
+      schema:
+        type: string
+        pattern: \d{2}-\d{2}-\d{4}
+    TransactionsSvcreferenceQueryParam:
+      name: reference
+      in: query
+      schema:
+        type: string
+    TransactionsSvcotherPartyQueryParam:
+      name: otherPartyId
+      in: query
+      schema:
+        type: string
+        format: uuid
+    TransactionsSvcisTradeRequestBroadcastQueryParam:
+      name: isTradeRequestBroadcast
+      in: query
+      schema:
+        type: boolean
+    TransactionsSvcstatusesParam:
+      name: statuses
+      in: query
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          $ref: '#/components/schemas/TransactionOrderStatus'
+    TransactionsSvctransactionTypeParam:
+      name: transactionType
+      in: query
+      schema:
+        $ref: '#/components/schemas/TransactionsSvcTransactionType'
+    TransactionsSvcfromDateParam:
+      name: from
+      in: query
+      description: 15-04-2022
+      schema:
+        type: string
+        pattern: \d{2}-\d{2}-\d{4}
+    TransactionsSvcidPathVariableForUserId:
+      name: id
+      in: path
+      description: userId
+      required: true
+      schema:
+        type: string
+        format: uuid
+    TransactionsSvcnetworkQueryParam:
+      name: network
+      in: query
+      schema:
+        type: string
+    TransactionsSvcpaymentChannelQueryParam:
+      name: paymentChannel
+      in: query
+      schema:
+        type: string
+    TransactionsSvctokenQueryParam:
+      name: token
+      in: query
+      schema:
+        type: string
   securitySchemes:
     authSignature:
       type: apiKey

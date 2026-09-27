@@ -187,6 +187,78 @@ paths:
       - authToken: []
 components:
   schemas:
+    TransactionStatus:
+      type: string
+      description: 'Status of the transaction, indicating its current state in the processing lifecycle.
+
+        - PENDING: The transaction has been created but not yet processed.
+
+        - IN_PROGRESS: The transaction is currently being processed.
+
+        - FAILED: The transaction processing has failed.
+
+        - SUCCESS: The transaction has been successfully processed.
+
+        '
+      enum:
+      - PENDING
+      - IN_PROGRESS
+      - FAILED
+      - SUCCESS
+      x-source-svc: ledger
+    CashPaymentTransactionList:
+      allOf:
+      - $ref: '#/components/schemas/Paging'
+      - type: object
+        properties:
+          content:
+            type: array
+            items:
+              $ref: '#/components/schemas/CashPaymentTransaction'
+      x-source-svc: ledger
+    CreateCashPaymentRequest:
+      type: object
+      description: Details required to create a cash payment. The amount and currency must align with an existing quote.
+      required:
+      - quoteId
+      - accountId
+      - amount
+      - beneficiaryId
+      - reference
+      - paymentReason
+      properties:
+        quoteId:
+          type: string
+          format: uuid
+          description: Identifier of an existing cash payment quote, retrieved from the cash payment quote endpoint.
+        accountId:
+          type: string
+          format: uuid
+          description: Account to debit for this payment. Can be the main account ID or a sub-account ID.
+        reference:
+          type: string
+          description: Alpha-numeric transfer reference, unique for this transfer.
+          example: CTR123456
+          pattern: ^[a-zA-Z0-9_-]{8,48}$
+          minLength: 8
+          maxLength: 48
+        amount:
+          type: number
+          exclusiveMinimum: 0
+        unitCurrency:
+          type: string
+          description: "Should be same as one of payout or account currencies in the quote. \nDefaults to account currency if not provided.\n"
+        beneficiaryId:
+          type: string
+          format: uuid
+          description: Identifier of an existing beneficiary to whom the transfer will be made.
+        paymentReason:
+          type: string
+          description: Reason for the payment, to be provided at the time of transfer creation.
+        narration:
+          type: string
+          description: Notes to be included in the transfer.
+      x-source-svc: ledger
     CashPaymentTransaction:
       type: object
       description: Details of a cash payment transaction.
@@ -243,30 +315,6 @@ components:
           type: string
           format: date-time
       x-source-svc: ledger
-    CashPaymentCurrency:
-      type: object
-      required:
-      - name
-      - logo
-      - code
-      - countryCode
-      - paymentChannels
-      properties:
-        name:
-          type: string
-        logo:
-          type: string
-        code:
-          type: string
-        countryCode:
-          type: string
-        paymentChannels:
-          type: array
-          uniqueItems: true
-          default: []
-          items:
-            $ref: '#/components/schemas/CashPaymentChannel'
-      x-source-svc: ledger
     CashPaymentCurrenciesList:
       type: object
       required:
@@ -278,6 +326,27 @@ components:
           items:
             $ref: '#/components/schemas/CashPaymentCurrency'
       x-source-svc: ledger
+    ErrorMessageDto:
+      description: Default error object for services. This gives consistent error object that all services may use.
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          description: Error code
+          example: UNKNOWN_ERROR
+        message:
+          type: string
+          description: Descriptive error message
+          example: Request could not be completed due to an error
+        data:
+          type: object
+          description: Additional data for this error message.
+          additionalProperties: true
+          properties: {}
+      x-common-model: ErrorMessageDto
     Paging:
       description: Base object for paginated list
       type: object
@@ -308,16 +377,6 @@ components:
       discriminator:
         propertyName: name
       x-common-model: Paging
-    CashPaymentTransactionList:
-      allOf:
-      - $ref: '#/components/schemas/Paging'
-      - type: object
-        properties:
-          content:
-            type: array
-            items:
-              $ref: '#/components/schemas/CashPaymentTransaction'
-      x-source-svc: ledger
     CashPaymentChannel:
       type: object
       required:
@@ -340,53 +399,29 @@ components:
             '
           example: BeneficiaryLocalBankAccount
       x-source-svc: ledger
-    CashPaymentQuote:
+    CashPaymentCurrency:
       type: object
       required:
-      - id
-      - payoutCurrency
-      - accountCurrency
-      - rate
-      - minimumAmount
-      - maximumAmount
-      - expiresAt
+      - name
+      - logo
+      - code
+      - countryCode
+      - paymentChannels
       properties:
-        id:
+        name:
           type: string
-          format: uuid
-          description: Unique identifier for the transfer quote.
-        accountCurrency:
+        logo:
           type: string
-          description: Currency of the account to be debited.
-          example: USD
-        payoutCurrency:
+        code:
           type: string
-          description: Currency of the payout to the beneficiary.
-          example: NGN
-        rate:
-          type: number
-          description: Exchange rate applied for this quote
-          example: 1450.75
-        minimumAmount:
-          type: number
-          description: Minimum amount allowed for this quote
-          example: 50
-        maximumAmount:
-          type: number
-          description: Maximum amount allowed for this quote
-          example: 10000
-        minimumPayoutAmount:
-          type: number
-          description: Minimum payout amount allowed for this quote
-          example: 72500
-        maximumPayoutAmount:
-          type: number
-          description: Maximum payout amount allowed for this quote
-          example: 14507500
-        expiresAt:
+        countryCode:
           type: string
-          format: date-time
-          description: Timestamp field.
+        paymentChannels:
+          type: array
+          uniqueItems: true
+          default: []
+          items:
+            $ref: '#/components/schemas/CashPaymentChannel'
       x-source-svc: ledger
     TransferRate:
       type: object
@@ -451,6 +486,79 @@ components:
           description: Country where the payment method belongs if available
           example: IE
       x-source-svc: ledger
+    CashPaymentQuote:
+      type: object
+      required:
+      - id
+      - payoutCurrency
+      - accountCurrency
+      - rate
+      - minimumAmount
+      - maximumAmount
+      - expiresAt
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the transfer quote.
+        accountCurrency:
+          type: string
+          description: Currency of the account to be debited.
+          example: USD
+        payoutCurrency:
+          type: string
+          description: Currency of the payout to the beneficiary.
+          example: NGN
+        rate:
+          type: number
+          description: Exchange rate applied for this quote
+          example: 1450.75
+        minimumAmount:
+          type: number
+          description: Minimum amount allowed for this quote
+          example: 50
+        maximumAmount:
+          type: number
+          description: Maximum amount allowed for this quote
+          example: 10000
+        minimumPayoutAmount:
+          type: number
+          description: Minimum payout amount allowed for this quote
+          example: 72500
+        maximumPayoutAmount:
+          type: number
+          description: Maximum payout amount allowed for this quote
+          example: 14507500
+        expiresAt:
+          type: string
+          format: date-time
+          description: Timestamp field.
+      x-source-svc: ledger
+    CreateTransferQuoteRequest:
+      type: object
+      required:
+      - payoutCurrency
+      - accountCurrency
+      - amount
+      properties:
+        payoutCurrency:
+          type: string
+          example: NGN
+          description: Currency of the payout to the beneficiary.
+        accountCurrency:
+          type: string
+          example: USD
+          description: Currency of the account to be debited.
+        amount:
+          type: number
+          example: 100
+          multipleOf: 0.01
+          exclusiveMinimum: 0
+        unitCurrency:
+          type: string
+          description: Should be same as one of payout or account currencies. Defaults to account currency if not provided.
+          example: USD
+      x-source-svc: ledger
     User2FAMethod:
       type: string
       enum:
@@ -482,133 +590,6 @@ components:
           items:
             $ref: '#/components/schemas/User2FAMethod'
       x-source-svc: ledger
-    CreateTransferQuoteRequest:
-      type: object
-      required:
-      - payoutCurrency
-      - accountCurrency
-      - amount
-      properties:
-        payoutCurrency:
-          type: string
-          example: NGN
-          description: Currency of the payout to the beneficiary.
-        accountCurrency:
-          type: string
-          example: USD
-          description: Currency of the account to be debited.
-        amount:
-          type: number
-          example: 100
-          multipleOf: 0.01
-          exclusiveMinimum: 0
-        unitCurrency:
-          type: string
-          description: Should be same as one of payout or account currencies. Defaults to account currency if not provided.
-          example: USD
-      x-source-svc: ledger
-    TransactionStatus:
-      type: string
-      description: 'Status of the transaction, indicating its current state in the processing lifecycle.
-
-        - PENDING: The transaction has been created but not yet processed.
-
-        - IN_PROGRESS: The transaction is currently being processed.
-
-        - FAILED: The transaction processing has failed.
-
-        - SUCCESS: The transaction has been successfully processed.
-
-        '
-      enum:
-      - PENDING
-      - IN_PROGRESS
-      - FAILED
-      - SUCCESS
-      x-source-svc: ledger
-    ErrorMessageDto:
-      description: Default error object for services. This gives consistent error object that all services may use.
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          description: Error code
-          example: UNKNOWN_ERROR
-        message:
-          type: string
-          description: Descriptive error message
-          example: Request could not be completed due to an error
-        data:
-          type: object
-          description: Additional data for this error message.
-          additionalProperties: true
-          properties: {}
-      x-common-model: ErrorMessageDto
-    CreateCashPaymentRequest:
-      type: object
-      description: Details required to create a cash payment. The amount and currency must align with an existing quote.
-      required:
-      - quoteId
-      - accountId
-      - amount
-      - beneficiaryId
-      - reference
-      - paymentReason
-      properties:
-        quoteId:
-          type: string
-          format: uuid
-          description: Identifier of an existing cash payment quote, retrieved from the cash payment quote endpoint.
-        accountId:
-          type: string
-          format: uuid
-          description: Account to debit for this payment. Can be the main account ID or a sub-account ID.
-        reference:
-          type: string
-          description: Alpha-numeric transfer reference, unique for this transfer.
-          example: CTR123456
-          pattern: ^[a-zA-Z0-9_-]{8,48}$
-          minLength: 8
-          maxLength: 48
-        amount:
-          type: number
-          exclusiveMinimum: 0
-        unitCurrency:
-          type: string
-          description: "Should be same as one of payout or account currencies in the quote. \nDefaults to account currency if not provided.\n"
-        beneficiaryId:
-          type: string
-          format: uuid
-          description: Identifier of an existing beneficiary to whom the transfer will be made.
-        paymentReason:
-          type: string
-          description: Reason for the payment, to be provided at the time of transfer creation.
-        narration:
-          type: string
-          description: Notes to be included in the transfer.
-      x-source-svc: ledger
-  parameters:
-    LedgerSvcpage:
-      in: query
-      name: page
-      required: false
-      description: Page parameter, starting from 1
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-    LedgerSvcsize:
-      in: query
-      name: size
-      required: false
-      schema:
-        type: integer
-        maximum: 100
-        minimum: 1
-        default: 20
   responses:
     LedgerSvcUnauthorized:
       description: Client is not authorized to make request
@@ -637,6 +618,25 @@ components:
           example:
             code: BAD_REQUEST
             message: Request could not be validated.
+  parameters:
+    LedgerSvcsize:
+      in: query
+      name: size
+      required: false
+      schema:
+        type: integer
+        maximum: 100
+        minimum: 1
+        default: 20
+    LedgerSvcpage:
+      in: query
+      name: page
+      required: false
+      description: Page parameter, starting from 1
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
   securitySchemes:
     authSignature:
       type: apiKey

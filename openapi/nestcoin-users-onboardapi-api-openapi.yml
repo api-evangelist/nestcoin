@@ -63,6 +63,33 @@ paths:
       x-visibility: external
 components:
   schemas:
+    UserRoles:
+      type: string
+      description: the roles a user can possess on Onboard
+      enum:
+      - CUSTOMER
+      - MERCHANT
+      - MERCHANT_NETWORK
+      x-source-svc: users
+    UserTransactionLimit:
+      type: object
+      properties:
+        dailyTransactionLimit:
+          type: number
+        maxSingleTransactionLimit:
+          type: number
+        minSingleTransactionLimit:
+          type: number
+        maxLifetimeLimit:
+          type: number
+      x-source-svc: users
+    UsersSvcUserType:
+      type: string
+      description: the type of the user
+      enum:
+      - CUSTOMER
+      - PARTNER
+      x-source-svc: users
     ProfileDataDto:
       type: object
       properties:
@@ -116,6 +143,32 @@ components:
         tradeHistoryDetails:
           $ref: '#/components/schemas/ProfileTradeDto'
       x-source-svc: users
+    VerificationStatus:
+      type: string
+      description: user's verification status
+      enum:
+      - VERIFIED
+      - UNVERIFIED
+      - FAILED_VERIFICATION
+      - REVIEW_REQUIRED
+      - IN_PROGRESS
+      - REJECTED
+      x-source-svc: users
+    ProfileTradeDto:
+      type: object
+      properties:
+        hasPreviousTradeHistory:
+          type: boolean
+          description: Partner have previous trading experience
+        proofOfTrade:
+          type: array
+          description: Partner's proof of previous trade history
+          items:
+            type: string
+        referee:
+          type: string
+          description: Partner's referee
+      x-source-svc: users
     ErrorMessageDto:
       description: Default error object for services. This gives consistent error object that all services may use.
       type: object
@@ -137,39 +190,6 @@ components:
           additionalProperties: true
           properties: {}
       x-common-model: ErrorMessageDto
-    ProfileTradeDto:
-      type: object
-      properties:
-        hasPreviousTradeHistory:
-          type: boolean
-          description: Partner have previous trading experience
-        proofOfTrade:
-          type: array
-          description: Partner's proof of previous trade history
-          items:
-            type: string
-        referee:
-          type: string
-          description: Partner's referee
-      x-source-svc: users
-    UsersSvcUserType:
-      type: string
-      description: the type of the user
-      enum:
-      - CUSTOMER
-      - PARTNER
-      x-source-svc: users
-    VerificationStatus:
-      type: string
-      description: user's verification status
-      enum:
-      - VERIFIED
-      - UNVERIFIED
-      - FAILED_VERIFICATION
-      - REVIEW_REQUIRED
-      - IN_PROGRESS
-      - REJECTED
-      x-source-svc: users
     KycNameChangeHistoryDto:
       type: object
       properties:
@@ -198,18 +218,6 @@ components:
       - previousName
       - currentName
       - timestamp
-      x-source-svc: users
-    UserTransactionLimit:
-      type: object
-      properties:
-        dailyTransactionLimit:
-          type: number
-        maxSingleTransactionLimit:
-          type: number
-        minSingleTransactionLimit:
-          type: number
-        maxLifetimeLimit:
-          type: number
       x-source-svc: users
     KycJobStatus:
       type: string
@@ -343,14 +351,6 @@ components:
           type: string
           description: Timestamp field.
           format: date-time
-      x-source-svc: users
-    UserRoles:
-      type: string
-      description: the roles a user can possess on Onboard
-      enum:
-      - CUSTOMER
-      - MERCHANT
-      - MERCHANT_NETWORK
       x-source-svc: users
   securitySchemes:
     authSignature:

@@ -56,7 +56,7 @@ tags:
 - Africa
 apis:
 - aid: nestcoin:nestcoin-auth-oauth-api
-  name: Nestcoin auth-oauth API
+  name: Nestcoin Auth OAUTH API
   description: The auth-oauth API from Nestcoin — 2 operation(s) for auth-oauth.
   humanURL: https://docs.onboard.xyz/
   baseURL: https://external.dev.onboardpay.co
@@ -72,7 +72,7 @@ apis:
   - type: DataModel
     url: data-model/nestcoin-data-model.yml
 - aid: nestcoin:nestcoin-auth-userauth-api
-  name: Nestcoin auth-userauth API
+  name: Nestcoin Auth Userauth API
   description: The auth-userauth API from Nestcoin — 3 operation(s) for auth-userauth.
   humanURL: https://docs.onboard.xyz/
   baseURL: https://external.dev.onboardpay.co
@@ -88,7 +88,7 @@ apis:
   - type: DataModel
     url: data-model/nestcoin-data-model.yml
 - aid: nestcoin:nestcoin-exchange-external-api-api
-  name: Nestcoin exchange-external-api
+  name: Nestcoin Exchange External API
   description: The exchange-external-api API from Nestcoin — 13 operation(s) for exchange-external-api.
   humanURL: https://docs.onboard.xyz/
   baseURL: https://external.dev.onboardpay.co
@@ -104,7 +104,7 @@ apis:
   - type: DataModel
     url: data-model/nestcoin-data-model.yml
 - aid: nestcoin:nestcoin-exchange-orders-api
-  name: Nestcoin exchange-orders API
+  name: Nestcoin Exchange Orders API
   description: The exchange-orders API from Nestcoin — 1 operation(s) for exchange-orders.
   humanURL: https://docs.onboard.xyz/
   baseURL: https://external.dev.onboardpay.co
@@ -138,7 +138,7 @@ apis:
   - type: DataModel
     url: data-model/nestcoin-data-model.yml
 - aid: nestcoin:nestcoin-ledger-accounts-api
-  name: Nestcoin ledger-accounts API
+  name: Nestcoin Ledger Accounts API
   description: The ledger-accounts API from Nestcoin — 5 operation(s) for ledger-accounts.
   humanURL: https://docs.onboard.xyz/
   baseURL: https://external.dev.onboardpay.co
@@ -156,7 +156,7 @@ apis:
   - type: DataModel
     url: data-model/nestcoin-data-model.yml
 - aid: nestcoin:nestcoin-ledger-beneficiaries-api
-  name: Nestcoin ledger-beneficiaries API
+  name: Nestcoin Ledger Beneficiaries API
   description: The ledger-beneficiaries API from Nestcoin — 4 operation(s) for ledger-beneficiaries.
   humanURL: https://docs.onboard.xyz/
   baseURL: https://external.dev.onboardpay.co
@@ -204,7 +204,7 @@ apis:
   - type: DataModel
     url: data-model/nestcoin-data-model.yml
 - aid: nestcoin:nestcoin-ledger-payments-api
-  name: Nestcoin ledger-payments API
+  name: Nestcoin Ledger Payments API
   description: The ledger-payments API from Nestcoin — 5 operation(s) for ledger-payments.
   humanURL: https://docs.onboard.xyz/
   baseURL: https://external.dev.onboardpay.co
@@ -220,7 +220,7 @@ apis:
   - type: DataModel
     url: data-model/nestcoin-data-model.yml
 - aid: nestcoin:nestcoin-ledger-sub-accounts-api
-  name: Nestcoin ledger-sub-accounts API
+  name: Nestcoin Ledger Sub Accounts API
   description: The ledger-sub-accounts API from Nestcoin — 4 operation(s) for ledger-sub-accounts.
   humanURL: https://docs.onboard.xyz/
   baseURL: https://external.dev.onboardpay.co
@@ -236,7 +236,7 @@ apis:
   - type: DataModel
     url: data-model/nestcoin-data-model.yml
 - aid: nestcoin:nestcoin-ledger-transfer-api
-  name: Nestcoin ledger-transfer API
+  name: Nestcoin Ledger Transfer API
   description: The ledger-transfer API from Nestcoin — 4 operation(s) for ledger-transfer.
   humanURL: https://docs.onboard.xyz/
   baseURL: https://external.dev.onboardpay.co
@@ -252,7 +252,7 @@ apis:
   - type: DataModel
     url: data-model/nestcoin-data-model.yml
 - aid: nestcoin:nestcoin-offers-offers-api
-  name: Nestcoin offers-offers API
+  name: Nestcoin Offers Offers API
   description: The offers-offers API from Nestcoin — 3 operation(s) for offers-offers.
   humanURL: https://docs.onboard.xyz/
   baseURL: https://external.dev.onboardpay.co
@@ -268,7 +268,7 @@ apis:
   - type: DataModel
     url: data-model/nestcoin-data-model.yml
 - aid: nestcoin:nestcoin-offers-onboardapi-api
-  name: Nestcoin offers-onboardapi API
+  name: Nestcoin Offers Onboardapi API
   description: The offers-onboardapi API from Nestcoin — 2 operation(s) for offers-onboardapi.
   humanURL: https://docs.onboard.xyz/
   baseURL: https://external.dev.onboardpay.co
@@ -284,7 +284,7 @@ apis:
   - type: DataModel
     url: data-model/nestcoin-data-model.yml
 - aid: nestcoin:nestcoin-orders-orders-api
-  name: Nestcoin orders-orders API
+  name: Nestcoin Orders Orders API
   description: The orders-orders API from Nestcoin — 5 operation(s) for orders-orders.
   humanURL: https://docs.onboard.xyz/
   baseURL: https://external.dev.onboardpay.co
@@ -300,7 +300,7 @@ apis:
   - type: DataModel
     url: data-model/nestcoin-data-model.yml
 - aid: nestcoin:nestcoin-orders-quotes-api
-  name: Nestcoin orders-quotes API
+  name: Nestcoin Orders Quotes API
   description: The orders-quotes API from Nestcoin — 3 operation(s) for orders-quotes.
   humanURL: https://docs.onboard.xyz/
   baseURL: https://external.dev.onboardpay.co
@@ -316,7 +316,7 @@ apis:
   - type: DataModel
     url: data-model/nestcoin-data-model.yml
 - aid: nestcoin:nestcoin-payment-methods-users-api
-  name: Nestcoin payment-methods-users API
+  name: Nestcoin Payment Methods Users API
   description: The payment-methods-users API from Nestcoin — 1 operation(s) for payment-methods-users.
   humanURL: https://docs.onboard.xyz/
   baseURL: https://external.dev.onboardpay.co
@@ -332,7 +332,7 @@ apis:
   - type: DataModel
     url: data-model/nestcoin-data-model.yml
 - aid: nestcoin:nestcoin-transactions-offramp-api
-  name: Nestcoin transactions-offramp API
+  name: Nestcoin Transactions Offramp API
   description: The transactions-offramp API from Nestcoin — 4 operation(s) for transactions-offramp.
   humanURL: https://docs.onboard.xyz/
   baseURL: https://external.dev.onboardpay.co
@@ -348,7 +348,7 @@ apis:
   - type: DataModel
     url: data-model/nestcoin-data-model.yml
 - aid: nestcoin:nestcoin-transactions-onboardapi-api
-  name: Nestcoin transactions-onboardapi API
+  name: Nestcoin Transactions Onboardapi API
   description: The transactions-onboardapi API from Nestcoin — 4 operation(s) for transactions-onboardapi.
   humanURL: https://docs.onboard.xyz/
   baseURL: https://external.dev.onboardpay.co
@@ -364,7 +364,7 @@ apis:
   - type: DataModel
     url: data-model/nestcoin-data-model.yml
 - aid: nestcoin:nestcoin-transactions-onramp-api
-  name: Nestcoin transactions-onramp API
+  name: Nestcoin Transactions Onramp API
   description: The transactions-onramp API from Nestcoin — 3 operation(s) for transactions-onramp.
   humanURL: https://docs.onboard.xyz/
   baseURL: https://external.dev.onboardpay.co
@@ -380,7 +380,7 @@ apis:
   - type: DataModel
     url: data-model/nestcoin-data-model.yml
 - aid: nestcoin:nestcoin-transactions-transactions-api
-  name: Nestcoin transactions-transactions API
+  name: Nestcoin Transactions Transactions API
   description: The transactions-transactions API from Nestcoin — 4 operation(s) for transactions-transactions.
   humanURL: https://docs.onboard.xyz/
   baseURL: https://external.dev.onboardpay.co
@@ -396,7 +396,7 @@ apis:
   - type: DataModel
     url: data-model/nestcoin-data-model.yml
 - aid: nestcoin:nestcoin-users-onboardapi-api
-  name: Nestcoin users-onboardapi API
+  name: Nestcoin Users Onboardapi API
   description: Endpoints available to for merchants liquidity automation
   humanURL: https://docs.onboard.xyz/
   baseURL: https://external.dev.onboardpay.co
@@ -412,7 +412,7 @@ apis:
   - type: DataModel
     url: data-model/nestcoin-data-model.yml
 - aid: nestcoin:nestcoin-users-users-api
-  name: Nestcoin users-users API
+  name: Nestcoin Users Users API
   description: User related endpoints
   humanURL: https://docs.onboard.xyz/
   baseURL: https://external.dev.onboardpay.co

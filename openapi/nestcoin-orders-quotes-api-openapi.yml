@@ -173,100 +173,6 @@ paths:
       security: []
 components:
   schemas:
-    ProviderPaymentChannel:
-      type: string
-      description: Payment channel a provider is used for
-      enum:
-      - BANK_TRANSFER
-      - MOBILE_MONEY
-      - P2P_WALLET
-      x-source-svc: orders
-    RateDto:
-      title: RateDto
-      type: object
-      properties:
-        currency:
-          type: string
-        price:
-          type: number
-        lastUpdated:
-          type: string
-          format: date-time
-      x-source-svc: orders
-    ErrorMessageDto:
-      description: Default error object for services. This gives consistent error object that all services may use.
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          description: Error code
-          example: UNKNOWN_ERROR
-        message:
-          type: string
-          description: Descriptive error message
-          example: Request could not be completed due to an error
-        data:
-          type: object
-          description: Additional data for this error message.
-          additionalProperties: true
-          properties: {}
-      x-common-model: ErrorMessageDto
-    QuoteDto:
-      title: QuoteDto
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        adId:
-          type: string
-          format: uuid
-        payoutCurrency:
-          type: string
-        rate:
-          type: number
-        minimumAmount:
-          type: number
-        maximumAmount:
-          type: number
-        expiresAt:
-          type: string
-          format: date-time
-          description: Timestamp field.
-        paymentMode:
-          description: 'BUY-only. Echoes the paymentMode persisted on the quote so the client can confirm which
-
-            mode this quote was issued under. Null for SELL quotes.
-
-            '
-          allOf:
-          - $ref: '#/components/schemas/PaymentMode'
-      x-source-svc: orders
-    OrderType:
-      type: string
-      enum:
-      - BUY
-      - SELL
-      x-source-svc: orders
-    QuoteResponseDto:
-      type: object
-      properties:
-        quote:
-          $ref: '#/components/schemas/QuoteDto'
-        fallbackQuote:
-          $ref: '#/components/schemas/QuoteDto'
-      x-source-svc: orders
-    PaymentMode:
-      type: string
-      default: DEPOSIT
-      description: "How the buyer is paying fiat for a BUY order. Chosen at quote time on `POST /quotes` and\npersisted on the resulting quote; the BUY order then inherits the value when it references\nthe quote. Clients do not (and cannot) re-specify it on the order request — the quote is\nthe binding contract.\n\n- `DEPOSIT` — buyer transfers fiat from an external bank account into the merchant's\n  pay-in account. Every payouts provider supports this and it is the default when the\n  field is omitted.\n- `INTERNAL_TRANSFER` — buyer pays via an internal transfer routed through a configured\n  override provider (currently `onb-nuban` for merchants on `onb-nuban-collections`).\n  Quote generation filters out merchants whose payment account doesn't have\n  `providerDetails.supportsCustomPayin=true`, or whose provider has no configured\n  internal-transfer override on the order service. If no merchant satisfies the request,\n  quote generation returns `NoMatchingQuoteException` rather than producing a quote that\n  would later fail at order placement.\n"
-      enum:
-      - DEPOSIT
-      - INTERNAL_TRANSFER
-      x-source-svc: orders
     QuoteRequestDto:
       title: QuoteRequestDto
       required:
@@ -316,6 +222,100 @@ components:
             '
           allOf:
           - $ref: '#/components/schemas/PaymentMode'
+      x-source-svc: orders
+    OrderType:
+      type: string
+      enum:
+      - BUY
+      - SELL
+      x-source-svc: orders
+    QuoteResponseDto:
+      type: object
+      properties:
+        quote:
+          $ref: '#/components/schemas/QuoteDto'
+        fallbackQuote:
+          $ref: '#/components/schemas/QuoteDto'
+      x-source-svc: orders
+    QuoteDto:
+      title: QuoteDto
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        adId:
+          type: string
+          format: uuid
+        payoutCurrency:
+          type: string
+        rate:
+          type: number
+        minimumAmount:
+          type: number
+        maximumAmount:
+          type: number
+        expiresAt:
+          type: string
+          format: date-time
+          description: Timestamp field.
+        paymentMode:
+          description: 'BUY-only. Echoes the paymentMode persisted on the quote so the client can confirm which
+
+            mode this quote was issued under. Null for SELL quotes.
+
+            '
+          allOf:
+          - $ref: '#/components/schemas/PaymentMode'
+      x-source-svc: orders
+    ErrorMessageDto:
+      description: Default error object for services. This gives consistent error object that all services may use.
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          description: Error code
+          example: UNKNOWN_ERROR
+        message:
+          type: string
+          description: Descriptive error message
+          example: Request could not be completed due to an error
+        data:
+          type: object
+          description: Additional data for this error message.
+          additionalProperties: true
+          properties: {}
+      x-common-model: ErrorMessageDto
+    ProviderPaymentChannel:
+      type: string
+      description: Payment channel a provider is used for
+      enum:
+      - BANK_TRANSFER
+      - MOBILE_MONEY
+      - P2P_WALLET
+      x-source-svc: orders
+    RateDto:
+      title: RateDto
+      type: object
+      properties:
+        currency:
+          type: string
+        price:
+          type: number
+        lastUpdated:
+          type: string
+          format: date-time
+      x-source-svc: orders
+    PaymentMode:
+      type: string
+      default: DEPOSIT
+      description: "How the buyer is paying fiat for a BUY order. Chosen at quote time on `POST /quotes` and\npersisted on the resulting quote; the BUY order then inherits the value when it references\nthe quote. Clients do not (and cannot) re-specify it on the order request — the quote is\nthe binding contract.\n\n- `DEPOSIT` — buyer transfers fiat from an external bank account into the merchant's\n  pay-in account. Every payouts provider supports this and it is the default when the\n  field is omitted.\n- `INTERNAL_TRANSFER` — buyer pays via an internal transfer routed through a configured\n  override provider (currently `onb-nuban` for merchants on `onb-nuban-collections`).\n  Quote generation filters out merchants whose payment account doesn't have\n  `providerDetails.supportsCustomPayin=true`, or whose provider has no configured\n  internal-transfer override on the order service. If no merchant satisfies the request,\n  quote generation returns `NoMatchingQuoteException` rather than producing a quote that\n  would later fail at order placement.\n"
+      enum:
+      - DEPOSIT
+      - INTERNAL_TRANSFER
       x-source-svc: orders
   securitySchemes:
     authSignature:

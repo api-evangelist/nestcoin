@@ -128,6 +128,19 @@ components:
 
             '
       x-source-svc: payment-methods
+    PaymentMethodUpdateRequest:
+      required:
+      - data
+      type: object
+      properties:
+        data:
+          type: object
+          additionalProperties: true
+          description: Can be used to store the required fields and their values for a payment method created by a user.
+        otp:
+          type: string
+          description: Otp code to verify if user exists
+      x-source-svc: payment-methods
     ErrorMessageDto:
       description: Default error object for services. This gives consistent error object that all services may use.
       type: object
@@ -149,19 +162,6 @@ components:
           additionalProperties: true
           properties: {}
       x-common-model: ErrorMessageDto
-    PaymentMethodUpdateRequest:
-      required:
-      - data
-      type: object
-      properties:
-        data:
-          type: object
-          additionalProperties: true
-          description: Can be used to store the required fields and their values for a payment method created by a user.
-        otp:
-          type: string
-          description: Otp code to verify if user exists
-      x-source-svc: payment-methods
   securitySchemes:
     authSignature:
       type: apiKey

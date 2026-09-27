@@ -188,20 +188,138 @@ paths:
       - authToken: []
 components:
   schemas:
-    CreateOfframpAccountRequest:
+    OfframpAccountTransactionList:
+      allOf:
+      - $ref: '#/components/schemas/Paging'
+      - type: object
+        required:
+        - content
+        properties:
+          content:
+            type: array
+            description: List of offramp account transactions
+            items:
+              $ref: '#/components/schemas/OfframpAccountTransaction'
+      x-source-svc: ledger
+    TransactionStatus:
+      type: string
+      description: 'Status of the transaction, indicating its current state in the processing lifecycle.
+
+        - PENDING: The transaction has been created but not yet processed.
+
+        - IN_PROGRESS: The transaction is currently being processed.
+
+        - FAILED: The transaction processing has failed.
+
+        - SUCCESS: The transaction has been successfully processed.
+
+        '
+      enum:
+      - PENDING
+      - IN_PROGRESS
+      - FAILED
+      - SUCCESS
+      x-source-svc: ledger
+    OfframpAccountTransaction:
+      allOf:
+      - $ref: '#/components/schemas/CashPaymentTransaction'
+      - type: object
+        description: Details of an offramp account transaction.
+        properties:
+          offrampAccountId:
+            type: string
+            format: uuid
+            description: Identifier of the offramp account associated with this transaction.
+          blockchainInfo:
+            $ref: '#/components/schemas/TransactionBlockchainInfo'
+      x-source-svc: ledger
+    TokenDetails:
+      type: object
+      description: Details of supported funding token object.
+      required:
+      - symbol
+      - name
+      - logoUrl
+      - supportedNetworks
+      properties:
+        symbol:
+          type: string
+          description: Token symbol
+          example: USDC
+        name:
+          type: string
+          description: Token name.
+          example: USD Coin
+        logoUrl:
+          type: string
+          example: https://etherscan.io/token/images/centre-usdc_28.png
+          description: URL for token's logo.
+        supportedNetworks:
+          description: A list of networks on which the token is supported
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/TokenNetwork'
+      x-source-svc: ledger
+    TokenNetwork:
       type: object
       required:
-      - beneficiaryId
-      - payoutCurrency
+      - code
+      - networkInfo
+      - decimals
+      - contractAddress
+      - minimumDeposit
       properties:
-        payoutCurrency:
+        code:
           type: string
-          description: Currency in which payouts will be made to the beneficiary.
-          example: KES
-        beneficiaryId:
+          description: 'human-readable identifier for the token on this network. Usually a combination of network code and asset symbol
+
+            '
+          example: ETH_USDC
+        decimals:
+          type: integer
+          format: int32
+          example: 6
+          minimum: 0
+          description: The number of decimals used by this token on this network.
+        contractAddress:
           type: string
-          format: uuid
-          description: "Identifier of an existing beneficiary to be linked to the offramp account. \nShould be in the same currency as payoutCurrency.\n"
+          description: Contract address of the token on the given network.
+          example: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+        minimumDeposit:
+          type: number
+          description: Minimum amount allowed for deposits.
+          example: 5.25
+        depositAvailable:
+          type: boolean
+          description: Indicates if deposits are currently available. Address request will fail if this is false.
+          default: true
+        withdrawalAvailable:
+          type: boolean
+          description: Indicates if withdrawals are currently available. Withdrawal request will fail if this is false.
+          default: true
+        withdrawalFee:
+          type: number
+          minimum: 0
+          example: '100.01'
+          description: Transaction value. Must be positive.
+        networkInfo:
+          $ref: '#/components/schemas/LedgerSvcBlockchainNetwork'
+      x-source-svc: ledger
+    TransactionBlockchainAddress:
+      type: object
+      description: Address data
+      required:
+      - address
+      properties:
+        address:
+          type: string
+          description: Blockchain address where deposit was received.
+          example: '0x2b059a574a35e60b228d10d54fec2671de4928e1'
+        memo:
+          type: string
+          description: Memo for blockchains where memo is required.
+          example: '1290122112'
       x-source-svc: ledger
     CashPaymentTransaction:
       type: object
@@ -258,6 +376,180 @@ components:
         createdDate:
           type: string
           format: date-time
+      x-source-svc: ledger
+    ErrorMessageDto:
+      description: Default error object for services. This gives consistent error object that all services may use.
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          description: Error code
+          example: UNKNOWN_ERROR
+        message:
+          type: string
+          description: Descriptive error message
+          example: Request could not be completed due to an error
+        data:
+          type: object
+          description: Additional data for this error message.
+          additionalProperties: true
+          properties: {}
+      x-common-model: ErrorMessageDto
+    OfframpAccountFundingAddress:
+      type: object
+      required:
+      - address
+      - network
+      - supportedTokens
+      properties:
+        address:
+          type: string
+          description: The deposit address for the offramp account.
+          example: '0x43e4715ae093a4c86b5ecddb52216c4f879e9672'
+        memo:
+          type: string
+          description: Memo for networks that support memo.
+        network:
+          $ref: '#/components/schemas/LedgerSvcBlockchainNetwork'
+        supportedTokens:
+          type: array
+          items:
+            $ref: '#/components/schemas/TokenDetails'
+      x-source-svc: ledger
+    Paging:
+      description: Base object for paginated list
+      type: object
+      properties:
+        name:
+          type: string
+          description: Descriptive name for the list
+        size:
+          minimum: 0
+          type: integer
+          format: int32
+          description: Positive integer
+        totalItems:
+          minimum: 0
+          type: integer
+          format: int32
+          description: Positive integer
+        nextPage:
+          minimum: 0
+          type: integer
+          format: int32
+          description: Positive integer
+        previousPage:
+          minimum: 0
+          type: integer
+          format: int32
+          description: Positive integer
+      discriminator:
+        propertyName: name
+      x-common-model: Paging
+    OfframpAccountList:
+      allOf:
+      - $ref: '#/components/schemas/Paging'
+      - type: object
+        required:
+        - content
+        properties:
+          content:
+            type: array
+            items:
+              $ref: '#/components/schemas/OfframpAccount'
+      x-source-svc: ledger
+    OfframpAccountStatus:
+      type: string
+      description: Status of the offramp account.
+      enum:
+      - ACTIVE
+      - INACTIVE
+      - SUSPENDED
+      x-source-svc: ledger
+    CreateOfframpAccountRequest:
+      type: object
+      required:
+      - beneficiaryId
+      - payoutCurrency
+      properties:
+        payoutCurrency:
+          type: string
+          description: Currency in which payouts will be made to the beneficiary.
+          example: KES
+        beneficiaryId:
+          type: string
+          format: uuid
+          description: "Identifier of an existing beneficiary to be linked to the offramp account. \nShould be in the same currency as payoutCurrency.\n"
+      x-source-svc: ledger
+    OfframpAccount:
+      type: object
+      required:
+      - id
+      - beneficiary
+      - payoutCurrency
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the offramp account.
+        beneficiary:
+          $ref: '#/components/schemas/Beneficiary'
+        payoutCurrency:
+          type: string
+          example: KES
+        status:
+          $ref: '#/components/schemas/OfframpAccountStatus'
+        createdDate:
+          type: string
+          format: date-time
+      x-source-svc: ledger
+    BasicBeneficiaryInfo:
+      type: object
+      description: Basic information about a beneficiary as at the time of transaction.
+      required:
+      - id
+      - accountName
+      - beneficiaryType
+      - accountIdentifier
+      - paymentChannelId
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the beneficiary.
+        accountName:
+          type: string
+          description: Name on the account
+          example: John Doe
+        beneficiaryType:
+          type: string
+          description: Type of beneficiary object.
+          example: BeneficiaryLocalBankAccount
+        bankName:
+          type: string
+          description: 'Name of the receiving bank, for mobile money this would be the network, and for P2P wallet it will be the name of the account provider
+
+            '
+          example: Great Bank LLC
+        accountIdentifier:
+          type: string
+          description: 'The account identifier at the bank. For mobile money, this is the phone number on account, for P2P wallet, this is the account ID
+
+            Where routing number or sort code is present, this would be `{routingNumber}-{accountNumber}`
+
+            '
+          example: '230101010'
+        paymentChannelId:
+          type: string
+          description: Identifier of the payment channel used for this transaction, if available. This can be used to determine the exact payment method used for the transaction.
+          example: BANK_TRANSFER_NIGERIA
+        country:
+          type: string
+          description: Country where the payment method belongs if available
+          example: IE
       x-source-svc: ledger
     LedgerSvcBlockchainNetwork:
       type: object
@@ -324,6 +616,54 @@ components:
 
             '
       x-source-svc: ledger
+    TransactionBlockchainInfo:
+      type: object
+      description: Blockchain transaction data, present on Crypto-backed transactions.
+      required:
+      - txHash
+      - recipient
+      - value
+      - tokenSymbol
+      properties:
+        txHash:
+          type: string
+          description: Blockchain Transaction Hash
+          example: '0x093a0b443d5f698d1097368c1c05fab1ee2304e508b36c08bb72c40389c17584'
+        recipient:
+          $ref: '#/components/schemas/TransactionBlockchainAddress'
+        senderAddress:
+          type: string
+          description: The address of the sender.
+          example: '0x2b059a574a35e60b228d10d54fec2671de4928e1'
+        value:
+          type: number
+          example: '100.01'
+          minimum: 0
+          description: Quantity of tokens transferred in the transaction.
+          default: '0.0'
+        blockNumber:
+          type: integer
+          format: int64
+          example: 20564802
+        tokenSymbol:
+          example: USDT
+          description: Token symbol
+          type: string
+        timestamp:
+          type: integer
+          format: int64
+          description: Transaction block timestamp.
+        explorerUrl:
+          type: string
+          format: url
+          description: URL to view the transaction on a blockchain explorer.
+      x-source-svc: ledger
+    AccountHolderType:
+      type: string
+      enum:
+      - INDIVIDUAL
+      - BUSINESS
+      x-source-svc: ledger
     Beneficiary:
       type: object
       additionalProperties: false
@@ -377,365 +717,6 @@ components:
         accountHolderType:
           $ref: '#/components/schemas/AccountHolderType'
       x-source-svc: ledger
-    TransactionBlockchainInfo:
-      type: object
-      description: Blockchain transaction data, present on Crypto-backed transactions.
-      required:
-      - txHash
-      - recipient
-      - value
-      - tokenSymbol
-      properties:
-        txHash:
-          type: string
-          description: Blockchain Transaction Hash
-          example: '0x093a0b443d5f698d1097368c1c05fab1ee2304e508b36c08bb72c40389c17584'
-        recipient:
-          $ref: '#/components/schemas/TransactionBlockchainAddress'
-        senderAddress:
-          type: string
-          description: The address of the sender.
-          example: '0x2b059a574a35e60b228d10d54fec2671de4928e1'
-        value:
-          type: number
-          example: '100.01'
-          minimum: 0
-          description: Quantity of tokens transferred in the transaction.
-          default: '0.0'
-        blockNumber:
-          type: integer
-          format: int64
-          example: 20564802
-        tokenSymbol:
-          example: USDT
-          description: Token symbol
-          type: string
-        timestamp:
-          type: integer
-          format: int64
-          description: Transaction block timestamp.
-        explorerUrl:
-          type: string
-          format: url
-          description: URL to view the transaction on a blockchain explorer.
-      x-source-svc: ledger
-    OfframpAccount:
-      type: object
-      required:
-      - id
-      - beneficiary
-      - payoutCurrency
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: Unique identifier for the offramp account.
-        beneficiary:
-          $ref: '#/components/schemas/Beneficiary'
-        payoutCurrency:
-          type: string
-          example: KES
-        status:
-          $ref: '#/components/schemas/OfframpAccountStatus'
-        createdDate:
-          type: string
-          format: date-time
-      x-source-svc: ledger
-    Paging:
-      description: Base object for paginated list
-      type: object
-      properties:
-        name:
-          type: string
-          description: Descriptive name for the list
-        size:
-          minimum: 0
-          type: integer
-          format: int32
-          description: Positive integer
-        totalItems:
-          minimum: 0
-          type: integer
-          format: int32
-          description: Positive integer
-        nextPage:
-          minimum: 0
-          type: integer
-          format: int32
-          description: Positive integer
-        previousPage:
-          minimum: 0
-          type: integer
-          format: int32
-          description: Positive integer
-      discriminator:
-        propertyName: name
-      x-common-model: Paging
-    TransactionBlockchainAddress:
-      type: object
-      description: Address data
-      required:
-      - address
-      properties:
-        address:
-          type: string
-          description: Blockchain address where deposit was received.
-          example: '0x2b059a574a35e60b228d10d54fec2671de4928e1'
-        memo:
-          type: string
-          description: Memo for blockchains where memo is required.
-          example: '1290122112'
-      x-source-svc: ledger
-    OfframpAccountStatus:
-      type: string
-      description: Status of the offramp account.
-      enum:
-      - ACTIVE
-      - INACTIVE
-      - SUSPENDED
-      x-source-svc: ledger
-    OfframpAccountTransactionList:
-      allOf:
-      - $ref: '#/components/schemas/Paging'
-      - type: object
-        required:
-        - content
-        properties:
-          content:
-            type: array
-            description: List of offramp account transactions
-            items:
-              $ref: '#/components/schemas/OfframpAccountTransaction'
-      x-source-svc: ledger
-    TokenDetails:
-      type: object
-      description: Details of supported funding token object.
-      required:
-      - symbol
-      - name
-      - logoUrl
-      - supportedNetworks
-      properties:
-        symbol:
-          type: string
-          description: Token symbol
-          example: USDC
-        name:
-          type: string
-          description: Token name.
-          example: USD Coin
-        logoUrl:
-          type: string
-          example: https://etherscan.io/token/images/centre-usdc_28.png
-          description: URL for token's logo.
-        supportedNetworks:
-          description: A list of networks on which the token is supported
-          type: array
-          minItems: 1
-          items:
-            $ref: '#/components/schemas/TokenNetwork'
-      x-source-svc: ledger
-    BasicBeneficiaryInfo:
-      type: object
-      description: Basic information about a beneficiary as at the time of transaction.
-      required:
-      - id
-      - accountName
-      - beneficiaryType
-      - accountIdentifier
-      - paymentChannelId
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: Unique identifier for the beneficiary.
-        accountName:
-          type: string
-          description: Name on the account
-          example: John Doe
-        beneficiaryType:
-          type: string
-          description: Type of beneficiary object.
-          example: BeneficiaryLocalBankAccount
-        bankName:
-          type: string
-          description: 'Name of the receiving bank, for mobile money this would be the network, and for P2P wallet it will be the name of the account provider
-
-            '
-          example: Great Bank LLC
-        accountIdentifier:
-          type: string
-          description: 'The account identifier at the bank. For mobile money, this is the phone number on account, for P2P wallet, this is the account ID
-
-            Where routing number or sort code is present, this would be `{routingNumber}-{accountNumber}`
-
-            '
-          example: '230101010'
-        paymentChannelId:
-          type: string
-          description: Identifier of the payment channel used for this transaction, if available. This can be used to determine the exact payment method used for the transaction.
-          example: BANK_TRANSFER_NIGERIA
-        country:
-          type: string
-          description: Country where the payment method belongs if available
-          example: IE
-      x-source-svc: ledger
-    AccountHolderType:
-      type: string
-      enum:
-      - INDIVIDUAL
-      - BUSINESS
-      x-source-svc: ledger
-    TokenNetwork:
-      type: object
-      required:
-      - code
-      - networkInfo
-      - decimals
-      - contractAddress
-      - minimumDeposit
-      properties:
-        code:
-          type: string
-          description: 'human-readable identifier for the token on this network. Usually a combination of network code and asset symbol
-
-            '
-          example: ETH_USDC
-        decimals:
-          type: integer
-          format: int32
-          example: 6
-          minimum: 0
-          description: The number of decimals used by this token on this network.
-        contractAddress:
-          type: string
-          description: Contract address of the token on the given network.
-          example: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
-        minimumDeposit:
-          type: number
-          description: Minimum amount allowed for deposits.
-          example: 5.25
-        depositAvailable:
-          type: boolean
-          description: Indicates if deposits are currently available. Address request will fail if this is false.
-          default: true
-        withdrawalAvailable:
-          type: boolean
-          description: Indicates if withdrawals are currently available. Withdrawal request will fail if this is false.
-          default: true
-        withdrawalFee:
-          type: number
-          minimum: 0
-          example: '100.01'
-          description: Transaction value. Must be positive.
-        networkInfo:
-          $ref: '#/components/schemas/LedgerSvcBlockchainNetwork'
-      x-source-svc: ledger
-    OfframpAccountList:
-      allOf:
-      - $ref: '#/components/schemas/Paging'
-      - type: object
-        required:
-        - content
-        properties:
-          content:
-            type: array
-            items:
-              $ref: '#/components/schemas/OfframpAccount'
-      x-source-svc: ledger
-    OfframpAccountTransaction:
-      allOf:
-      - $ref: '#/components/schemas/CashPaymentTransaction'
-      - type: object
-        description: Details of an offramp account transaction.
-        properties:
-          offrampAccountId:
-            type: string
-            format: uuid
-            description: Identifier of the offramp account associated with this transaction.
-          blockchainInfo:
-            $ref: '#/components/schemas/TransactionBlockchainInfo'
-      x-source-svc: ledger
-    TransactionStatus:
-      type: string
-      description: 'Status of the transaction, indicating its current state in the processing lifecycle.
-
-        - PENDING: The transaction has been created but not yet processed.
-
-        - IN_PROGRESS: The transaction is currently being processed.
-
-        - FAILED: The transaction processing has failed.
-
-        - SUCCESS: The transaction has been successfully processed.
-
-        '
-      enum:
-      - PENDING
-      - IN_PROGRESS
-      - FAILED
-      - SUCCESS
-      x-source-svc: ledger
-    OfframpAccountFundingAddress:
-      type: object
-      required:
-      - address
-      - network
-      - supportedTokens
-      properties:
-        address:
-          type: string
-          description: The deposit address for the offramp account.
-          example: '0x43e4715ae093a4c86b5ecddb52216c4f879e9672'
-        memo:
-          type: string
-          description: Memo for networks that support memo.
-        network:
-          $ref: '#/components/schemas/LedgerSvcBlockchainNetwork'
-        supportedTokens:
-          type: array
-          items:
-            $ref: '#/components/schemas/TokenDetails'
-      x-source-svc: ledger
-    ErrorMessageDto:
-      description: Default error object for services. This gives consistent error object that all services may use.
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          description: Error code
-          example: UNKNOWN_ERROR
-        message:
-          type: string
-          description: Descriptive error message
-          example: Request could not be completed due to an error
-        data:
-          type: object
-          description: Additional data for this error message.
-          additionalProperties: true
-          properties: {}
-      x-common-model: ErrorMessageDto
-  parameters:
-    LedgerSvcpage:
-      in: query
-      name: page
-      required: false
-      description: Page parameter, starting from 1
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-    LedgerSvcsize:
-      in: query
-      name: size
-      required: false
-      schema:
-        type: integer
-        maximum: 100
-        minimum: 1
-        default: 20
   responses:
     LedgerSvcUnauthorized:
       description: Client is not authorized to make request
@@ -764,6 +745,25 @@ components:
           example:
             code: BAD_REQUEST
             message: Request could not be validated.
+  parameters:
+    LedgerSvcsize:
+      in: query
+      name: size
+      required: false
+      schema:
+        type: integer
+        maximum: 100
+        minimum: 1
+        default: 20
+    LedgerSvcpage:
+      in: query
+      name: page
+      required: false
+      description: Page parameter, starting from 1
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
   securitySchemes:
     authSignature:
       type: apiKey

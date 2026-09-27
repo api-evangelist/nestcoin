@@ -163,63 +163,6 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
 components:
   schemas:
-    ErrorMessageDto:
-      description: Default error object for services. This gives consistent error object that all services may use.
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          description: Error code
-          example: UNKNOWN_ERROR
-        message:
-          type: string
-          description: Descriptive error message
-          example: Request could not be completed due to an error
-        data:
-          type: object
-          description: Additional data for this error message.
-          additionalProperties: true
-          properties: {}
-      x-common-model: ErrorMessageDto
-    Token:
-      properties:
-        token:
-          type: string
-          description: Token string (Request, Access, Refresh)
-        expiry:
-          type: string
-          format: date-time
-          description: Timestamp field.
-          x-source-svc: auth
-      required:
-      - token
-      - expiry
-      x-source-svc: auth
-    UserAuthOtpResendResponse:
-      type: object
-      properties:
-        sent:
-          type: boolean
-        authSessionId:
-          type: string
-      x-source-svc: auth
-    AccessTokenResponse:
-      properties:
-        userId:
-          type: string
-          description: Onboard unique User ID
-        accessToken:
-          $ref: '#/components/schemas/Token'
-        refreshToken:
-          $ref: '#/components/schemas/Token'
-      required:
-      - userId
-      - accessToken
-      - refreshToken
-      x-source-svc: auth
     UserAuthInitRequest:
       required:
       - email
@@ -241,6 +184,72 @@ components:
           description: Indicates if user is a returning user, i.e. previously verified
           default: false
       x-source-svc: auth
+    AccessTokenResponse:
+      properties:
+        userId:
+          type: string
+          description: Onboard unique User ID
+        accessToken:
+          $ref: '#/components/schemas/Token'
+        refreshToken:
+          $ref: '#/components/schemas/Token'
+      required:
+      - userId
+      - accessToken
+      - refreshToken
+      x-source-svc: auth
+    ErrorMessageDto:
+      description: Default error object for services. This gives consistent error object that all services may use.
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          description: Error code
+          example: UNKNOWN_ERROR
+        message:
+          type: string
+          description: Descriptive error message
+          example: Request could not be completed due to an error
+        data:
+          type: object
+          description: Additional data for this error message.
+          additionalProperties: true
+          properties: {}
+      x-common-model: ErrorMessageDto
+    UserAuthOtpResendResponse:
+      type: object
+      properties:
+        sent:
+          type: boolean
+        authSessionId:
+          type: string
+      x-source-svc: auth
+    Token:
+      properties:
+        token:
+          type: string
+          description: Token string (Request, Access, Refresh)
+        expiry:
+          type: string
+          format: date-time
+          description: Timestamp field.
+          x-source-svc: auth
+      required:
+      - token
+      - expiry
+      x-source-svc: auth
+    UserAuthOtpResendRequest:
+      type: object
+      required:
+      - authSessionId
+      properties:
+        authSessionId:
+          type: string
+          format: uuid
+      x-source-svc: auth
     UserAuthOtpVerificationRequest:
       required:
       - authSessionId
@@ -254,15 +263,6 @@ components:
         otp:
           type: string
           description: The verification code sent to user (partner) email
-      x-source-svc: auth
-    UserAuthOtpResendRequest:
-      type: object
-      required:
-      - authSessionId
-      properties:
-        authSessionId:
-          type: string
-          format: uuid
       x-source-svc: auth
   securitySchemes:
     authSignature:
