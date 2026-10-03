@@ -311,62 +311,38 @@ paths:
       security:
       - authToken: []
 components:
-  responses:
-    LedgerSvcEntityAlreadyExist:
-      description: Entity already exist, it can not be created.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessageDto'
-          example:
-            code: ENTITY_ALREADY_EXIST
-            message: Entity already exist, it can not be created.
-    LedgerSvcUnauthorized:
-      description: Client is not authorized to make request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessageDto'
-          example:
-            code: UNAUTHORIZED
-            message: Either client security header is missing or it is not valid.
-    LedgerSvcAccessDenied:
-      description: Expected permission is not available.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessageDto'
-          example:
-            code: ACCESS_DENIED
-            message: Expected permission or scope is not present.
-    LedgerSvcServerError:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessageDto'
-          example:
-            code: INTERNAL_ERROR
-            message: An internal server error occurred.
-    LedgerSvcNotFound:
-      description: Entity was not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessageDto'
-          example:
-            code: NOT_FOUND
-            message: Information could not be found
-    LedgerSvcInvalidRequest:
-      description: Request could not be validated
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessageDto'
-          example:
-            code: BAD_REQUEST
-            message: Request could not be validated.
   schemas:
+    FundingAddress:
+      type: object
+      additionalProperties: false
+      required:
+      - tokenInfo
+      - address
+      properties:
+        address:
+          type: string
+          description: The deposit address
+          example: '0x43e4715ae093a4c86b5ecddb52216c4f879e9672'
+        memo:
+          type: string
+          description: Optional, for networks that support memo.
+        tokenInfo:
+          $ref: '#/components/schemas/TokenNetwork'
+      x-source-svc: ledger
+    AccountBalanceDetails:
+      type: object
+      additionalProperties: false
+      description: Account balance details
+      properties:
+        balance:
+          description: The actual ledger balance of the account
+          type: number
+          example: 1000
+        availableBalance:
+          description: The available balance for spending
+          type: number
+          example: 1000
+      x-source-svc: ledger
     SubAccount:
       type: object
       additionalProperties: false
@@ -408,94 +384,28 @@ components:
           format: date-time
           description: The date the sub-account was created.
       x-source-svc: ledger
-    CreateSubAccountNumberRequest:
+    CreateSubAccountRequest:
       type: object
-      description: Request to generate a bank account number for a sub-account.
+      description: 'Request to create a sub-account under a main account.
+
+        '
       required:
-      - accountName
+      - accountId
+      - reference
       properties:
-        accountName:
+        accountId:
           type: string
-          description: Name to assign to the generated bank account.
-          example: ACME Collections
-      x-source-svc: ledger
-    TokenNetwork:
-      type: object
-      required:
-      - code
-      - networkInfo
-      - decimals
-      - contractAddress
-      - minimumDeposit
-      properties:
-        code:
+          format: uuid
+          description: The main account ID under which the sub-account will be created.
+        reference:
           type: string
-          description: 'human-readable identifier for the token on this network. Usually a combination of network code and asset symbol
-
-            '
-          example: ETH_USDC
-        decimals:
-          type: integer
-          format: int32
-          example: 6
-          minimum: 0
-          description: The number of decimals used by this token on this network.
-        contractAddress:
+          description: A unique reference for the sub-account. This must be unique across all sub-accounts.
+          minLength: 6
+          maxLength: 36
+          pattern: ^[a-zA-Z0-9_-]{6,36}$
+        displayName:
           type: string
-          description: Contract address of the token on the given network.
-          example: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
-        minimumDeposit:
-          type: number
-          description: Minimum amount allowed for deposits.
-          example: 5.25
-        depositAvailable:
-          type: boolean
-          description: Indicates if deposits are currently available. Address request will fail if this is false.
-          default: true
-        withdrawalAvailable:
-          type: boolean
-          description: Indicates if withdrawals are currently available. Withdrawal request will fail if this is false.
-          default: true
-        withdrawalFee:
-          type: number
-          minimum: 0
-          example: '100.01'
-          description: Transaction value. Must be positive.
-        networkInfo:
-          $ref: '#/components/schemas/LedgerSvcBlockchainNetwork'
-      x-source-svc: ledger
-    AccountBalanceDetails:
-      type: object
-      additionalProperties: false
-      description: Account balance details
-      properties:
-        balance:
-          description: The actual ledger balance of the account
-          type: number
-          example: 1000
-        availableBalance:
-          description: The available balance for spending
-          type: number
-          example: 1000
-      x-source-svc: ledger
-    FundingAddressResponse:
-      type: object
-      additionalProperties: false
-      required:
-      - available
-      properties:
-        available:
-          type: boolean
-          description: 'Indicates if the funding address has been generated and is available for use.
-
-            When false, the fundingAddress field will be null, and the client can create the address.
-
-            When true, the fundingAddress field will contain the deposit address details.
-
-            '
-          default: false
-        fundingAddress:
-          $ref: '#/components/schemas/FundingAddress'
+          description: An optional name for the sub-account.
       x-source-svc: ledger
     CashDepositPaymentDetails:
       type: object
@@ -516,6 +426,21 @@ components:
           type: string
           description: Currency the destination account accepts for the deposit.
           example: NGN
+      x-source-svc: ledger
+    SubAccountList:
+      allOf:
+      - $ref: '#/components/schemas/Paging'
+      - type: object
+        description: Paginated list of sub-accounts belonging to a client.
+        additionalProperties: false
+        required:
+        - content
+        properties:
+          content:
+            type: array
+            description: List of sub-accounts
+            items:
+              $ref: '#/components/schemas/SubAccount'
       x-source-svc: ledger
     ErrorMessageDto:
       description: Default error object for services. This gives consistent error object that all services may use.
@@ -538,130 +463,6 @@ components:
           additionalProperties: true
           properties: {}
       x-common-model: ErrorMessageDto
-    Paging:
-      description: Base object for paginated list
-      type: object
-      properties:
-        name:
-          type: string
-          description: Descriptive name for the list
-        size:
-          minimum: 0
-          type: integer
-          format: int32
-          description: Positive integer
-        totalItems:
-          minimum: 0
-          type: integer
-          format: int32
-          description: Positive integer
-        nextPage:
-          minimum: 0
-          type: integer
-          format: int32
-          description: Positive integer
-        previousPage:
-          minimum: 0
-          type: integer
-          format: int32
-          description: Positive integer
-      discriminator:
-        propertyName: name
-      x-common-model: Paging
-    StatusDto:
-      description: Status data, check additional message field.
-      type: object
-      required:
-      - success
-      properties:
-        success:
-          description: Status can be successful or failed, a value of true indicates success.
-          type: boolean
-          example: true
-        message:
-          type: string
-          description: additional message describing status.
-        data:
-          type: object
-          additionalProperties: true
-          description: Data associated with the status, this will not always be present
-        error:
-          $ref: '#/components/schemas/ErrorMessageDto'
-      x-common-model: StatusDto
-    FundingAddress:
-      type: object
-      additionalProperties: false
-      required:
-      - tokenInfo
-      - address
-      properties:
-        address:
-          type: string
-          description: The deposit address
-          example: '0x43e4715ae093a4c86b5ecddb52216c4f879e9672'
-        memo:
-          type: string
-          description: Optional, for networks that support memo.
-        tokenInfo:
-          $ref: '#/components/schemas/TokenNetwork'
-      x-source-svc: ledger
-    CashAccountDetails:
-      type: object
-      required:
-      - accountInfoType
-      - accountName
-      - accountNumber
-      properties:
-        accountInfoType:
-          type: string
-          pattern: ^Cash(LocalBank|SepaBank|ACHBank|SwiftBank|MobileWallet|MultiRailBank)Account$
-          description: 'Used to determine the exact schema type.
-
-            Allowed values:
-
-            - CashLocalBankAccount
-
-            - CashSepaBankAccount
-
-            - CashACHBankAccount
-
-            - CashSwiftBankAccount
-
-            - CashMobileWalletAccount
-
-            - CashMultiRailBankAccount
-
-            '
-        accountName:
-          type: string
-          description: Name on the destination account.
-          example: John Doe
-        accountNumber:
-          type: string
-          description: 'The destination account identifier. For mobile money this is the phone number, for P2P wallet the account ID.
-
-            Where routing number or sort code is present, this would be `{routingNumber}-{accountNumber}`.
-
-            '
-          example: '230101010'
-        reference:
-          type: string
-          description: 'Reference the customer must include with the deposit so the pay-in is auto-matched.
-
-            Optional — some providers do not require one.
-
-            '
-          example: PROV123456
-      discriminator:
-        propertyName: accountInfoType
-        mapping:
-          CashLocalBankAccount: '#/components/schemas/CashLocalBankAccount'
-          CashSepaBankAccount: '#/components/schemas/CashSepaBankAccount'
-          CashACHBankAccount: '#/components/schemas/CashACHBankAccount'
-          CashSwiftBankAccount: '#/components/schemas/CashSwiftBankAccount'
-          CashMobileWalletAccount: '#/components/schemas/CashMobileWalletAccount'
-          CashMultiRailBankAccount: '#/components/schemas/CashMultiRailBankAccount'
-      x-source-svc: ledger
     LedgerSvcBlockchainNetwork:
       type: object
       description: Details of blockchain network
@@ -727,44 +528,6 @@ components:
 
             '
       x-source-svc: ledger
-    CreateSubAccountRequest:
-      type: object
-      description: 'Request to create a sub-account under a main account.
-
-        '
-      required:
-      - accountId
-      - reference
-      properties:
-        accountId:
-          type: string
-          format: uuid
-          description: The main account ID under which the sub-account will be created.
-        reference:
-          type: string
-          description: A unique reference for the sub-account. This must be unique across all sub-accounts.
-          minLength: 6
-          maxLength: 36
-          pattern: ^[a-zA-Z0-9_-]{6,36}$
-        displayName:
-          type: string
-          description: An optional name for the sub-account.
-      x-source-svc: ledger
-    SubAccountList:
-      allOf:
-      - $ref: '#/components/schemas/Paging'
-      - type: object
-        description: Paginated list of sub-accounts belonging to a client.
-        additionalProperties: false
-        required:
-        - content
-        properties:
-          content:
-            type: array
-            description: List of sub-accounts
-            items:
-              $ref: '#/components/schemas/SubAccount'
-      x-source-svc: ledger
     UpdateSubAccountRequest:
       type: object
       required:
@@ -778,6 +541,243 @@ components:
           description: Indicates if the sub-account is frozen (locked) or not.
           default: false
       x-source-svc: ledger
+    TokenNetwork:
+      type: object
+      required:
+      - code
+      - networkInfo
+      - decimals
+      - contractAddress
+      - minimumDeposit
+      properties:
+        code:
+          type: string
+          description: 'human-readable identifier for the token on this network. Usually a combination of network code and asset symbol
+
+            '
+          example: ETH_USDC
+        decimals:
+          type: integer
+          format: int32
+          example: 6
+          minimum: 0
+          description: The number of decimals used by this token on this network.
+        contractAddress:
+          type: string
+          description: Contract address of the token on the given network.
+          example: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+        minimumDeposit:
+          type: number
+          description: Minimum amount allowed for deposits.
+          example: 5.25
+        depositAvailable:
+          type: boolean
+          description: Indicates if deposits are currently available. Address request will fail if this is false.
+          default: true
+        withdrawalAvailable:
+          type: boolean
+          description: Indicates if withdrawals are currently available. Withdrawal request will fail if this is false.
+          default: true
+        withdrawalFee:
+          type: number
+          minimum: 0
+          example: '100.01'
+          description: Transaction value. Must be positive.
+        networkInfo:
+          $ref: '#/components/schemas/LedgerSvcBlockchainNetwork'
+      x-source-svc: ledger
+    Paging:
+      description: Base object for paginated list
+      type: object
+      properties:
+        name:
+          type: string
+          description: Descriptive name for the list
+        size:
+          minimum: 0
+          type: integer
+          format: int32
+          description: Positive integer
+        totalItems:
+          minimum: 0
+          type: integer
+          format: int32
+          description: Positive integer
+        nextPage:
+          minimum: 0
+          type: integer
+          format: int32
+          description: Positive integer
+        previousPage:
+          minimum: 0
+          type: integer
+          format: int32
+          description: Positive integer
+      discriminator:
+        propertyName: name
+      x-common-model: Paging
+    StatusDto:
+      description: Status data, check additional message field.
+      type: object
+      required:
+      - success
+      properties:
+        success:
+          description: Status can be successful or failed, a value of true indicates success.
+          type: boolean
+          example: true
+        message:
+          type: string
+          description: additional message describing status.
+        data:
+          type: object
+          additionalProperties: true
+          description: Data associated with the status, this will not always be present
+        error:
+          $ref: '#/components/schemas/ErrorMessageDto'
+      x-common-model: StatusDto
+    CashAccountDetails:
+      type: object
+      required:
+      - accountInfoType
+      - accountName
+      - accountNumber
+      properties:
+        accountInfoType:
+          type: string
+          pattern: ^Cash(LocalBank|SepaBank|ACHBank|SwiftBank|MobileWallet|MultiRailBank)Account$
+          description: 'Used to determine the exact schema type.
+
+            Allowed values:
+
+            - CashLocalBankAccount
+
+            - CashSepaBankAccount
+
+            - CashACHBankAccount
+
+            - CashSwiftBankAccount
+
+            - CashMobileWalletAccount
+
+            - CashMultiRailBankAccount
+
+            '
+        accountName:
+          type: string
+          description: Name on the destination account.
+          example: John Doe
+        accountNumber:
+          type: string
+          description: 'The destination account identifier. For mobile money this is the phone number, for P2P wallet the account ID.
+
+            Where routing number or sort code is present, this would be `{routingNumber}-{accountNumber}`.
+
+            '
+          example: '230101010'
+        reference:
+          type: string
+          description: 'Reference the customer must include with the deposit so the pay-in is auto-matched.
+
+            Optional — some providers do not require one.
+
+            '
+          example: PROV123456
+      discriminator:
+        propertyName: accountInfoType
+        mapping:
+          CashLocalBankAccount: '#/components/schemas/CashLocalBankAccount'
+          CashSepaBankAccount: '#/components/schemas/CashSepaBankAccount'
+          CashACHBankAccount: '#/components/schemas/CashACHBankAccount'
+          CashSwiftBankAccount: '#/components/schemas/CashSwiftBankAccount'
+          CashMobileWalletAccount: '#/components/schemas/CashMobileWalletAccount'
+          CashMultiRailBankAccount: '#/components/schemas/CashMultiRailBankAccount'
+      x-source-svc: ledger
+    FundingAddressResponse:
+      type: object
+      additionalProperties: false
+      required:
+      - available
+      properties:
+        available:
+          type: boolean
+          description: 'Indicates if the funding address has been generated and is available for use.
+
+            When false, the fundingAddress field will be null, and the client can create the address.
+
+            When true, the fundingAddress field will contain the deposit address details.
+
+            '
+          default: false
+        fundingAddress:
+          $ref: '#/components/schemas/FundingAddress'
+      x-source-svc: ledger
+    CreateSubAccountNumberRequest:
+      type: object
+      description: Request to generate a bank account number for a sub-account.
+      required:
+      - accountName
+      properties:
+        accountName:
+          type: string
+          description: Name to assign to the generated bank account.
+          example: ACME Collections
+      x-source-svc: ledger
+  responses:
+    LedgerSvcNotFound:
+      description: Entity was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: NOT_FOUND
+            message: Information could not be found
+    LedgerSvcServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: INTERNAL_ERROR
+            message: An internal server error occurred.
+    LedgerSvcAccessDenied:
+      description: Expected permission is not available.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: ACCESS_DENIED
+            message: Expected permission or scope is not present.
+    LedgerSvcUnauthorized:
+      description: Client is not authorized to make request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: UNAUTHORIZED
+            message: Either client security header is missing or it is not valid.
+    LedgerSvcEntityAlreadyExist:
+      description: Entity already exist, it can not be created.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: ENTITY_ALREADY_EXIST
+            message: Entity already exist, it can not be created.
+    LedgerSvcInvalidRequest:
+      description: Request could not be validated
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: BAD_REQUEST
+            message: Request could not be validated.
   parameters:
     LedgerSvcaccountIdQuery:
       name: accountId
@@ -787,15 +787,6 @@ components:
       schema:
         type: string
         format: uuid
-    LedgerSvcsize:
-      in: query
-      name: size
-      required: false
-      schema:
-        type: integer
-        maximum: 100
-        minimum: 1
-        default: 20
     LedgerSvcaccountNumberCurrencyQuery:
       in: query
       name: currency
@@ -805,15 +796,15 @@ components:
         type: string
         default: USD
         example: NGN
-    LedgerSvcpage:
+    LedgerSvcsize:
       in: query
-      name: page
+      name: size
       required: false
-      description: Page parameter, starting from 1
       schema:
         type: integer
+        maximum: 100
         minimum: 1
-        default: 1
+        default: 20
     LedgerSvcsubAccountIdOrRef:
       in: path
       name: subAccountIdRef
@@ -823,6 +814,15 @@ components:
       required: true
       schema:
         type: string
+    LedgerSvcpage:
+      in: query
+      name: page
+      required: false
+      description: Page parameter, starting from 1
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
   securitySchemes:
     authSignature:
       type: apiKey

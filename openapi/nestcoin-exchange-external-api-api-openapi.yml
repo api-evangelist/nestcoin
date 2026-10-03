@@ -806,33 +806,6 @@ paths:
       security: []
 components:
   schemas:
-    UltimateBeneficialOwner:
-      type: object
-      description: An individual owning 25% or more of the business
-      required:
-      - fullName
-      - email
-      - ownershipPercentage
-      properties:
-        fullName:
-          type: string
-        email:
-          type: string
-          format: email
-        ownershipPercentage:
-          type: number
-      x-source-svc: exchange
-    OfferStatus:
-      type: string
-      description: the current offer status
-      default: ACTIVE
-      enum:
-      - PENDING
-      - ACTIVE
-      - OFFLINE
-      - LOW_BALANCE
-      - LIMIT_REACHED
-      x-source-svc: exchange
     DefaultConfigurationResponse:
       type: object
       required:
@@ -844,249 +817,44 @@ components:
         noKyc:
           $ref: '#/components/schemas/TransactionLimitResponse'
       x-source-svc: exchange
-    BestOfferDTO:
-      type: object
-      properties:
-        offer:
-          $ref: '#/components/schemas/OfferDto'
-        orderRequestTradeId:
-          type: string
+    BlockchainNetwork:
       required:
-      - offer
-      - orderRequestTradeId
-      x-source-svc: exchange
-    PaymentChannel:
-      required:
-      - name
-      type: object
-      properties:
-        paymentChannelId:
-          type: string
-          description: Identifier for payment channel
-        name:
-          type: string
-          description: Payment channel name
-        supportedCurrencies:
-          type: array
-          items:
-            $ref: '#/components/schemas/PaymentChannelSupportedCurrency'
-      x-source-svc: exchange
-    TradeMode:
-      type: string
-      enum:
-      - P2P
-      - IP
-      - OTC
-      x-source-svc: exchange
-    CexSignerDto:
-      required:
-      - address
-      - businessId
-      - networkId
-      type: object
-      properties:
-        businessId:
-          type: string
-          description: General format for UUID
-          format: uuid
-          example: 3a5aaea8-504a-4404-ad3d-b82574fba5e5
-        networkId:
-          type: string
-          description: Gateway network ID
-          example: bsc_testnet
-        address:
-          type: string
-          description: Exchange signer address
-          example: 1.2869144918162796e+48
-        createdAt:
-          type: string
-          format: date-time
-          description: Timestamp field.
-          x-faker: date.recent
-        updatedAt:
-          type: string
-          format: date-time
-          description: Timestamp field.
-          x-faker: date.recent
-      description: Registered wallet address
-      x-source-svc: exchange
-    InitTradeProductEnum:
-      type: string
-      enum:
-      - WEB3
-      - CUSTODIAL
-      x-source-svc: exchange
-    CreateOrderDto:
-      required:
-      - tradeUrl
-      type: object
-      properties:
-        tradeUrl:
-          type: string
-          description: Http link for CEX to redirect to
-      description: Response for a successful create order command
-      x-source-svc: exchange
-    PaymentChannelSupportedCurrency:
-      type: object
-      properties:
-        country:
-          type: string
-          description: ISO code (alpha 2) for the country valid for
-        currency:
-          type: string
-          description: ISO code for the supported currency
-      x-source-svc: exchange
-    OrderOfferDTO:
-      required:
-      - networkId
-      - partnerId
-      - rate
-      - token
-      - tokenAmount
-      - transactionType
-      type: object
-      properties:
-        offerId:
-          type: string
-          format: uuid
-        partnerId:
-          type: string
-          format: uuid
-        transactionType:
-          type: string
-          enum:
-          - ONRAMP
-          - OFFRAMP
-        rate:
-          type: number
-          example: 0.32
-        networkId:
-          type: string
-          example: TRC20
-        fiatSymbol:
-          type: string
-          example: NGN
-        fiatAmount:
-          type: number
-          example: 120.5
-        token:
-          type: string
-          example: USDT
-        tokenAmount:
-          type: number
-          example: 120.5
-        partnerDisplayName:
-          type: string
-          example: John Doe
-      x-source-svc: exchange
-    PriceDto:
-      required:
-      - price
-      type: object
-      properties:
-        price:
-          type: number
-          description: The price at which the order will be traded
-      description: Price for a trade
-      x-source-svc: exchange
-    GetExchangeOrdersExternalStatusesEnum:
-      type: string
-      enum:
-      - INITIATED
-      - DEPOSITED
-      - CONFIRMED
-      - COMPLETED
-      - PENDING
-      - CANCELLED
-      - IN_DISPUTE
-      - AWAITING_ACCEPTANCE
-      x-source-svc: exchange
-    FiatCurrency:
-      required:
-      - isoCode
+      - chainId
+      - explorer
       - logo
       - name
-      type: object
-      properties:
-        name:
-          type: string
-          description: Offical name of a currency
-        logo:
-          type: string
-          description: URL to fiat logo
-        isoCode:
-          type: string
-          description: ISO 4217 (alphabetic) for currency
-        symbol:
-          type: string
-          description: Alias to isoCode
-        unicodeSymbol:
-          type: string
-          description: Unicode symbol for fiat
-        transactionLimitsConfig:
-          $ref: '#/components/schemas/DefaultConfigurationResponse'
-      x-source-svc: exchange
-    LegalEntityType:
-      type: string
-      description: Legal structure of the business entity (KYB "Business type (Entity)")
-      enum:
-      - LIMITED_LIABILITY_COMPANY
-      - PUBLIC_COMPANY
-      - SOLE_PROPRIETORSHIP
-      - PARTNERSHIP
-      - CORPORATION
-      - TRUST
-      - PRIVATE_FOUNDATION
-      - CHARITY
-      - NON_PROFIT_ORGANIZATION
-      - PUBLIC_AGENCY
-      x-source-svc: exchange
-    GetExchangeOrdersExternalTransactionTypeEnum:
-      type: string
-      enum:
-      - ONRAMP
-      - OFFRAMP
-      x-source-svc: exchange
-    LiquidityPoolDto:
-      required:
-      - businessId
-      - cexSigner
-      - createdAt
+      - nativeAsset
       - networkId
-      - updatedAt
       type: object
       properties:
         networkId:
           type: string
-          description: ID for network
+          description: Unique network connector identifier on Onboard
           example: bsc_testnet
-        cexSigner:
+        name:
           type: string
-          description: CEX signer wallet address
-          example: 0
-        businessId:
+          description: Human readable name for the network
+          example: Binance Smart Chain Network
+        logo:
           type: string
-          description: CEX profile business ID
-        address:
+          description: network's logo
+          format: url
+        explorer:
           type: string
-          description: CEX liquidity pool address
-          example: 0
-        poolIndex:
+          description: URL to explorer (scan) application for the network
+          format: url
+        chainId:
           type: number
-          description: on-chain index of liquidity pool account
-        initHash:
+          description: Protocol chain ID
+          example: 1
+        nativeAsset:
           type: string
-          description: contract creation transaction hash
-        createdAt:
-          type: string
-          format: date-time
-          description: Timestamp field.
-          x-faker: date.recent
-        updatedAt:
-          type: string
-          format: date-time
-          description: Timestamp field.
-          x-faker: date.recent
+          description: Network native coin symbol
+          example: BNB
+        availableTokens:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tokens'
       x-source-svc: exchange
     TradeTypeQueryParamTradeTypeEnum:
       type: string
@@ -1094,34 +862,11 @@ components:
       - BUY
       - SELL
       x-source-svc: exchange
-    BusinessDocument:
-      type: object
-      description: An uploaded KYB document
-      required:
-      - label
-      - uploadId
-      properties:
-        label:
-          type: string
-          description: Human-readable document name, e.g. Certificate of Incorporation
-        uploadId:
-          type: string
-          description: Identifier of the stored upload
-        url:
-          type: string
-          description: Direct URL to the stored file
-          format: url
-      x-source-svc: exchange
-    OfferPaymentChannelColor:
-      type: object
-      properties:
-        bg:
-          type: string
-        fg:
-          type: string
-      required:
-      - bg
-      - fg
+    OfferTypeQueryParamOfferTypeEnum:
+      type: string
+      enum:
+      - ONRAMP
+      - OFFRAMP
       x-source-svc: exchange
     OfferPaymentChannel:
       type: object
@@ -1135,46 +880,206 @@ components:
         color:
           $ref: '#/components/schemas/OfferPaymentChannelColor'
       x-source-svc: exchange
-    ErrorMessageDto:
-      description: Default error object for services. This gives consistent error object that all services may use.
+    GetExchangeOrdersExternalStatusesEnum:
+      type: string
+      enum:
+      - INITIATED
+      - DEPOSITED
+      - CONFIRMED
+      - COMPLETED
+      - PENDING
+      - CANCELLED
+      - IN_DISPUTE
+      - AWAITING_ACCEPTANCE
+      x-source-svc: exchange
+    AutoRefillConfig:
       type: object
       required:
-      - code
-      - message
+      - threshold
+      - amount
       properties:
-        code:
-          type: string
-          description: Error code
-          example: UNKNOWN_ERROR
-        message:
-          type: string
-          description: Descriptive error message
-          example: Request could not be completed due to an error
-        data:
-          type: object
-          description: Additional data for this error message.
-          additionalProperties: true
-          properties: {}
-      x-common-model: ErrorMessageDto
-    BusinessDirector:
+        threshold:
+          type: number
+          description: If ad available unit go belows this value the system would trigger a auto refill
+        amount:
+          type: number
+          description: The token amount to refill the ad with
+      x-source-svc: exchange
+    OfferStatus:
+      type: string
+      description: the current offer status
+      default: ACTIVE
+      enum:
+      - PENDING
+      - ACTIVE
+      - OFFLINE
+      - LOW_BALANCE
+      - LIMIT_REACHED
+      x-source-svc: exchange
+    InitTradeProductEnum:
+      type: string
+      enum:
+      - WEB3
+      - CUSTODIAL
+      x-source-svc: exchange
+    GetExchangeOrdersExternalTransactionTypeEnum:
+      type: string
+      enum:
+      - ONRAMP
+      - OFFRAMP
+      x-source-svc: exchange
+    OfferPaymentMethod:
       type: object
-      description: A current director of the business
+      allOf:
+      - $ref: '#/components/schemas/OfferPaymentChannel'
+      - type: object
+        properties:
+          id:
+            type: string
+      x-source-svc: exchange
+    CexProfileDto:
       required:
-      - fullName
-      - email
+      - businessCategory
+      - businessEmail
+      - businessFormationDate
+      - businessId
+      - businessIndustry
+      - businessLocation
+      - businessName
+      - businessRegCountry
+      - businessRegNo
+      - createdAt
+      - legalEntityType
+      - monthlyTransactionVolume
+      - operatesInRestrictedRegions
+      - taxCountry
+      - taxIdentificationNumber
+      - transactsOnBehalfOfThirdParties
+      - updatedAt
+      type: object
       properties:
-        fullName:
+        businessId:
           type: string
-        email:
+          description: General format for UUID
+          format: uuid
+          example: 3a5aaea8-504a-4404-ad3d-b82574fba5e5
+        businessName:
+          type: string
+          description: Registered name of business entity
+          example: Onabord exchange
+        businessEmail:
           type: string
           format: email
+          description: Business profile email address
+        businessLocation:
+          type: string
+          description: business full location address
+        productName:
+          type: string
+          description: Product name
+        productWebsiteUrl:
+          type: string
+          description: HTTP link to the product / business website
+          format: url
+        productDescription:
+          type: string
+          description: Description of product
+        businessPhoneNumber:
+          pattern: \+[1-9][0-9]{0,3}[0-9]{7,14}
+          type: string
+          description: Phone number field.
+        businessRegNo:
+          type: string
+          description: Business registration number (if any)
+        businessRegCountry:
+          type: string
+          description: Business country of registration (if any)
+        businessLogoUrl:
+          type: string
+          description: HTTP link to business image logo
+          format: url
+        businessFormationDate:
+          type: string
+          description: Date the business entity was formed
+          format: date
+        businessType:
+          type: string
+        businessIndustry:
+          $ref: '#/components/schemas/BusinessIndustry'
+        enabledProducts:
+          type: array
+          items:
+            type: string
+        operatingAddress:
+          type: string
+          description: Operating address, when different from the registered address
+        taxCountry:
+          type: string
+          description: Tax residency country, Valid alpha2 country code
+          minLength: 2
+          maxLength: 2
+        taxIdentificationNumber:
+          type: string
+          description: Business tax identification number (TIN)
+        legalEntityType:
+          $ref: '#/components/schemas/LegalEntityType'
+        businessCategory:
+          $ref: '#/components/schemas/BusinessCategory'
+        monthlyTransactionVolume:
+          type: string
+          description: Current monthly transaction volume bucket in USD
+        transactsOnBehalfOfThirdParties:
+          type: boolean
+          description: Whether the business transacts on behalf of other parties
+        operatesInRestrictedRegions:
+          type: boolean
+          description: Whether the business operates in or serves customers from restricted regions
+        restrictedRegions:
+          type: string
+          description: Free-text list of restricted regions, when applicable
+        ultimateBeneficialOwners:
+          type: array
+          items:
+            $ref: '#/components/schemas/UltimateBeneficialOwner'
+        directors:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessDirector'
+        authorisedSignatories:
+          type: array
+          description: BVNs of authorised signatories (Nigerian-registered entities)
+          items:
+            type: string
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessDocument'
+        declarationAcceptedAt:
+          type: string
+          format: date-time
+          description: Timestamp field.
+          x-faker: date.recent
+        createdAt:
+          type: string
+          format: date-time
+          description: Timestamp field.
+          x-faker: date.recent
+        updatedAt:
+          type: string
+          format: date-time
+          description: Timestamp field.
+          x-faker: date.recent
+      description: CEX user profile object
       x-source-svc: exchange
-    OfferBehavior:
-      type: string
-      description: Offer rate behavior
-      enum:
-      - FIXED
-      - FLEXIBLE
+    PaymentChannelSupportedCurrency:
+      type: object
+      properties:
+        country:
+          type: string
+          description: ISO code (alpha 2) for the country valid for
+        currency:
+          type: string
+          description: ISO code for the supported currency
       x-source-svc: exchange
     ExchangeOrderDTO:
       type: object
@@ -1275,26 +1180,34 @@ components:
           type: string
           default: 'null'
       x-source-svc: exchange
-    TradeOptions:
+    BusinessDirector:
+      type: object
+      description: A current director of the business
       required:
-      - fiats
-      - networks
+      - fullName
+      - email
+      properties:
+        fullName:
+          type: string
+        email:
+          type: string
+          format: email
+      x-source-svc: exchange
+    PaymentChannel:
+      required:
+      - name
       type: object
       properties:
-        fiats:
+        paymentChannelId:
+          type: string
+          description: Identifier for payment channel
+        name:
+          type: string
+          description: Payment channel name
+        supportedCurrencies:
           type: array
           items:
-            $ref: '#/components/schemas/FiatCurrency'
-        networks:
-          type: array
-          items:
-            $ref: '#/components/schemas/BlockchainNetwork'
-        paymentChannels:
-          type: array
-          items:
-            $ref: '#/components/schemas/PaymentChannel'
-        transactionLimitsConfig:
-          $ref: '#/components/schemas/DefaultConfigurationResponse'
+            $ref: '#/components/schemas/PaymentChannelSupportedCurrency'
       x-source-svc: exchange
     ExchangeOrdersResponse:
       type: object
@@ -1312,51 +1225,150 @@ components:
         totalOrders:
           type: integer
       x-source-svc: exchange
-    OfferTypeQueryParamOfferTypeEnum:
+    DeployLiquidityPoolCommand:
+      required:
+      - cexSigner
+      - networkId
+      type: object
+      properties:
+        networkId:
+          type: string
+          description: ID for network
+          example: bsc_testnet
+        cexSigner:
+          type: string
+          description: CEX signer wallet address
+          example: 0
+      x-source-svc: exchange
+    LegalEntityType:
+      type: string
+      description: Legal structure of the business entity (KYB "Business type (Entity)")
+      enum:
+      - LIMITED_LIABILITY_COMPANY
+      - PUBLIC_COMPANY
+      - SOLE_PROPRIETORSHIP
+      - PARTNERSHIP
+      - CORPORATION
+      - TRUST
+      - PRIVATE_FOUNDATION
+      - CHARITY
+      - NON_PROFIT_ORGANIZATION
+      - PUBLIC_AGENCY
+      x-source-svc: exchange
+    OfferType:
       type: string
       enum:
       - ONRAMP
       - OFFRAMP
       x-source-svc: exchange
-    CreateOrderTradeTypeEnum:
+    ErrorMessageDto:
+      description: Default error object for services. This gives consistent error object that all services may use.
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          description: Error code
+          example: UNKNOWN_ERROR
+        message:
+          type: string
+          description: Descriptive error message
+          example: Request could not be completed due to an error
+        data:
+          type: object
+          description: Additional data for this error message.
+          additionalProperties: true
+          properties: {}
+      x-common-model: ErrorMessageDto
+    BestOfferDTO:
+      type: object
+      properties:
+        offer:
+          $ref: '#/components/schemas/OfferDto'
+        orderRequestTradeId:
+          type: string
+      required:
+      - offer
+      - orderRequestTradeId
+      x-source-svc: exchange
+    InitTradeTradeTypeEnum:
       type: string
       enum:
       - BUY
       - SELL
       x-source-svc: exchange
-    TradeCriteria:
+    WalletDTO:
       type: object
       properties:
-        verifiedKyc:
+        walletAddress:
+          type: string
+          example: 0
+        networkId:
+          type: string
+          example: bsc_testnet
+        walletName:
+          type: string
+          example: My Trust Wallet
+      x-source-svc: exchange
+    LiquidityPoolBalanceDto:
+      required:
+      - assetSymbol
+      - balance
+      - isNative
+      - networkId
+      type: object
+      properties:
+        networkId:
+          type: string
+        assetSymbol:
+          type: string
+        balance:
+          type: string
+        balanceInUsd:
+          type: number
+        tokenAddress:
+          type: string
+        isNative:
           type: boolean
       x-source-svc: exchange
-    FeeConfig:
+    TransactionLimitResponse:
       type: object
       properties:
-        tradeType:
-          $ref: '#/components/schemas/OfferType'
-        tradeMode:
-          $ref: '#/components/schemas/TradeMode'
-        base:
+        maxSingleTransactionLimit:
           type: number
-          description: Flat fee that must be paid for irrespective of percentage fee
-        tradePercentage:
+        minSingleTransactionLimit:
           type: number
-          description: Fee described as a percentage of the trade
-        cap:
+        dailyTransactionLimit:
           type: number
-          description: Maximum value a fee is allowed to have
-        network:
-          type: string
-          description: 'The network this config should be applied to(There will always be at least
-
-            one fee config, that config will have network value of `default`
-
-            '
+        maxLifetimeLimit:
+          type: number
+      x-source-svc: exchange
+    Tokens:
       required:
-      - base
-      - tradePercentage
-      - network
+      - decimals
+      - isNative
+      - networkId
+      - symbol
+      type: object
+      properties:
+        symbol:
+          type: string
+          description: Token symbol e.g ETH, USDC, BUSD
+          example: USDC
+        networkId:
+          type: string
+          description: Onboard network identifier
+        decimals:
+          type: number
+          description: Token decimal size
+        isNative:
+          type: boolean
+          description: Flags of the token is native to the blockchain or not
+        address:
+          type: string
+          description: Token address on the chain if it's not a native token
       x-source-svc: exchange
     OfferDto:
       type: object
@@ -1546,18 +1558,99 @@ components:
       - partnerRating
       - partnerLastActiveAt
       x-source-svc: exchange
-    AutoRefillConfig:
-      type: object
+    OrderOfferDTO:
       required:
-      - threshold
-      - amount
+      - networkId
+      - partnerId
+      - rate
+      - token
+      - tokenAmount
+      - transactionType
+      type: object
       properties:
-        threshold:
+        offerId:
+          type: string
+          format: uuid
+        partnerId:
+          type: string
+          format: uuid
+        transactionType:
+          type: string
+          enum:
+          - ONRAMP
+          - OFFRAMP
+        rate:
           type: number
-          description: If ad available unit go belows this value the system would trigger a auto refill
-        amount:
+          example: 0.32
+        networkId:
+          type: string
+          example: TRC20
+        fiatSymbol:
+          type: string
+          example: NGN
+        fiatAmount:
           type: number
-          description: The token amount to refill the ad with
+          example: 120.5
+        token:
+          type: string
+          example: USDT
+        tokenAmount:
+          type: number
+          example: 120.5
+        partnerDisplayName:
+          type: string
+          example: John Doe
+      x-source-svc: exchange
+    TradeCriteria:
+      type: object
+      properties:
+        verifiedKyc:
+          type: boolean
+      x-source-svc: exchange
+    BusinessCategory:
+      type: string
+      description: KYB onboarding tier that determines the required document set
+      enum:
+      - GENERAL_BUSINESS
+      - OTC_FX_LIQUIDITY_PROVIDER
+      - LICENSED_FINANCIAL_SERVICES
+      x-source-svc: exchange
+    TradeOptions:
+      required:
+      - fiats
+      - networks
+      type: object
+      properties:
+        fiats:
+          type: array
+          items:
+            $ref: '#/components/schemas/FiatCurrency'
+        networks:
+          type: array
+          items:
+            $ref: '#/components/schemas/BlockchainNetwork'
+        paymentChannels:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentChannel'
+        transactionLimitsConfig:
+          $ref: '#/components/schemas/DefaultConfigurationResponse'
+      x-source-svc: exchange
+    UltimateBeneficialOwner:
+      type: object
+      description: An individual owning 25% or more of the business
+      required:
+      - fullName
+      - email
+      - ownershipPercentage
+      properties:
+        fullName:
+          type: string
+        email:
+          type: string
+          format: email
+        ownershipPercentage:
+          type: number
       x-source-svc: exchange
     BusinessIndustry:
       type: string
@@ -1578,40 +1671,27 @@ components:
       - MEDIA_ENTERTAINMENT
       - OTHER
       x-source-svc: exchange
-    DeployLiquidityPoolCommand:
+    CreateOrderDto:
       required:
-      - cexSigner
-      - networkId
+      - tradeUrl
       type: object
       properties:
-        networkId:
+        tradeUrl:
           type: string
-          description: ID for network
-          example: bsc_testnet
-        cexSigner:
-          type: string
-          description: CEX signer wallet address
-          example: 0
+          description: Http link for CEX to redirect to
+      description: Response for a successful create order command
       x-source-svc: exchange
-    CexProfileDto:
+    FulfillOrderAs:
+      type: string
+      enum:
+      - BUSINESS
+      - PERSONAL
+      x-source-svc: exchange
+    CexSignerDto:
       required:
-      - businessCategory
-      - businessEmail
-      - businessFormationDate
+      - address
       - businessId
-      - businessIndustry
-      - businessLocation
-      - businessName
-      - businessRegCountry
-      - businessRegNo
-      - createdAt
-      - legalEntityType
-      - monthlyTransactionVolume
-      - operatesInRestrictedRegions
-      - taxCountry
-      - taxIdentificationNumber
-      - transactsOnBehalfOfThirdParties
-      - updatedAt
+      - networkId
       type: object
       properties:
         businessId:
@@ -1619,102 +1699,14 @@ components:
           description: General format for UUID
           format: uuid
           example: 3a5aaea8-504a-4404-ad3d-b82574fba5e5
-        businessName:
+        networkId:
           type: string
-          description: Registered name of business entity
-          example: Onabord exchange
-        businessEmail:
+          description: Gateway network ID
+          example: bsc_testnet
+        address:
           type: string
-          format: email
-          description: Business profile email address
-        businessLocation:
-          type: string
-          description: business full location address
-        productName:
-          type: string
-          description: Product name
-        productWebsiteUrl:
-          type: string
-          description: HTTP link to the product / business website
-          format: url
-        productDescription:
-          type: string
-          description: Description of product
-        businessPhoneNumber:
-          pattern: \+[1-9][0-9]{0,3}[0-9]{7,14}
-          type: string
-          description: Phone number field.
-        businessRegNo:
-          type: string
-          description: Business registration number (if any)
-        businessRegCountry:
-          type: string
-          description: Business country of registration (if any)
-        businessLogoUrl:
-          type: string
-          description: HTTP link to business image logo
-          format: url
-        businessFormationDate:
-          type: string
-          description: Date the business entity was formed
-          format: date
-        businessType:
-          type: string
-        businessIndustry:
-          $ref: '#/components/schemas/BusinessIndustry'
-        enabledProducts:
-          type: array
-          items:
-            type: string
-        operatingAddress:
-          type: string
-          description: Operating address, when different from the registered address
-        taxCountry:
-          type: string
-          description: Tax residency country, Valid alpha2 country code
-          minLength: 2
-          maxLength: 2
-        taxIdentificationNumber:
-          type: string
-          description: Business tax identification number (TIN)
-        legalEntityType:
-          $ref: '#/components/schemas/LegalEntityType'
-        businessCategory:
-          $ref: '#/components/schemas/BusinessCategory'
-        monthlyTransactionVolume:
-          type: string
-          description: Current monthly transaction volume bucket in USD
-        transactsOnBehalfOfThirdParties:
-          type: boolean
-          description: Whether the business transacts on behalf of other parties
-        operatesInRestrictedRegions:
-          type: boolean
-          description: Whether the business operates in or serves customers from restricted regions
-        restrictedRegions:
-          type: string
-          description: Free-text list of restricted regions, when applicable
-        ultimateBeneficialOwners:
-          type: array
-          items:
-            $ref: '#/components/schemas/UltimateBeneficialOwner'
-        directors:
-          type: array
-          items:
-            $ref: '#/components/schemas/BusinessDirector'
-        authorisedSignatories:
-          type: array
-          description: BVNs of authorised signatories (Nigerian-registered entities)
-          items:
-            type: string
-        documents:
-          type: array
-          items:
-            $ref: '#/components/schemas/BusinessDocument'
-        declarationAcceptedAt:
-          type: string
-          format: date-time
-          description: Timestamp field.
-          x-faker: date.recent
+          description: Exchange signer address
+          example: 1.2869144918162796e+48
         createdAt:
           type: string
           format: date-time
@@ -1725,7 +1717,17 @@ components:
           format: date-time
           description: Timestamp field.
           x-faker: date.recent
-      description: CEX user profile object
+      description: Registered wallet address
+      x-source-svc: exchange
+    PriceDto:
+      required:
+      - price
+      type: object
+      properties:
+        price:
+          type: number
+          description: The price at which the order will be traded
+      description: Price for a trade
       x-source-svc: exchange
     CreateOrderProductEnum:
       type: string
@@ -1733,86 +1735,103 @@ components:
       - WEB3
       - CUSTODIAL
       x-source-svc: exchange
-    OfferPaymentMethod:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/OfferPaymentChannel'
-      - type: object
-        properties:
-          id:
-            type: string
-      x-source-svc: exchange
-    BusinessCategory:
+    OfferBehavior:
       type: string
-      description: KYB onboarding tier that determines the required document set
+      description: Offer rate behavior
       enum:
-      - GENERAL_BUSINESS
-      - OTC_FX_LIQUIDITY_PROVIDER
-      - LICENSED_FINANCIAL_SERVICES
+      - FIXED
+      - FLEXIBLE
       x-source-svc: exchange
-    OfferType:
+    TradeMode:
       type: string
       enum:
-      - ONRAMP
-      - OFFRAMP
+      - P2P
+      - IP
+      - OTC
       x-source-svc: exchange
-    FulfillOrderAs:
-      type: string
-      enum:
-      - BUSINESS
-      - PERSONAL
-      x-source-svc: exchange
-    BlockchainNetwork:
+    LiquidityPoolDto:
       required:
-      - chainId
-      - explorer
+      - businessId
+      - cexSigner
+      - createdAt
+      - networkId
+      - updatedAt
+      type: object
+      properties:
+        networkId:
+          type: string
+          description: ID for network
+          example: bsc_testnet
+        cexSigner:
+          type: string
+          description: CEX signer wallet address
+          example: 0
+        businessId:
+          type: string
+          description: CEX profile business ID
+        address:
+          type: string
+          description: CEX liquidity pool address
+          example: 0
+        poolIndex:
+          type: number
+          description: on-chain index of liquidity pool account
+        initHash:
+          type: string
+          description: contract creation transaction hash
+        createdAt:
+          type: string
+          format: date-time
+          description: Timestamp field.
+          x-faker: date.recent
+        updatedAt:
+          type: string
+          format: date-time
+          description: Timestamp field.
+          x-faker: date.recent
+      x-source-svc: exchange
+    FiatCurrency:
+      required:
+      - isoCode
       - logo
       - name
-      - nativeAsset
-      - networkId
       type: object
       properties:
-        networkId:
-          type: string
-          description: Unique network connector identifier on Onboard
-          example: bsc_testnet
         name:
           type: string
-          description: Human readable name for the network
-          example: Binance Smart Chain Network
+          description: Offical name of a currency
         logo:
           type: string
-          description: network's logo
-          format: url
-        explorer:
+          description: URL to fiat logo
+        isoCode:
           type: string
-          description: URL to explorer (scan) application for the network
-          format: url
-        chainId:
-          type: number
-          description: Protocol chain ID
-          example: 1
-        nativeAsset:
+          description: ISO 4217 (alphabetic) for currency
+        symbol:
           type: string
-          description: Network native coin symbol
-          example: BNB
-        availableTokens:
-          type: array
-          items:
-            $ref: '#/components/schemas/Tokens'
+          description: Alias to isoCode
+        unicodeSymbol:
+          type: string
+          description: Unicode symbol for fiat
+        transactionLimitsConfig:
+          $ref: '#/components/schemas/DefaultConfigurationResponse'
       x-source-svc: exchange
-    WalletDTO:
+    BusinessDocument:
       type: object
+      description: An uploaded KYB document
+      required:
+      - label
+      - uploadId
       properties:
-        walletAddress:
+        label:
           type: string
-          example: 0
-        networkId:
+          description: Human-readable document name, e.g. Certificate of Incorporation
+        uploadId:
           type: string
-          example: bsc_testnet
-        walletName:
+          description: Identifier of the stored upload
+        url:
           type: string
-          example: My Trust Wallet
+          description: Direct URL to the stored file
+          format: url
       x-source-svc: exchange
     PartnerStats:
       type: object
@@ -1836,121 +1855,54 @@ components:
           format: double
           example: 5
       x-source-svc: exchange
-    TransactionLimitResponse:
+    OfferPaymentChannelColor:
       type: object
       properties:
-        maxSingleTransactionLimit:
-          type: number
-        minSingleTransactionLimit:
-          type: number
-        dailyTransactionLimit:
-          type: number
-        maxLifetimeLimit:
-          type: number
+        bg:
+          type: string
+        fg:
+          type: string
+      required:
+      - bg
+      - fg
       x-source-svc: exchange
-    InitTradeTradeTypeEnum:
+    CreateOrderTradeTypeEnum:
       type: string
       enum:
       - BUY
       - SELL
       x-source-svc: exchange
-    LiquidityPoolBalanceDto:
-      required:
-      - assetSymbol
-      - balance
-      - isNative
-      - networkId
+    FeeConfig:
       type: object
       properties:
-        networkId:
-          type: string
-        assetSymbol:
-          type: string
-        balance:
-          type: string
-        balanceInUsd:
+        tradeType:
+          $ref: '#/components/schemas/OfferType'
+        tradeMode:
+          $ref: '#/components/schemas/TradeMode'
+        base:
           type: number
-        tokenAddress:
+          description: Flat fee that must be paid for irrespective of percentage fee
+        tradePercentage:
+          type: number
+          description: Fee described as a percentage of the trade
+        cap:
+          type: number
+          description: Maximum value a fee is allowed to have
+        network:
           type: string
-        isNative:
-          type: boolean
-      x-source-svc: exchange
-    Tokens:
+          description: 'The network this config should be applied to(There will always be at least
+
+            one fee config, that config will have network value of `default`
+
+            '
       required:
-      - decimals
-      - isNative
-      - networkId
-      - symbol
-      type: object
-      properties:
-        symbol:
-          type: string
-          description: Token symbol e.g ETH, USDC, BUSD
-          example: USDC
-        networkId:
-          type: string
-          description: Onboard network identifier
-        decimals:
-          type: number
-          description: Token decimal size
-        isNative:
-          type: boolean
-          description: Flags of the token is native to the blockchain or not
-        address:
-          type: string
-          description: Token address on the chain if it's not a native token
+      - base
+      - tradePercentage
+      - network
       x-source-svc: exchange
   parameters:
-    ExchangeSvcfiatQueryParam:
-      name: fiat
-      in: query
-      schema:
-        type: string
-    ExchangeSvcpageQueryParam:
-      name: page
-      in: query
-      schema:
-        type: number
-    ExchangeSvctokenAmountQueryParam:
-      name: tokenAmount
-      in: query
-      schema:
-        type: number
-    ExchangeSvcpaymentChannelTypeQueryParam:
-      name: paymentChannelType
-      in: query
-      schema:
-        type: string
-    ExchangeSvcfiatAmountQueryParam:
-      name: fiatAmount
-      in: query
-      schema:
-        type: number
-    ExchangeSvclimitQueryParam:
-      name: limit
-      in: query
-      description: Pagination limit
-      schema:
-        type: number
-    ExchangeSvcnetworkQueryParam:
-      name: networkId
-      in: query
-      description: Onboard blockchain network identifier or chain Id e.g Base will be `base` or `8453` or `0x2105`
-      schema:
-        type: string
-    ExchangeSvcofferTypeQueryParam:
-      name: offerType
-      in: query
-      schema:
-        $ref: '#/components/schemas/OfferTypeQueryParamOfferTypeEnum'
-    ExchangeSvcmerchantIdQueryParam:
-      name: merchantId
-      in: query
-      required: false
-      schema:
-        type: string
-    ExchangeSvctokenQueryParam:
-      name: token
+    ExchangeSvcpaymentChannelQueryParam:
+      name: paymentChannel
       in: query
       schema:
         type: string
@@ -1963,9 +1915,57 @@ components:
       required: false
       schema:
         $ref: '#/components/schemas/TradeTypeQueryParamTradeTypeEnum'
-    ExchangeSvcpaymentChannelQueryParam:
-      name: paymentChannel
+    ExchangeSvclimitQueryParam:
+      name: limit
       in: query
+      description: Pagination limit
+      schema:
+        type: number
+    ExchangeSvctokenAmountQueryParam:
+      name: tokenAmount
+      in: query
+      schema:
+        type: number
+    ExchangeSvcpageQueryParam:
+      name: page
+      in: query
+      schema:
+        type: number
+    ExchangeSvcofferTypeQueryParam:
+      name: offerType
+      in: query
+      schema:
+        $ref: '#/components/schemas/OfferTypeQueryParamOfferTypeEnum'
+    ExchangeSvcfiatQueryParam:
+      name: fiat
+      in: query
+      schema:
+        type: string
+    ExchangeSvcpaymentChannelTypeQueryParam:
+      name: paymentChannelType
+      in: query
+      schema:
+        type: string
+    ExchangeSvcfiatAmountQueryParam:
+      name: fiatAmount
+      in: query
+      schema:
+        type: number
+    ExchangeSvctokenQueryParam:
+      name: token
+      in: query
+      schema:
+        type: string
+    ExchangeSvcmerchantIdQueryParam:
+      name: merchantId
+      in: query
+      required: false
+      schema:
+        type: string
+    ExchangeSvcnetworkQueryParam:
+      name: networkId
+      in: query
+      description: Onboard blockchain network identifier or chain Id e.g Base will be `base` or `8453` or `0x2105`
       schema:
         type: string
   securitySchemes:

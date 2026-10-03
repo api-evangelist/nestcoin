@@ -163,26 +163,33 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
 components:
   schemas:
-    UserAuthInitRequest:
-      required:
-      - email
-      type: object
+    Token:
       properties:
-        email:
+        token:
           type: string
-          description: user's email
+          description: Token string (Request, Access, Refresh)
+        expiry:
+          type: string
+          format: date-time
+          description: Timestamp field.
+          x-source-svc: auth
+      required:
+      - token
+      - expiry
       x-source-svc: auth
-    UserAuthInitResponse:
+    UserAuthOtpVerificationRequest:
+      required:
+      - authSessionId
+      - otp
       type: object
       properties:
         authSessionId:
           type: string
           description: The log in session ID of the user, valid for the duration of the OTP validity
           format: uuid
-        isReturning:
-          type: boolean
-          description: Indicates if user is a returning user, i.e. previously verified
-          default: false
+        otp:
+          type: string
+          description: The verification code sent to user (partner) email
       x-source-svc: auth
     AccessTokenResponse:
       properties:
@@ -197,6 +204,14 @@ components:
       - userId
       - accessToken
       - refreshToken
+      x-source-svc: auth
+    UserAuthOtpResendResponse:
+      type: object
+      properties:
+        sent:
+          type: boolean
+        authSessionId:
+          type: string
       x-source-svc: auth
     ErrorMessageDto:
       description: Default error object for services. This gives consistent error object that all services may use.
@@ -219,27 +234,17 @@ components:
           additionalProperties: true
           properties: {}
       x-common-model: ErrorMessageDto
-    UserAuthOtpResendResponse:
+    UserAuthInitResponse:
       type: object
       properties:
-        sent:
-          type: boolean
         authSessionId:
           type: string
-      x-source-svc: auth
-    Token:
-      properties:
-        token:
-          type: string
-          description: Token string (Request, Access, Refresh)
-        expiry:
-          type: string
-          format: date-time
-          description: Timestamp field.
-          x-source-svc: auth
-      required:
-      - token
-      - expiry
+          description: The log in session ID of the user, valid for the duration of the OTP validity
+          format: uuid
+        isReturning:
+          type: boolean
+          description: Indicates if user is a returning user, i.e. previously verified
+          default: false
       x-source-svc: auth
     UserAuthOtpResendRequest:
       type: object
@@ -250,19 +255,14 @@ components:
           type: string
           format: uuid
       x-source-svc: auth
-    UserAuthOtpVerificationRequest:
+    UserAuthInitRequest:
       required:
-      - authSessionId
-      - otp
+      - email
       type: object
       properties:
-        authSessionId:
+        email:
           type: string
-          description: The log in session ID of the user, valid for the duration of the OTP validity
-          format: uuid
-        otp:
-          type: string
-          description: The verification code sent to user (partner) email
+          description: user's email
       x-source-svc: auth
   securitySchemes:
     authSignature:

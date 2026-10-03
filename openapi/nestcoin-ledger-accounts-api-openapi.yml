@@ -192,6 +192,31 @@ paths:
       - authToken: []
 components:
   schemas:
+    Asset:
+      type: object
+      additionalProperties: false
+      properties:
+        code:
+          type: string
+          minLength: 3
+          description: The asset code/symbol for this asset.
+          example: USD
+        name:
+          type: string
+          description: Name of this asset.
+          example: US Dollars
+        decimals:
+          type: integer
+          description: Number of decimal places supported by this asset.
+          example: 2
+        symbol:
+          type: string
+          description: asset symbol
+        supportsBlockchainTransfer:
+          type: boolean
+          description: Indicates if this asset supports blockchain operations like crypto transfers.
+          default: false
+      x-source-svc: ledger
     Account:
       type: object
       additionalProperties: false
@@ -234,6 +259,121 @@ components:
           description: The date the customer was created
           type: string
           format: date-time
+      x-source-svc: ledger
+    SupportedAssetsList:
+      type: object
+      description: List of assets supported for main account.
+      properties:
+        assets:
+          type: array
+          items:
+            $ref: '#/components/schemas/Asset'
+      x-source-svc: ledger
+    CashDepositPaymentDetails:
+      type: object
+      description: 'Destination account details the customer must pay into to fund the deposit. Mirrors a Beneficiary
+
+        (without an id). Carries only the account details needed to make the payment; transaction context
+
+        (amount, status, etc.) lives on the enclosing CashDepositTransaction.
+
+        '
+      required:
+      - details
+      - payinCurrency
+      properties:
+        details:
+          $ref: '#/components/schemas/CashAccountDetails'
+        payinCurrency:
+          type: string
+          description: Currency the destination account accepts for the deposit.
+          example: NGN
+      x-source-svc: ledger
+    ErrorMessageDto:
+      description: Default error object for services. This gives consistent error object that all services may use.
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          description: Error code
+          example: UNKNOWN_ERROR
+        message:
+          type: string
+          description: Descriptive error message
+          example: Request could not be completed due to an error
+        data:
+          type: object
+          description: Additional data for this error message.
+          additionalProperties: true
+          properties: {}
+      x-common-model: ErrorMessageDto
+    LedgerSvcBlockchainNetwork:
+      type: object
+      description: Details of blockchain network
+      required:
+      - name
+      - id
+      - blockTime
+      - confirmations
+      - coinName
+      - coinSymbol
+      properties:
+        id:
+          type: string
+          description: Simple identifier to identify the network
+          example: ETH
+        name:
+          type: string
+          description: Descriptive name for network
+          example: Ethereum
+        blockTime:
+          type: integer
+          format: int32
+          description: Average time to generate new blocks in seconds.
+          minimum: 1
+          example: 15
+        confirmations:
+          type: number
+          description: 'Minimum number of confirmations needed for a transaction to be confirmed.
+
+            Total wait time for an asset can be computed as  blockTime * confirmations.
+
+            '
+          minimum: 1
+          example: 8
+        coinName:
+          type: string
+          example: Ether
+          description: name of the network's native coin
+        coinSymbol:
+          type: string
+          description: symbol of the network's native coin
+          example: ETH
+        supportsMemo:
+          type: boolean
+          description: Indicates if the network has memo support.
+          default: 'false'
+        alias:
+          type: string
+          description: The network alias
+          example: BEP20
+        addressExplorerUrl:
+          type: string
+          format: url
+          example: https://etherscan.io/address
+          description: 'Base URL path of an address on the blockchain explorer. Full URL can be obtained by appending the address to this.
+
+            '
+        txExplorerUrl:
+          type: string
+          format: url
+          example: https://etherscan.io/tx
+          description: 'Base URL Path of a transaction on the blockchain explorer. Full URL can be obtained by appending the TX hash to this URL.
+
+            '
       x-source-svc: ledger
     TokenDetails:
       type: object
@@ -308,80 +448,16 @@ components:
         networkInfo:
           $ref: '#/components/schemas/LedgerSvcBlockchainNetwork'
       x-source-svc: ledger
-    SupportedAssetsList:
-      type: object
-      description: List of assets supported for main account.
-      properties:
-        assets:
-          type: array
-          items:
-            $ref: '#/components/schemas/Asset'
-      x-source-svc: ledger
-    CashDepositPaymentDetails:
-      type: object
-      description: 'Destination account details the customer must pay into to fund the deposit. Mirrors a Beneficiary
-
-        (without an id). Carries only the account details needed to make the payment; transaction context
-
-        (amount, status, etc.) lives on the enclosing CashDepositTransaction.
-
-        '
-      required:
-      - details
-      - payinCurrency
-      properties:
-        details:
-          $ref: '#/components/schemas/CashAccountDetails'
-        payinCurrency:
-          type: string
-          description: Currency the destination account accepts for the deposit.
-          example: NGN
-      x-source-svc: ledger
-    ErrorMessageDto:
-      description: Default error object for services. This gives consistent error object that all services may use.
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          description: Error code
-          example: UNKNOWN_ERROR
-        message:
-          type: string
-          description: Descriptive error message
-          example: Request could not be completed due to an error
-        data:
-          type: object
-          description: Additional data for this error message.
-          additionalProperties: true
-          properties: {}
-      x-common-model: ErrorMessageDto
-    Asset:
+    CustomerAccountList:
       type: object
       additionalProperties: false
       properties:
-        code:
-          type: string
-          minLength: 3
-          description: The asset code/symbol for this asset.
-          example: USD
-        name:
-          type: string
-          description: Name of this asset.
-          example: US Dollars
-        decimals:
-          type: integer
-          description: Number of decimal places supported by this asset.
-          example: 2
-        symbol:
-          type: string
-          description: asset symbol
-        supportsBlockchainTransfer:
-          type: boolean
-          description: Indicates if this asset supports blockchain operations like crypto transfers.
-          default: false
+        content:
+          type: array
+          uniqueItems: true
+          description: List of accounts
+          items:
+            $ref: '#/components/schemas/Account'
       x-source-svc: ledger
     AssetBlockchainTokens:
       type: object
@@ -455,83 +531,25 @@ components:
           CashMobileWalletAccount: '#/components/schemas/CashMobileWalletAccount'
           CashMultiRailBankAccount: '#/components/schemas/CashMultiRailBankAccount'
       x-source-svc: ledger
-    LedgerSvcBlockchainNetwork:
-      type: object
-      description: Details of blockchain network
-      required:
-      - name
-      - id
-      - blockTime
-      - confirmations
-      - coinName
-      - coinSymbol
-      properties:
-        id:
-          type: string
-          description: Simple identifier to identify the network
-          example: ETH
-        name:
-          type: string
-          description: Descriptive name for network
-          example: Ethereum
-        blockTime:
-          type: integer
-          format: int32
-          description: Average time to generate new blocks in seconds.
-          minimum: 1
-          example: 15
-        confirmations:
-          type: number
-          description: 'Minimum number of confirmations needed for a transaction to be confirmed.
-
-            Total wait time for an asset can be computed as  blockTime * confirmations.
-
-            '
-          minimum: 1
-          example: 8
-        coinName:
-          type: string
-          example: Ether
-          description: name of the network's native coin
-        coinSymbol:
-          type: string
-          description: symbol of the network's native coin
-          example: ETH
-        supportsMemo:
-          type: boolean
-          description: Indicates if the network has memo support.
-          default: 'false'
-        alias:
-          type: string
-          description: The network alias
-          example: BEP20
-        addressExplorerUrl:
-          type: string
-          format: url
-          example: https://etherscan.io/address
-          description: 'Base URL path of an address on the blockchain explorer. Full URL can be obtained by appending the address to this.
-
-            '
-        txExplorerUrl:
-          type: string
-          format: url
-          example: https://etherscan.io/tx
-          description: 'Base URL Path of a transaction on the blockchain explorer. Full URL can be obtained by appending the TX hash to this URL.
-
-            '
-      x-source-svc: ledger
-    CustomerAccountList:
-      type: object
-      additionalProperties: false
-      properties:
-        content:
-          type: array
-          uniqueItems: true
-          description: List of accounts
-          items:
-            $ref: '#/components/schemas/Account'
-      x-source-svc: ledger
   responses:
+    LedgerSvcNotFound:
+      description: Entity was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: NOT_FOUND
+            message: Information could not be found
+    LedgerSvcServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: INTERNAL_ERROR
+            message: An internal server error occurred.
     LedgerSvcAccessDenied:
       description: Expected permission is not available.
       content:
@@ -550,24 +568,6 @@ components:
           example:
             code: UNAUTHORIZED
             message: Either client security header is missing or it is not valid.
-    LedgerSvcServerError:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessageDto'
-          example:
-            code: INTERNAL_ERROR
-            message: An internal server error occurred.
-    LedgerSvcNotFound:
-      description: Entity was not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessageDto'
-          example:
-            code: NOT_FOUND
-            message: Information could not be found
     LedgerSvcInvalidRequest:
       description: Request could not be validated
       content:
@@ -586,13 +586,6 @@ components:
       schema:
         type: string
         format: uuid
-    LedgerSvcassetCode:
-      in: path
-      name: assetCode
-      description: The assets code of a crypto
-      required: true
-      schema:
-        type: string
     LedgerSvcaccountNumberCurrencyQuery:
       in: query
       name: currency
@@ -602,6 +595,13 @@ components:
         type: string
         default: USD
         example: NGN
+    LedgerSvcassetCode:
+      in: path
+      name: assetCode
+      description: The assets code of a crypto
+      required: true
+      schema:
+        type: string
   securitySchemes:
     authSignature:
       type: apiKey

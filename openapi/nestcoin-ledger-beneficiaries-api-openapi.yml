@@ -254,140 +254,7 @@ paths:
       security:
       - authToken: []
 components:
-  parameters:
-    LedgerSvccurrencyCode:
-      name: currency
-      description: The currency code for the request.
-      required: false
-      in: query
-      schema:
-        type: string
-        example: USD
-    LedgerSvcbeneficiaryId:
-      in: path
-      name: beneficiaryId
-      description: The unique ID of a beneficiary
-      required: true
-      schema:
-        type: string
-        format: uuid
-    LedgerSvcsize:
-      in: query
-      name: size
-      required: false
-      schema:
-        type: integer
-        maximum: 100
-        minimum: 1
-        default: 20
-    LedgerSvcpage:
-      in: query
-      name: page
-      required: false
-      description: Page parameter, starting from 1
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-    LedgerSvcaccountHolderType:
-      name: accountHolderType
-      description: The account holder type
-      required: false
-      in: query
-      schema:
-        $ref: '#/components/schemas/AccountHolderType'
-  responses:
-    LedgerSvcUnauthorized:
-      description: Client is not authorized to make request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessageDto'
-          example:
-            code: UNAUTHORIZED
-            message: Either client security header is missing or it is not valid.
-    LedgerSvcAccessDenied:
-      description: Expected permission is not available.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessageDto'
-          example:
-            code: ACCESS_DENIED
-            message: Expected permission or scope is not present.
-    LedgerSvcServerError:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessageDto'
-          example:
-            code: INTERNAL_ERROR
-            message: An internal server error occurred.
-    LedgerSvcInvalidRequest:
-      description: Request could not be validated
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessageDto'
-          example:
-            code: BAD_REQUEST
-            message: Request could not be validated.
   schemas:
-    CreateCryptoBeneficiaryRequest:
-      type: object
-      additionalProperties: false
-      description: create crypto beneficiary for customer
-      required:
-      - address
-      - network
-      properties:
-        address:
-          description: beneficiary crypto address
-          type: string
-        name:
-          description: beneficiary name
-          type: string
-        network:
-          description: crypto network
-          type: string
-        memo:
-          description: memo for network optional
-          type: string
-      x-source-svc: ledger
-    CryptoBeneficiaryList:
-      allOf:
-      - $ref: '#/components/schemas/Paging'
-      - type: object
-        additionalProperties: false
-        properties:
-          content:
-            type: array
-            description: List of Crypto Beneficiaries
-            items:
-              $ref: '#/components/schemas/CryptoBeneficiary'
-      x-source-svc: ledger
-    ErrorMessageDto:
-      description: Default error object for services. This gives consistent error object that all services may use.
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          description: Error code
-          example: UNKNOWN_ERROR
-        message:
-          type: string
-          description: Descriptive error message
-          example: Request could not be completed due to an error
-        data:
-          type: object
-          description: Additional data for this error message.
-          additionalProperties: true
-          properties: {}
-      x-common-model: ErrorMessageDto
     CreateBeneficiaryRequest:
       type: object
       additionalProperties: false
@@ -438,56 +305,6 @@ components:
 
             '
       x-source-svc: ledger
-    Paging:
-      description: Base object for paginated list
-      type: object
-      properties:
-        name:
-          type: string
-          description: Descriptive name for the list
-        size:
-          minimum: 0
-          type: integer
-          format: int32
-          description: Positive integer
-        totalItems:
-          minimum: 0
-          type: integer
-          format: int32
-          description: Positive integer
-        nextPage:
-          minimum: 0
-          type: integer
-          format: int32
-          description: Positive integer
-        previousPage:
-          minimum: 0
-          type: integer
-          format: int32
-          description: Positive integer
-      discriminator:
-        propertyName: name
-      x-common-model: Paging
-    StatusDto:
-      description: Status data, check additional message field.
-      type: object
-      required:
-      - success
-      properties:
-        success:
-          description: Status can be successful or failed, a value of true indicates success.
-          type: boolean
-          example: true
-        message:
-          type: string
-          description: additional message describing status.
-        data:
-          type: object
-          additionalProperties: true
-          description: Data associated with the status, this will not always be present
-        error:
-          $ref: '#/components/schemas/ErrorMessageDto'
-      x-common-model: StatusDto
     AccountHolderType:
       type: string
       enum:
@@ -518,6 +335,39 @@ components:
         memo:
           description: Beneficiary network memo
           type: string
+      x-source-svc: ledger
+    ErrorMessageDto:
+      description: Default error object for services. This gives consistent error object that all services may use.
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          description: Error code
+          example: UNKNOWN_ERROR
+        message:
+          type: string
+          description: Descriptive error message
+          example: Request could not be completed due to an error
+        data:
+          type: object
+          description: Additional data for this error message.
+          additionalProperties: true
+          properties: {}
+      x-common-model: ErrorMessageDto
+    CryptoBeneficiaryList:
+      allOf:
+      - $ref: '#/components/schemas/Paging'
+      - type: object
+        additionalProperties: false
+        properties:
+          content:
+            type: array
+            description: List of Crypto Beneficiaries
+            items:
+              $ref: '#/components/schemas/CryptoBeneficiary'
       x-source-svc: ledger
     Beneficiary:
       type: object
@@ -572,6 +422,27 @@ components:
         accountHolderType:
           $ref: '#/components/schemas/AccountHolderType'
       x-source-svc: ledger
+    CreateCryptoBeneficiaryRequest:
+      type: object
+      additionalProperties: false
+      description: create crypto beneficiary for customer
+      required:
+      - address
+      - network
+      properties:
+        address:
+          description: beneficiary crypto address
+          type: string
+        name:
+          description: beneficiary name
+          type: string
+        network:
+          description: crypto network
+          type: string
+        memo:
+          description: memo for network optional
+          type: string
+      x-source-svc: ledger
     BeneficiaryList:
       allOf:
       - $ref: '#/components/schemas/Paging'
@@ -584,6 +455,135 @@ components:
             items:
               $ref: '#/components/schemas/Beneficiary'
       x-source-svc: ledger
+    StatusDto:
+      description: Status data, check additional message field.
+      type: object
+      required:
+      - success
+      properties:
+        success:
+          description: Status can be successful or failed, a value of true indicates success.
+          type: boolean
+          example: true
+        message:
+          type: string
+          description: additional message describing status.
+        data:
+          type: object
+          additionalProperties: true
+          description: Data associated with the status, this will not always be present
+        error:
+          $ref: '#/components/schemas/ErrorMessageDto'
+      x-common-model: StatusDto
+    Paging:
+      description: Base object for paginated list
+      type: object
+      properties:
+        name:
+          type: string
+          description: Descriptive name for the list
+        size:
+          minimum: 0
+          type: integer
+          format: int32
+          description: Positive integer
+        totalItems:
+          minimum: 0
+          type: integer
+          format: int32
+          description: Positive integer
+        nextPage:
+          minimum: 0
+          type: integer
+          format: int32
+          description: Positive integer
+        previousPage:
+          minimum: 0
+          type: integer
+          format: int32
+          description: Positive integer
+      discriminator:
+        propertyName: name
+      x-common-model: Paging
+  responses:
+    LedgerSvcServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: INTERNAL_ERROR
+            message: An internal server error occurred.
+    LedgerSvcAccessDenied:
+      description: Expected permission is not available.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: ACCESS_DENIED
+            message: Expected permission or scope is not present.
+    LedgerSvcUnauthorized:
+      description: Client is not authorized to make request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: UNAUTHORIZED
+            message: Either client security header is missing or it is not valid.
+    LedgerSvcInvalidRequest:
+      description: Request could not be validated
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: BAD_REQUEST
+            message: Request could not be validated.
+  parameters:
+    LedgerSvcaccountHolderType:
+      name: accountHolderType
+      description: The account holder type
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/AccountHolderType'
+    LedgerSvcsize:
+      in: query
+      name: size
+      required: false
+      schema:
+        type: integer
+        maximum: 100
+        minimum: 1
+        default: 20
+    LedgerSvcbeneficiaryId:
+      in: path
+      name: beneficiaryId
+      description: The unique ID of a beneficiary
+      required: true
+      schema:
+        type: string
+        format: uuid
+    LedgerSvccurrencyCode:
+      name: currency
+      description: The currency code for the request.
+      required: false
+      in: query
+      schema:
+        type: string
+        example: USD
+    LedgerSvcpage:
+      in: query
+      name: page
+      required: false
+      description: Page parameter, starting from 1
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
   securitySchemes:
     authSignature:
       type: apiKey

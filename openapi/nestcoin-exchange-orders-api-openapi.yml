@@ -124,18 +124,6 @@ paths:
       x-visibility: external
 components:
   schemas:
-    CreateOrderTradeTypeEnum:
-      type: string
-      enum:
-      - BUY
-      - SELL
-      x-source-svc: exchange
-    CreateOrderProductEnum:
-      type: string
-      enum:
-      - WEB3
-      - CUSTODIAL
-      x-source-svc: exchange
     ErrorMessageDto:
       description: Default error object for services. This gives consistent error object that all services may use.
       type: object
@@ -157,6 +145,18 @@ components:
           additionalProperties: true
           properties: {}
       x-common-model: ErrorMessageDto
+    CreateOrderTradeTypeEnum:
+      type: string
+      enum:
+      - BUY
+      - SELL
+      x-source-svc: exchange
+    CreateOrderProductEnum:
+      type: string
+      enum:
+      - WEB3
+      - CUSTODIAL
+      x-source-svc: exchange
   securitySchemes:
     authSignature:
       type: apiKey
