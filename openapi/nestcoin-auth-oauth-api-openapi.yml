@@ -110,6 +110,20 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
 components:
   schemas:
+    Token:
+      properties:
+        token:
+          type: string
+          description: Token string (Request, Access, Refresh)
+        expiry:
+          type: string
+          format: date-time
+          description: Timestamp field.
+          x-source-svc: auth
+      required:
+      - token
+      - expiry
+      x-source-svc: auth
     ErrorMessageDto:
       description: Default error object for services. This gives consistent error object that all services may use.
       type: object
@@ -131,20 +145,6 @@ components:
           additionalProperties: true
           properties: {}
       x-common-model: ErrorMessageDto
-    Token:
-      properties:
-        token:
-          type: string
-          description: Token string (Request, Access, Refresh)
-        expiry:
-          type: string
-          format: date-time
-          description: Timestamp field.
-          x-source-svc: auth
-      required:
-      - token
-      - expiry
-      x-source-svc: auth
     AccessTokenResponse:
       properties:
         userId:

@@ -856,41 +856,28 @@ components:
           items:
             $ref: '#/components/schemas/Tokens'
       x-source-svc: exchange
-    TradeTypeQueryParamTradeTypeEnum:
-      type: string
-      enum:
-      - BUY
-      - SELL
-      x-source-svc: exchange
-    OfferTypeQueryParamOfferTypeEnum:
-      type: string
-      enum:
-      - ONRAMP
-      - OFFRAMP
-      x-source-svc: exchange
-    OfferPaymentChannel:
+    ExchangeOrdersResponse:
       type: object
       properties:
-        channelId:
-          type: string
-        channelName:
-          type: string
-        channelType:
-          type: string
-        color:
-          $ref: '#/components/schemas/OfferPaymentChannelColor'
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExchangeOrderDTO'
+        pageNumber:
+          type: integer
+        pageSize:
+          type: integer
+        totalPages:
+          type: integer
+        totalOrders:
+          type: integer
       x-source-svc: exchange
-    GetExchangeOrdersExternalStatusesEnum:
+    OfferBehavior:
       type: string
+      description: Offer rate behavior
       enum:
-      - INITIATED
-      - DEPOSITED
-      - CONFIRMED
-      - COMPLETED
-      - PENDING
-      - CANCELLED
-      - IN_DISPUTE
-      - AWAITING_ACCEPTANCE
+      - FIXED
+      - FLEXIBLE
       x-source-svc: exchange
     AutoRefillConfig:
       type: object
@@ -905,37 +892,347 @@ components:
           type: number
           description: The token amount to refill the ad with
       x-source-svc: exchange
-    OfferStatus:
-      type: string
-      description: the current offer status
-      default: ACTIVE
-      enum:
-      - PENDING
-      - ACTIVE
-      - OFFLINE
-      - LOW_BALANCE
-      - LIMIT_REACHED
-      x-source-svc: exchange
-    InitTradeProductEnum:
-      type: string
-      enum:
-      - WEB3
-      - CUSTODIAL
-      x-source-svc: exchange
-    GetExchangeOrdersExternalTransactionTypeEnum:
-      type: string
-      enum:
-      - ONRAMP
-      - OFFRAMP
-      x-source-svc: exchange
-    OfferPaymentMethod:
+    TransactionLimitResponse:
       type: object
-      allOf:
-      - $ref: '#/components/schemas/OfferPaymentChannel'
-      - type: object
-        properties:
-          id:
-            type: string
+      properties:
+        maxSingleTransactionLimit:
+          type: number
+        minSingleTransactionLimit:
+          type: number
+        dailyTransactionLimit:
+          type: number
+        maxLifetimeLimit:
+          type: number
+      x-source-svc: exchange
+    LiquidityPoolDto:
+      required:
+      - businessId
+      - cexSigner
+      - createdAt
+      - networkId
+      - updatedAt
+      type: object
+      properties:
+        networkId:
+          type: string
+          description: ID for network
+          example: bsc_testnet
+        cexSigner:
+          type: string
+          description: CEX signer wallet address
+          example: 0
+        businessId:
+          type: string
+          description: CEX profile business ID
+        address:
+          type: string
+          description: CEX liquidity pool address
+          example: 0
+        poolIndex:
+          type: number
+          description: on-chain index of liquidity pool account
+        initHash:
+          type: string
+          description: contract creation transaction hash
+        createdAt:
+          type: string
+          format: date-time
+          description: Timestamp field.
+          x-faker: date.recent
+        updatedAt:
+          type: string
+          format: date-time
+          description: Timestamp field.
+          x-faker: date.recent
+      x-source-svc: exchange
+    ExchangeOrderDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        cexOrderId:
+          minimum: 1
+          type: integer
+        apiKey:
+          type: string
+        lastWebhookSentAt:
+          type: string
+          format: date-time
+          description: Timestamp field.
+          x-faker: date.recent
+        orderId:
+          type: string
+          format: uuid
+        reference:
+          type: string
+          example: 0165359005113074501885
+        customerId:
+          type: string
+          format: uuid
+        customerName:
+          type: string
+          example: John Doe
+        offer:
+          $ref: '#/components/schemas/OrderOfferDTO'
+        escrowAddress:
+          type: string
+          description: Escrow address
+          example: 1.2869144918162796e+48
+        paymentChannelId:
+          type: string
+          example: BANK_TRANSFER_NIGERIA
+        paymentMethod:
+          type: object
+          properties: {}
+        buyerPaymentMethod:
+          type: object
+          properties: {}
+        customerWallet:
+          $ref: '#/components/schemas/WalletDTO'
+        tokenAddress:
+          type: string
+          example: 0
+        status:
+          type: string
+          enum:
+          - INITIATED
+          - DEPOSITED
+          - CONFIRMED
+          - COMPLETED
+          - PENDING
+          - CANCELLED
+          - IN_DISPUTE
+          - AWAITING_ACCEPTANCE
+        createdAt:
+          type: string
+          format: date-time
+          description: Timestamp field.
+          x-faker: date.recent
+        initiatedAt:
+          type: string
+          format: date-time
+          description: Timestamp field.
+          x-faker: date.recent
+        depositedAt:
+          type: string
+          format: date-time
+          description: Timestamp field.
+          x-faker: date.recent
+        confirmedAt:
+          type: string
+          format: date-time
+          description: Timestamp field.
+          x-faker: date.recent
+        completedAt:
+          type: string
+          format: date-time
+          description: Timestamp field.
+          x-faker: date.recent
+        cancelledAt:
+          type: string
+          format: date-time
+          description: Timestamp field.
+          x-faker: date.recent
+        lockHash:
+          type: string
+          default: 'null'
+        confirmationHash:
+          type: string
+          default: 'null'
+        cancellationHash:
+          type: string
+          default: 'null'
+      x-source-svc: exchange
+    FulfillOrderAs:
+      type: string
+      enum:
+      - BUSINESS
+      - PERSONAL
+      x-source-svc: exchange
+    LiquidityPoolBalanceDto:
+      required:
+      - assetSymbol
+      - balance
+      - isNative
+      - networkId
+      type: object
+      properties:
+        networkId:
+          type: string
+        assetSymbol:
+          type: string
+        balance:
+          type: string
+        balanceInUsd:
+          type: number
+        tokenAddress:
+          type: string
+        isNative:
+          type: boolean
+      x-source-svc: exchange
+    OrderOfferDTO:
+      required:
+      - networkId
+      - partnerId
+      - rate
+      - token
+      - tokenAmount
+      - transactionType
+      type: object
+      properties:
+        offerId:
+          type: string
+          format: uuid
+        partnerId:
+          type: string
+          format: uuid
+        transactionType:
+          type: string
+          enum:
+          - ONRAMP
+          - OFFRAMP
+        rate:
+          type: number
+          example: 0.32
+        networkId:
+          type: string
+          example: TRC20
+        fiatSymbol:
+          type: string
+          example: NGN
+        fiatAmount:
+          type: number
+          example: 120.5
+        token:
+          type: string
+          example: USDT
+        tokenAmount:
+          type: number
+          example: 120.5
+        partnerDisplayName:
+          type: string
+          example: John Doe
+      x-source-svc: exchange
+    TradeCriteria:
+      type: object
+      properties:
+        verifiedKyc:
+          type: boolean
+      x-source-svc: exchange
+    DeployLiquidityPoolCommand:
+      required:
+      - cexSigner
+      - networkId
+      type: object
+      properties:
+        networkId:
+          type: string
+          description: ID for network
+          example: bsc_testnet
+        cexSigner:
+          type: string
+          description: CEX signer wallet address
+          example: 0
+      x-source-svc: exchange
+    BusinessDocument:
+      type: object
+      description: An uploaded KYB document
+      required:
+      - label
+      - uploadId
+      properties:
+        label:
+          type: string
+          description: Human-readable document name, e.g. Certificate of Incorporation
+        uploadId:
+          type: string
+          description: Identifier of the stored upload
+        url:
+          type: string
+          description: Direct URL to the stored file
+          format: url
+      x-source-svc: exchange
+    TradeOptions:
+      required:
+      - fiats
+      - networks
+      type: object
+      properties:
+        fiats:
+          type: array
+          items:
+            $ref: '#/components/schemas/FiatCurrency'
+        networks:
+          type: array
+          items:
+            $ref: '#/components/schemas/BlockchainNetwork'
+        paymentChannels:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentChannel'
+        transactionLimitsConfig:
+          $ref: '#/components/schemas/DefaultConfigurationResponse'
+      x-source-svc: exchange
+    BestOfferDTO:
+      type: object
+      properties:
+        offer:
+          $ref: '#/components/schemas/OfferDto'
+        orderRequestTradeId:
+          type: string
+      required:
+      - offer
+      - orderRequestTradeId
+      x-source-svc: exchange
+    PaymentChannel:
+      required:
+      - name
+      type: object
+      properties:
+        paymentChannelId:
+          type: string
+          description: Identifier for payment channel
+        name:
+          type: string
+          description: Payment channel name
+        supportedCurrencies:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentChannelSupportedCurrency'
+      x-source-svc: exchange
+    ErrorMessageDto:
+      description: Default error object for services. This gives consistent error object that all services may use.
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          description: Error code
+          example: UNKNOWN_ERROR
+        message:
+          type: string
+          description: Descriptive error message
+          example: Request could not be completed due to an error
+        data:
+          type: object
+          description: Additional data for this error message.
+          additionalProperties: true
+          properties: {}
+      x-common-model: ErrorMessageDto
+    CreateOrderTradeTypeEnum:
+      type: string
+      enum:
+      - BUY
+      - SELL
+      x-source-svc: exchange
+    TradeTypeQueryParamTradeTypeEnum:
+      type: string
+      enum:
+      - BUY
+      - SELL
       x-source-svc: exchange
     CexProfileDto:
       required:
@@ -1071,174 +1368,38 @@ components:
           x-faker: date.recent
       description: CEX user profile object
       x-source-svc: exchange
-    PaymentChannelSupportedCurrency:
-      type: object
-      properties:
-        country:
-          type: string
-          description: ISO code (alpha 2) for the country valid for
-        currency:
-          type: string
-          description: ISO code for the supported currency
+    BusinessCategory:
+      type: string
+      description: KYB onboarding tier that determines the required document set
+      enum:
+      - GENERAL_BUSINESS
+      - OTC_FX_LIQUIDITY_PROVIDER
+      - LICENSED_FINANCIAL_SERVICES
       x-source-svc: exchange
-    ExchangeOrderDTO:
+    UltimateBeneficialOwner:
       type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        cexOrderId:
-          minimum: 1
-          type: integer
-        apiKey:
-          type: string
-        lastWebhookSentAt:
-          type: string
-          format: date-time
-          description: Timestamp field.
-          x-faker: date.recent
-        orderId:
-          type: string
-          format: uuid
-        reference:
-          type: string
-          example: 0165359005113074501885
-        customerId:
-          type: string
-          format: uuid
-        customerName:
-          type: string
-          example: John Doe
-        offer:
-          $ref: '#/components/schemas/OrderOfferDTO'
-        escrowAddress:
-          type: string
-          description: Escrow address
-          example: 1.2869144918162796e+48
-        paymentChannelId:
-          type: string
-          example: BANK_TRANSFER_NIGERIA
-        paymentMethod:
-          type: object
-          properties: {}
-        buyerPaymentMethod:
-          type: object
-          properties: {}
-        customerWallet:
-          $ref: '#/components/schemas/WalletDTO'
-        tokenAddress:
-          type: string
-          example: 0
-        status:
-          type: string
-          enum:
-          - INITIATED
-          - DEPOSITED
-          - CONFIRMED
-          - COMPLETED
-          - PENDING
-          - CANCELLED
-          - IN_DISPUTE
-          - AWAITING_ACCEPTANCE
-        createdAt:
-          type: string
-          format: date-time
-          description: Timestamp field.
-          x-faker: date.recent
-        initiatedAt:
-          type: string
-          format: date-time
-          description: Timestamp field.
-          x-faker: date.recent
-        depositedAt:
-          type: string
-          format: date-time
-          description: Timestamp field.
-          x-faker: date.recent
-        confirmedAt:
-          type: string
-          format: date-time
-          description: Timestamp field.
-          x-faker: date.recent
-        completedAt:
-          type: string
-          format: date-time
-          description: Timestamp field.
-          x-faker: date.recent
-        cancelledAt:
-          type: string
-          format: date-time
-          description: Timestamp field.
-          x-faker: date.recent
-        lockHash:
-          type: string
-          default: 'null'
-        confirmationHash:
-          type: string
-          default: 'null'
-        cancellationHash:
-          type: string
-          default: 'null'
-      x-source-svc: exchange
-    BusinessDirector:
-      type: object
-      description: A current director of the business
+      description: An individual owning 25% or more of the business
       required:
       - fullName
       - email
+      - ownershipPercentage
       properties:
         fullName:
           type: string
         email:
           type: string
           format: email
+        ownershipPercentage:
+          type: number
       x-source-svc: exchange
-    PaymentChannel:
-      required:
-      - name
+    OfferPaymentMethod:
       type: object
-      properties:
-        paymentChannelId:
-          type: string
-          description: Identifier for payment channel
-        name:
-          type: string
-          description: Payment channel name
-        supportedCurrencies:
-          type: array
-          items:
-            $ref: '#/components/schemas/PaymentChannelSupportedCurrency'
-      x-source-svc: exchange
-    ExchangeOrdersResponse:
-      type: object
-      properties:
-        orders:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExchangeOrderDTO'
-        pageNumber:
-          type: integer
-        pageSize:
-          type: integer
-        totalPages:
-          type: integer
-        totalOrders:
-          type: integer
-      x-source-svc: exchange
-    DeployLiquidityPoolCommand:
-      required:
-      - cexSigner
-      - networkId
-      type: object
-      properties:
-        networkId:
-          type: string
-          description: ID for network
-          example: bsc_testnet
-        cexSigner:
-          type: string
-          description: CEX signer wallet address
-          example: 0
+      allOf:
+      - $ref: '#/components/schemas/OfferPaymentChannel'
+      - type: object
+        properties:
+          id:
+            type: string
       x-source-svc: exchange
     LegalEntityType:
       type: string
@@ -1255,95 +1416,49 @@ components:
       - NON_PROFIT_ORGANIZATION
       - PUBLIC_AGENCY
       x-source-svc: exchange
-    OfferType:
+    CreateOrderProductEnum:
+      type: string
+      enum:
+      - WEB3
+      - CUSTODIAL
+      x-source-svc: exchange
+    GetExchangeOrdersExternalTransactionTypeEnum:
       type: string
       enum:
       - ONRAMP
       - OFFRAMP
       x-source-svc: exchange
-    ErrorMessageDto:
-      description: Default error object for services. This gives consistent error object that all services may use.
-      type: object
+    CexSignerDto:
       required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          description: Error code
-          example: UNKNOWN_ERROR
-        message:
-          type: string
-          description: Descriptive error message
-          example: Request could not be completed due to an error
-        data:
-          type: object
-          description: Additional data for this error message.
-          additionalProperties: true
-          properties: {}
-      x-common-model: ErrorMessageDto
-    BestOfferDTO:
-      type: object
-      properties:
-        offer:
-          $ref: '#/components/schemas/OfferDto'
-        orderRequestTradeId:
-          type: string
-      required:
-      - offer
-      - orderRequestTradeId
-      x-source-svc: exchange
-    InitTradeTradeTypeEnum:
-      type: string
-      enum:
-      - BUY
-      - SELL
-      x-source-svc: exchange
-    WalletDTO:
-      type: object
-      properties:
-        walletAddress:
-          type: string
-          example: 0
-        networkId:
-          type: string
-          example: bsc_testnet
-        walletName:
-          type: string
-          example: My Trust Wallet
-      x-source-svc: exchange
-    LiquidityPoolBalanceDto:
-      required:
-      - assetSymbol
-      - balance
-      - isNative
+      - address
+      - businessId
       - networkId
       type: object
       properties:
+        businessId:
+          type: string
+          description: General format for UUID
+          format: uuid
+          example: 3a5aaea8-504a-4404-ad3d-b82574fba5e5
         networkId:
           type: string
-        assetSymbol:
+          description: Gateway network ID
+          example: bsc_testnet
+        address:
           type: string
-        balance:
+          description: Exchange signer address
+          example: 1.2869144918162796e+48
+        createdAt:
           type: string
-        balanceInUsd:
-          type: number
-        tokenAddress:
+          format: date-time
+          description: Timestamp field.
+          x-faker: date.recent
+        updatedAt:
           type: string
-        isNative:
-          type: boolean
-      x-source-svc: exchange
-    TransactionLimitResponse:
-      type: object
-      properties:
-        maxSingleTransactionLimit:
-          type: number
-        minSingleTransactionLimit:
-          type: number
-        dailyTransactionLimit:
-          type: number
-        maxLifetimeLimit:
-          type: number
+          format: date-time
+          description: Timestamp field.
+          x-faker: date.recent
+      description: Registered wallet address
       x-source-svc: exchange
     Tokens:
       required:
@@ -1369,6 +1484,66 @@ components:
         address:
           type: string
           description: Token address on the chain if it's not a native token
+      x-source-svc: exchange
+    BusinessDirector:
+      type: object
+      description: A current director of the business
+      required:
+      - fullName
+      - email
+      properties:
+        fullName:
+          type: string
+        email:
+          type: string
+          format: email
+      x-source-svc: exchange
+    InitTradeProductEnum:
+      type: string
+      enum:
+      - WEB3
+      - CUSTODIAL
+      x-source-svc: exchange
+    TradeMode:
+      type: string
+      enum:
+      - P2P
+      - IP
+      - OTC
+      x-source-svc: exchange
+    GetExchangeOrdersExternalStatusesEnum:
+      type: string
+      enum:
+      - INITIATED
+      - DEPOSITED
+      - CONFIRMED
+      - COMPLETED
+      - PENDING
+      - CANCELLED
+      - IN_DISPUTE
+      - AWAITING_ACCEPTANCE
+      x-source-svc: exchange
+    PartnerStats:
+      type: object
+      properties:
+        partnerId:
+          type: string
+          format: uuid
+        averageRating:
+          type: number
+          example: 3
+        totalTransactions:
+          type: number
+        tradeCount:
+          type: number
+        completionPercentage:
+          type: number
+          format: double
+          example: 94
+        averageResponseTime:
+          type: number
+          format: double
+          example: 5
       x-source-svc: exchange
     OfferDto:
       type: object
@@ -1558,238 +1733,6 @@ components:
       - partnerRating
       - partnerLastActiveAt
       x-source-svc: exchange
-    OrderOfferDTO:
-      required:
-      - networkId
-      - partnerId
-      - rate
-      - token
-      - tokenAmount
-      - transactionType
-      type: object
-      properties:
-        offerId:
-          type: string
-          format: uuid
-        partnerId:
-          type: string
-          format: uuid
-        transactionType:
-          type: string
-          enum:
-          - ONRAMP
-          - OFFRAMP
-        rate:
-          type: number
-          example: 0.32
-        networkId:
-          type: string
-          example: TRC20
-        fiatSymbol:
-          type: string
-          example: NGN
-        fiatAmount:
-          type: number
-          example: 120.5
-        token:
-          type: string
-          example: USDT
-        tokenAmount:
-          type: number
-          example: 120.5
-        partnerDisplayName:
-          type: string
-          example: John Doe
-      x-source-svc: exchange
-    TradeCriteria:
-      type: object
-      properties:
-        verifiedKyc:
-          type: boolean
-      x-source-svc: exchange
-    BusinessCategory:
-      type: string
-      description: KYB onboarding tier that determines the required document set
-      enum:
-      - GENERAL_BUSINESS
-      - OTC_FX_LIQUIDITY_PROVIDER
-      - LICENSED_FINANCIAL_SERVICES
-      x-source-svc: exchange
-    TradeOptions:
-      required:
-      - fiats
-      - networks
-      type: object
-      properties:
-        fiats:
-          type: array
-          items:
-            $ref: '#/components/schemas/FiatCurrency'
-        networks:
-          type: array
-          items:
-            $ref: '#/components/schemas/BlockchainNetwork'
-        paymentChannels:
-          type: array
-          items:
-            $ref: '#/components/schemas/PaymentChannel'
-        transactionLimitsConfig:
-          $ref: '#/components/schemas/DefaultConfigurationResponse'
-      x-source-svc: exchange
-    UltimateBeneficialOwner:
-      type: object
-      description: An individual owning 25% or more of the business
-      required:
-      - fullName
-      - email
-      - ownershipPercentage
-      properties:
-        fullName:
-          type: string
-        email:
-          type: string
-          format: email
-        ownershipPercentage:
-          type: number
-      x-source-svc: exchange
-    BusinessIndustry:
-      type: string
-      description: Sector the business primarily operates in
-      enum:
-      - TECHNOLOGY_SOFTWARE
-      - FINANCIAL_SERVICES
-      - ECOMMERCE
-      - MARKETING_ADVERTISING
-      - CONSULTING_PROFESSIONAL_SERVICES
-      - EDUCATION
-      - HEALTHCARE
-      - MANUFACTURING
-      - LOGISTICS_SUPPLY_CHAIN
-      - REAL_ESTATE
-      - CRYPTO_WEB3
-      - GAMING
-      - MEDIA_ENTERTAINMENT
-      - OTHER
-      x-source-svc: exchange
-    CreateOrderDto:
-      required:
-      - tradeUrl
-      type: object
-      properties:
-        tradeUrl:
-          type: string
-          description: Http link for CEX to redirect to
-      description: Response for a successful create order command
-      x-source-svc: exchange
-    FulfillOrderAs:
-      type: string
-      enum:
-      - BUSINESS
-      - PERSONAL
-      x-source-svc: exchange
-    CexSignerDto:
-      required:
-      - address
-      - businessId
-      - networkId
-      type: object
-      properties:
-        businessId:
-          type: string
-          description: General format for UUID
-          format: uuid
-          example: 3a5aaea8-504a-4404-ad3d-b82574fba5e5
-        networkId:
-          type: string
-          description: Gateway network ID
-          example: bsc_testnet
-        address:
-          type: string
-          description: Exchange signer address
-          example: 1.2869144918162796e+48
-        createdAt:
-          type: string
-          format: date-time
-          description: Timestamp field.
-          x-faker: date.recent
-        updatedAt:
-          type: string
-          format: date-time
-          description: Timestamp field.
-          x-faker: date.recent
-      description: Registered wallet address
-      x-source-svc: exchange
-    PriceDto:
-      required:
-      - price
-      type: object
-      properties:
-        price:
-          type: number
-          description: The price at which the order will be traded
-      description: Price for a trade
-      x-source-svc: exchange
-    CreateOrderProductEnum:
-      type: string
-      enum:
-      - WEB3
-      - CUSTODIAL
-      x-source-svc: exchange
-    OfferBehavior:
-      type: string
-      description: Offer rate behavior
-      enum:
-      - FIXED
-      - FLEXIBLE
-      x-source-svc: exchange
-    TradeMode:
-      type: string
-      enum:
-      - P2P
-      - IP
-      - OTC
-      x-source-svc: exchange
-    LiquidityPoolDto:
-      required:
-      - businessId
-      - cexSigner
-      - createdAt
-      - networkId
-      - updatedAt
-      type: object
-      properties:
-        networkId:
-          type: string
-          description: ID for network
-          example: bsc_testnet
-        cexSigner:
-          type: string
-          description: CEX signer wallet address
-          example: 0
-        businessId:
-          type: string
-          description: CEX profile business ID
-        address:
-          type: string
-          description: CEX liquidity pool address
-          example: 0
-        poolIndex:
-          type: number
-          description: on-chain index of liquidity pool account
-        initHash:
-          type: string
-          description: contract creation transaction hash
-        createdAt:
-          type: string
-          format: date-time
-          description: Timestamp field.
-          x-faker: date.recent
-        updatedAt:
-          type: string
-          format: date-time
-          description: Timestamp field.
-          x-faker: date.recent
-      x-source-svc: exchange
     FiatCurrency:
       required:
       - isoCode
@@ -1815,45 +1758,15 @@ components:
         transactionLimitsConfig:
           $ref: '#/components/schemas/DefaultConfigurationResponse'
       x-source-svc: exchange
-    BusinessDocument:
-      type: object
-      description: An uploaded KYB document
+    CreateOrderDto:
       required:
-      - label
-      - uploadId
-      properties:
-        label:
-          type: string
-          description: Human-readable document name, e.g. Certificate of Incorporation
-        uploadId:
-          type: string
-          description: Identifier of the stored upload
-        url:
-          type: string
-          description: Direct URL to the stored file
-          format: url
-      x-source-svc: exchange
-    PartnerStats:
+      - tradeUrl
       type: object
       properties:
-        partnerId:
+        tradeUrl:
           type: string
-          format: uuid
-        averageRating:
-          type: number
-          example: 3
-        totalTransactions:
-          type: number
-        tradeCount:
-          type: number
-        completionPercentage:
-          type: number
-          format: double
-          example: 94
-        averageResponseTime:
-          type: number
-          format: double
-          example: 5
+          description: Http link for CEX to redirect to
+      description: Response for a successful create order command
       x-source-svc: exchange
     OfferPaymentChannelColor:
       type: object
@@ -1866,7 +1779,19 @@ components:
       - bg
       - fg
       x-source-svc: exchange
-    CreateOrderTradeTypeEnum:
+    OfferPaymentChannel:
+      type: object
+      properties:
+        channelId:
+          type: string
+        channelName:
+          type: string
+        channelType:
+          type: string
+        color:
+          $ref: '#/components/schemas/OfferPaymentChannelColor'
+      x-source-svc: exchange
+    InitTradeTradeTypeEnum:
       type: string
       enum:
       - BUY
@@ -1900,9 +1825,121 @@ components:
       - tradePercentage
       - network
       x-source-svc: exchange
+    WalletDTO:
+      type: object
+      properties:
+        walletAddress:
+          type: string
+          example: 0
+        networkId:
+          type: string
+          example: bsc_testnet
+        walletName:
+          type: string
+          example: My Trust Wallet
+      x-source-svc: exchange
+    PaymentChannelSupportedCurrency:
+      type: object
+      properties:
+        country:
+          type: string
+          description: ISO code (alpha 2) for the country valid for
+        currency:
+          type: string
+          description: ISO code for the supported currency
+      x-source-svc: exchange
+    OfferStatus:
+      type: string
+      description: the current offer status
+      default: ACTIVE
+      enum:
+      - PENDING
+      - ACTIVE
+      - OFFLINE
+      - LOW_BALANCE
+      - LIMIT_REACHED
+      x-source-svc: exchange
+    BusinessIndustry:
+      type: string
+      description: Sector the business primarily operates in
+      enum:
+      - TECHNOLOGY_SOFTWARE
+      - FINANCIAL_SERVICES
+      - ECOMMERCE
+      - MARKETING_ADVERTISING
+      - CONSULTING_PROFESSIONAL_SERVICES
+      - EDUCATION
+      - HEALTHCARE
+      - MANUFACTURING
+      - LOGISTICS_SUPPLY_CHAIN
+      - REAL_ESTATE
+      - CRYPTO_WEB3
+      - GAMING
+      - MEDIA_ENTERTAINMENT
+      - OTHER
+      x-source-svc: exchange
+    OfferType:
+      type: string
+      enum:
+      - ONRAMP
+      - OFFRAMP
+      x-source-svc: exchange
+    OfferTypeQueryParamOfferTypeEnum:
+      type: string
+      enum:
+      - ONRAMP
+      - OFFRAMP
+      x-source-svc: exchange
+    PriceDto:
+      required:
+      - price
+      type: object
+      properties:
+        price:
+          type: number
+          description: The price at which the order will be traded
+      description: Price for a trade
+      x-source-svc: exchange
   parameters:
+    ExchangeSvctokenAmountQueryParam:
+      name: tokenAmount
+      in: query
+      schema:
+        type: number
+    ExchangeSvcpageQueryParam:
+      name: page
+      in: query
+      schema:
+        type: number
     ExchangeSvcpaymentChannelQueryParam:
       name: paymentChannel
+      in: query
+      schema:
+        type: string
+    ExchangeSvcmerchantIdQueryParam:
+      name: merchantId
+      in: query
+      required: false
+      schema:
+        type: string
+    ExchangeSvcfiatAmountQueryParam:
+      name: fiatAmount
+      in: query
+      schema:
+        type: number
+    ExchangeSvclimitQueryParam:
+      name: limit
+      in: query
+      description: Pagination limit
+      schema:
+        type: number
+    ExchangeSvcofferTypeQueryParam:
+      name: offerType
+      in: query
+      schema:
+        $ref: '#/components/schemas/OfferTypeQueryParamOfferTypeEnum'
+    ExchangeSvctokenQueryParam:
+      name: token
       in: query
       schema:
         type: string
@@ -1915,30 +1952,10 @@ components:
       required: false
       schema:
         $ref: '#/components/schemas/TradeTypeQueryParamTradeTypeEnum'
-    ExchangeSvclimitQueryParam:
-      name: limit
+    ExchangeSvcnetworkQueryParam:
+      name: networkId
       in: query
-      description: Pagination limit
-      schema:
-        type: number
-    ExchangeSvctokenAmountQueryParam:
-      name: tokenAmount
-      in: query
-      schema:
-        type: number
-    ExchangeSvcpageQueryParam:
-      name: page
-      in: query
-      schema:
-        type: number
-    ExchangeSvcofferTypeQueryParam:
-      name: offerType
-      in: query
-      schema:
-        $ref: '#/components/schemas/OfferTypeQueryParamOfferTypeEnum'
-    ExchangeSvcfiatQueryParam:
-      name: fiat
-      in: query
+      description: Onboard blockchain network identifier or chain Id e.g Base will be `base` or `8453` or `0x2105`
       schema:
         type: string
     ExchangeSvcpaymentChannelTypeQueryParam:
@@ -1946,26 +1963,9 @@ components:
       in: query
       schema:
         type: string
-    ExchangeSvcfiatAmountQueryParam:
-      name: fiatAmount
+    ExchangeSvcfiatQueryParam:
+      name: fiat
       in: query
-      schema:
-        type: number
-    ExchangeSvctokenQueryParam:
-      name: token
-      in: query
-      schema:
-        type: string
-    ExchangeSvcmerchantIdQueryParam:
-      name: merchantId
-      in: query
-      required: false
-      schema:
-        type: string
-    ExchangeSvcnetworkQueryParam:
-      name: networkId
-      in: query
-      description: Onboard blockchain network identifier or chain Id e.g Base will be `base` or `8453` or `0x2105`
       schema:
         type: string
   securitySchemes:

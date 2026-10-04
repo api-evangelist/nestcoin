@@ -63,6 +63,76 @@ paths:
       x-visibility: external
 components:
   schemas:
+    UserTransactionLimit:
+      type: object
+      properties:
+        dailyTransactionLimit:
+          type: number
+        maxSingleTransactionLimit:
+          type: number
+        minSingleTransactionLimit:
+          type: number
+        maxLifetimeLimit:
+          type: number
+      x-source-svc: users
+    KycNameChangeHistoryDto:
+      type: object
+      properties:
+        reason:
+          type: string
+          description: Name change reason
+        actor:
+          type: string
+          description: Name of admin that initiated the change
+        previousName:
+          type: string
+          description: Previous full name
+        currentName:
+          type: string
+          description: Current full name
+        evidenceUrl:
+          type: string
+          format: url
+          description: Url link of change request evidence
+        timestamp:
+          type: string
+          format: date-time
+      required:
+      - reason
+      - actor
+      - previousName
+      - currentName
+      - timestamp
+      x-source-svc: users
+    UserRoles:
+      type: string
+      description: the roles a user can possess on Onboard
+      enum:
+      - CUSTOMER
+      - MERCHANT
+      - MERCHANT_NETWORK
+      x-source-svc: users
+    ErrorMessageDto:
+      description: Default error object for services. This gives consistent error object that all services may use.
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          description: Error code
+          example: UNKNOWN_ERROR
+        message:
+          type: string
+          description: Descriptive error message
+          example: Request could not be completed due to an error
+        data:
+          type: object
+          description: Additional data for this error message.
+          additionalProperties: true
+          properties: {}
+      x-common-model: ErrorMessageDto
     ProfileDataDto:
       type: object
       properties:
@@ -115,6 +185,35 @@ components:
           example: 1200
         tradeHistoryDetails:
           $ref: '#/components/schemas/ProfileTradeDto'
+      x-source-svc: users
+    KycJobStatus:
+      type: string
+      enum:
+      - VERIFIED
+      - UNVERIFIED
+      - IN_PROGRESS
+      - AWAITING_INPUT
+      - FAILED_VERIFICATION
+      - REVIEW_REQUIRED
+      - VERIFICATION_TIMEOUT
+      x-source-svc: users
+    VerificationStatus:
+      type: string
+      description: user's verification status
+      enum:
+      - VERIFIED
+      - UNVERIFIED
+      - FAILED_VERIFICATION
+      - REVIEW_REQUIRED
+      - IN_PROGRESS
+      - REJECTED
+      x-source-svc: users
+    UsersSvcUserType:
+      type: string
+      description: the type of the user
+      enum:
+      - CUSTOMER
+      - PARTNER
       x-source-svc: users
     UserDataDto:
       required:
@@ -238,38 +337,6 @@ components:
           description: Timestamp field.
           format: date-time
       x-source-svc: users
-    ErrorMessageDto:
-      description: Default error object for services. This gives consistent error object that all services may use.
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          description: Error code
-          example: UNKNOWN_ERROR
-        message:
-          type: string
-          description: Descriptive error message
-          example: Request could not be completed due to an error
-        data:
-          type: object
-          description: Additional data for this error message.
-          additionalProperties: true
-          properties: {}
-      x-common-model: ErrorMessageDto
-    VerificationStatus:
-      type: string
-      description: user's verification status
-      enum:
-      - VERIFIED
-      - UNVERIFIED
-      - FAILED_VERIFICATION
-      - REVIEW_REQUIRED
-      - IN_PROGRESS
-      - REJECTED
-      x-source-svc: users
     ProfileTradeDto:
       type: object
       properties:
@@ -284,73 +351,6 @@ components:
         referee:
           type: string
           description: Partner's referee
-      x-source-svc: users
-    KycNameChangeHistoryDto:
-      type: object
-      properties:
-        reason:
-          type: string
-          description: Name change reason
-        actor:
-          type: string
-          description: Name of admin that initiated the change
-        previousName:
-          type: string
-          description: Previous full name
-        currentName:
-          type: string
-          description: Current full name
-        evidenceUrl:
-          type: string
-          format: url
-          description: Url link of change request evidence
-        timestamp:
-          type: string
-          format: date-time
-      required:
-      - reason
-      - actor
-      - previousName
-      - currentName
-      - timestamp
-      x-source-svc: users
-    UsersSvcUserType:
-      type: string
-      description: the type of the user
-      enum:
-      - CUSTOMER
-      - PARTNER
-      x-source-svc: users
-    KycJobStatus:
-      type: string
-      enum:
-      - VERIFIED
-      - UNVERIFIED
-      - IN_PROGRESS
-      - AWAITING_INPUT
-      - FAILED_VERIFICATION
-      - REVIEW_REQUIRED
-      - VERIFICATION_TIMEOUT
-      x-source-svc: users
-    UserTransactionLimit:
-      type: object
-      properties:
-        dailyTransactionLimit:
-          type: number
-        maxSingleTransactionLimit:
-          type: number
-        minSingleTransactionLimit:
-          type: number
-        maxLifetimeLimit:
-          type: number
-      x-source-svc: users
-    UserRoles:
-      type: string
-      description: the roles a user can possess on Onboard
-      enum:
-      - CUSTOMER
-      - MERCHANT
-      - MERCHANT_NETWORK
       x-source-svc: users
   securitySchemes:
     authSignature:

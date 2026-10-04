@@ -274,93 +274,59 @@ paths:
       security:
       - authToken: []
 components:
-  responses:
-    LedgerSvcNotFound:
-      description: Entity was not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessageDto'
-          example:
-            code: NOT_FOUND
-            message: Information could not be found
-    LedgerSvcServerError:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessageDto'
-          example:
-            code: INTERNAL_ERROR
-            message: An internal server error occurred.
-    LedgerSvcAccessDenied:
-      description: Expected permission is not available.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessageDto'
-          example:
-            code: ACCESS_DENIED
-            message: Expected permission or scope is not present.
-    LedgerSvcUnauthorized:
-      description: Client is not authorized to make request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessageDto'
-          example:
-            code: UNAUTHORIZED
-            message: Either client security header is missing or it is not valid.
-    LedgerSvcInvalidRequest:
-      description: Request could not be validated
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorMessageDto'
-          example:
-            code: BAD_REQUEST
-            message: Request could not be validated.
-  schemas:
-    TransactionStatus:
-      type: string
-      description: 'Status of the transaction, indicating its current state in the processing lifecycle.
-
-        - PENDING: The transaction has been created but not yet processed.
-
-        - IN_PROGRESS: The transaction is currently being processed.
-
-        - FAILED: The transaction processing has failed.
-
-        - SUCCESS: The transaction has been successfully processed.
+  parameters:
+    LedgerSvcsubAccountIdOrRef:
+      in: path
+      name: subAccountIdRef
+      description: 'The unique onboard sub-account ID or reference
 
         '
-      enum:
-      - PENDING
-      - IN_PROGRESS
-      - FAILED
-      - SUCCESS
-      x-source-svc: ledger
-    ErrorMessageDto:
-      description: Default error object for services. This gives consistent error object that all services may use.
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          description: Error code
-          example: UNKNOWN_ERROR
-        message:
-          type: string
-          description: Descriptive error message
-          example: Request could not be completed due to an error
-        data:
-          type: object
-          description: Additional data for this error message.
-          additionalProperties: true
-          properties: {}
-      x-common-model: ErrorMessageDto
+      required: true
+      schema:
+        type: string
+    LedgerSvcpage:
+      in: query
+      name: page
+      required: false
+      description: Page parameter, starting from 1
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    LedgerSvcsize:
+      in: query
+      name: size
+      required: false
+      schema:
+        type: integer
+        maximum: 100
+        minimum: 1
+        default: 20
+    LedgerSvcactivityId:
+      in: path
+      name: activityId
+      description: The unique transaction activity ID
+      required: true
+      schema:
+        type: string
+        format: uuid
+    LedgerSvcaccountId:
+      in: path
+      name: accountId
+      description: the unique onboard account ID
+      required: true
+      schema:
+        type: string
+        format: uuid
+    LedgerSvcanyAccountIdQuery:
+      name: accountId
+      description: Any account ID (could be Main account, sub-account or offramp account)
+      required: false
+      in: query
+      schema:
+        type: string
+        format: uuid
+  schemas:
     TransactionActivity:
       type: object
       description: 'A single entry in the aggregated account activity feed. The concrete subtype is
@@ -442,17 +408,35 @@ components:
           type: string
           format: date-time
       x-source-svc: ledger
-    TransactionActivityList:
-      allOf:
-      - $ref: '#/components/schemas/Paging'
-      - type: object
-        properties:
-          content:
-            type: array
-            description: List of transaction activities
-            items:
-              $ref: '#/components/schemas/TransactionActivity'
+    ActivityAccountType:
+      type: string
+      description: The kind of account a transaction activity occurred on.
+      enum:
+      - MAIN
+      - SUB_ACCOUNT
+      - OFFRAMP_ACCOUNT
       x-source-svc: ledger
+    ErrorMessageDto:
+      description: Default error object for services. This gives consistent error object that all services may use.
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          description: Error code
+          example: UNKNOWN_ERROR
+        message:
+          type: string
+          description: Descriptive error message
+          example: Request could not be completed due to an error
+        data:
+          type: object
+          description: Additional data for this error message.
+          additionalProperties: true
+          properties: {}
+      x-common-model: ErrorMessageDto
     TransactionActivityType:
       type: string
       description: Semantic category of a transaction activity feed entry.
@@ -465,13 +449,35 @@ components:
       - INTERNAL_TRANSFER
       - OFFRAMP_DEPOSIT
       x-source-svc: ledger
-    ActivityAccountType:
+    TransactionActivityList:
+      allOf:
+      - $ref: '#/components/schemas/Paging'
+      - type: object
+        properties:
+          content:
+            type: array
+            description: List of transaction activities
+            items:
+              $ref: '#/components/schemas/TransactionActivity'
+      x-source-svc: ledger
+    TransactionStatus:
       type: string
-      description: The kind of account a transaction activity occurred on.
+      description: 'Status of the transaction, indicating its current state in the processing lifecycle.
+
+        - PENDING: The transaction has been created but not yet processed.
+
+        - IN_PROGRESS: The transaction is currently being processed.
+
+        - FAILED: The transaction processing has failed.
+
+        - SUCCESS: The transaction has been successfully processed.
+
+        '
       enum:
-      - MAIN
-      - SUB_ACCOUNT
-      - OFFRAMP_ACCOUNT
+      - PENDING
+      - IN_PROGRESS
+      - FAILED
+      - SUCCESS
       x-source-svc: ledger
     ActivityDirection:
       type: string
@@ -509,58 +515,52 @@ components:
       discriminator:
         propertyName: name
       x-common-model: Paging
-  parameters:
-    LedgerSvcaccountId:
-      in: path
-      name: accountId
-      description: the unique onboard account ID
-      required: true
-      schema:
-        type: string
-        format: uuid
-    LedgerSvcactivityId:
-      in: path
-      name: activityId
-      description: The unique transaction activity ID
-      required: true
-      schema:
-        type: string
-        format: uuid
-    LedgerSvcanyAccountIdQuery:
-      name: accountId
-      description: Any account ID (could be Main account, sub-account or offramp account)
-      required: false
-      in: query
-      schema:
-        type: string
-        format: uuid
-    LedgerSvcsize:
-      in: query
-      name: size
-      required: false
-      schema:
-        type: integer
-        maximum: 100
-        minimum: 1
-        default: 20
-    LedgerSvcsubAccountIdOrRef:
-      in: path
-      name: subAccountIdRef
-      description: 'The unique onboard sub-account ID or reference
-
-        '
-      required: true
-      schema:
-        type: string
-    LedgerSvcpage:
-      in: query
-      name: page
-      required: false
-      description: Page parameter, starting from 1
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
+  responses:
+    LedgerSvcUnauthorized:
+      description: Client is not authorized to make request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: UNAUTHORIZED
+            message: Either client security header is missing or it is not valid.
+    LedgerSvcNotFound:
+      description: Entity was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: NOT_FOUND
+            message: Information could not be found
+    LedgerSvcAccessDenied:
+      description: Expected permission is not available.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: ACCESS_DENIED
+            message: Expected permission or scope is not present.
+    LedgerSvcServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: INTERNAL_ERROR
+            message: An internal server error occurred.
+    LedgerSvcInvalidRequest:
+      description: Request could not be validated
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessageDto'
+          example:
+            code: BAD_REQUEST
+            message: Request could not be validated.
   securitySchemes:
     authSignature:
       type: apiKey

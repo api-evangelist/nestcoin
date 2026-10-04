@@ -177,34 +177,6 @@ components:
       - token
       - expiry
       x-source-svc: auth
-    UserAuthOtpVerificationRequest:
-      required:
-      - authSessionId
-      - otp
-      type: object
-      properties:
-        authSessionId:
-          type: string
-          description: The log in session ID of the user, valid for the duration of the OTP validity
-          format: uuid
-        otp:
-          type: string
-          description: The verification code sent to user (partner) email
-      x-source-svc: auth
-    AccessTokenResponse:
-      properties:
-        userId:
-          type: string
-          description: Onboard unique User ID
-        accessToken:
-          $ref: '#/components/schemas/Token'
-        refreshToken:
-          $ref: '#/components/schemas/Token'
-      required:
-      - userId
-      - accessToken
-      - refreshToken
-      x-source-svc: auth
     UserAuthOtpResendResponse:
       type: object
       properties:
@@ -212,6 +184,18 @@ components:
           type: boolean
         authSessionId:
           type: string
+      x-source-svc: auth
+    UserAuthInitResponse:
+      type: object
+      properties:
+        authSessionId:
+          type: string
+          description: The log in session ID of the user, valid for the duration of the OTP validity
+          format: uuid
+        isReturning:
+          type: boolean
+          description: Indicates if user is a returning user, i.e. previously verified
+          default: false
       x-source-svc: auth
     ErrorMessageDto:
       description: Default error object for services. This gives consistent error object that all services may use.
@@ -234,17 +218,14 @@ components:
           additionalProperties: true
           properties: {}
       x-common-model: ErrorMessageDto
-    UserAuthInitResponse:
+    UserAuthInitRequest:
+      required:
+      - email
       type: object
       properties:
-        authSessionId:
+        email:
           type: string
-          description: The log in session ID of the user, valid for the duration of the OTP validity
-          format: uuid
-        isReturning:
-          type: boolean
-          description: Indicates if user is a returning user, i.e. previously verified
-          default: false
+          description: user's email
       x-source-svc: auth
     UserAuthOtpResendRequest:
       type: object
@@ -255,14 +236,33 @@ components:
           type: string
           format: uuid
       x-source-svc: auth
-    UserAuthInitRequest:
+    AccessTokenResponse:
+      properties:
+        userId:
+          type: string
+          description: Onboard unique User ID
+        accessToken:
+          $ref: '#/components/schemas/Token'
+        refreshToken:
+          $ref: '#/components/schemas/Token'
       required:
-      - email
+      - userId
+      - accessToken
+      - refreshToken
+      x-source-svc: auth
+    UserAuthOtpVerificationRequest:
+      required:
+      - authSessionId
+      - otp
       type: object
       properties:
-        email:
+        authSessionId:
           type: string
-          description: user's email
+          description: The log in session ID of the user, valid for the duration of the OTP validity
+          format: uuid
+        otp:
+          type: string
+          description: The verification code sent to user (partner) email
       x-source-svc: auth
   securitySchemes:
     authSignature:

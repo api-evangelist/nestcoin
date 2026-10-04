@@ -159,67 +159,26 @@ paths:
                 $ref: '#/components/schemas/ErrorMessageDto'
       security: []
 components:
-  parameters:
-    OffersSvcofferTypeQueryParam:
-      name: offerType
-      in: query
-      schema:
-        $ref: '#/components/schemas/OffersSvcOfferType'
-      required: false
-    OffersSvcpaymentChannelQueryParam:
-      name: paymentChannel
-      in: query
-      schema:
-        type: string
-    OffersSvcmerchantBlackListQueryParam:
-      name: exemptedMerchants
-      in: query
-      required: false
-      schema:
-        type: array
-        items:
-          type: string
-    OffersSvcnetworkQueryParam:
-      in: query
-      name: network
-      required: false
-      schema:
-        type: string
-      description: Blockchain network identifier
-    OffersSvcprioritizeIpQueryParam:
-      name: prioritizeIp
-      in: query
-      required: false
-      schema:
-        type: boolean
-    OffersSvctokenSymbolQueryParam:
-      name: tokenSymbol
-      in: query
-      schema:
-        type: string
-      required: false
-    OffersSvcfiatUnitAmountQueryParam:
-      name: fiatUnitAmount
-      in: query
-      schema:
-        type: number
-    OffersSvcunitAmountQueryParam:
-      name: unitAmount
-      in: query
-      schema:
-        type: number
-    OffersSvcfiatSymbolQueryParam:
-      name: fiatSymbol
-      in: query
-      schema:
-        type: string
-      required: false
   schemas:
-    OffersSvcOfferType:
+    OffersSvcAutoRefillConfig:
+      type: object
+      required:
+      - threshold
+      - amount
+      properties:
+        threshold:
+          type: number
+          description: If ad available unit go belows this value the system would trigger a auto refill
+        amount:
+          type: number
+          description: The token amount to refill the ad with
+      x-source-svc: offers
+    OffersSvcOfferBehavior:
       type: string
+      description: Offer rate behavior
       enum:
-      - ONRAMP
-      - OFFRAMP
+      - FIXED
+      - FLEXIBLE
       x-source-svc: offers
     OfferLimitsDto:
       type: object
@@ -245,23 +204,6 @@ components:
           type: number
         maxFiat:
           type: number
-      x-source-svc: offers
-    OffersSvcOfferPaymentChannelColor:
-      type: object
-      properties:
-        bg:
-          type: string
-        fg:
-          type: string
-      required:
-      - bg
-      - fg
-      x-source-svc: offers
-    OffersSvcFulfillOrderAs:
-      type: string
-      enum:
-      - BUSINESS
-      - PERSONAL
       x-source-svc: offers
     ErrorMessageDto:
       description: Default error object for services. This gives consistent error object that all services may use.
@@ -290,75 +232,6 @@ components:
       - P2P
       - IP
       - OTC
-      x-source-svc: offers
-    OffersSvcFeeConfig:
-      type: object
-      properties:
-        tradeType:
-          $ref: '#/components/schemas/OffersSvcOfferType'
-        tradeMode:
-          $ref: '#/components/schemas/OffersSvcTradeMode'
-        base:
-          type: number
-          description: Flat fee that must be paid for irrespective of percentage fee
-        tradePercentage:
-          type: number
-          description: Fee described as a percentage of the trade
-        cap:
-          type: number
-          description: Maximum value a fee is allowed to have
-        network:
-          type: string
-          description: 'The network this config should be applied to(There will always be at least
-
-            one fee config, that config will have network value of `default`
-
-            '
-      required:
-      - base
-      - tradePercentage
-      - network
-      x-source-svc: offers
-    OffersSvcOfferBehavior:
-      type: string
-      description: Offer rate behavior
-      enum:
-      - FIXED
-      - FLEXIBLE
-      x-source-svc: offers
-    OffersSvcOfferPaymentChannel:
-      type: object
-      properties:
-        channelId:
-          type: string
-        channelName:
-          type: string
-        channelType:
-          type: string
-        color:
-          $ref: '#/components/schemas/OffersSvcOfferPaymentChannelColor'
-      x-source-svc: offers
-    OffersSvcOfferPaymentMethod:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/OffersSvcOfferPaymentChannel'
-      - type: object
-        properties:
-          id:
-            type: string
-      x-source-svc: offers
-    OffersSvcAutoRefillConfig:
-      type: object
-      required:
-      - threshold
-      - amount
-      properties:
-        threshold:
-          type: number
-          description: If ad available unit go belows this value the system would trigger a auto refill
-        amount:
-          type: number
-          description: The token amount to refill the ad with
       x-source-svc: offers
     OffersSvcOfferDto:
       type: object
@@ -548,16 +421,37 @@ components:
       - partnerRating
       - partnerLastActiveAt
       x-source-svc: offers
-    OffersSvcOfferStatus:
-      type: string
-      description: the current offer status
-      default: ACTIVE
-      enum:
-      - PENDING
-      - ACTIVE
-      - OFFLINE
-      - LOW_BALANCE
-      - LIMIT_REACHED
+    OffersSvcOfferPaymentChannelColor:
+      type: object
+      properties:
+        bg:
+          type: string
+        fg:
+          type: string
+      required:
+      - bg
+      - fg
+      x-source-svc: offers
+    OffersSvcOfferPaymentChannel:
+      type: object
+      properties:
+        channelId:
+          type: string
+        channelName:
+          type: string
+        channelType:
+          type: string
+        color:
+          $ref: '#/components/schemas/OffersSvcOfferPaymentChannelColor'
+      x-source-svc: offers
+    OffersSvcOfferPaymentMethod:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/OffersSvcOfferPaymentChannel'
+      - type: object
+        properties:
+          id:
+            type: string
       x-source-svc: offers
     OffersSvcTradeCriteria:
       type: object
@@ -587,6 +481,112 @@ components:
           format: double
           example: 5
       x-source-svc: offers
+    OffersSvcOfferType:
+      type: string
+      enum:
+      - ONRAMP
+      - OFFRAMP
+      x-source-svc: offers
+    OffersSvcOfferStatus:
+      type: string
+      description: the current offer status
+      default: ACTIVE
+      enum:
+      - PENDING
+      - ACTIVE
+      - OFFLINE
+      - LOW_BALANCE
+      - LIMIT_REACHED
+      x-source-svc: offers
+    OffersSvcFulfillOrderAs:
+      type: string
+      enum:
+      - BUSINESS
+      - PERSONAL
+      x-source-svc: offers
+    OffersSvcFeeConfig:
+      type: object
+      properties:
+        tradeType:
+          $ref: '#/components/schemas/OffersSvcOfferType'
+        tradeMode:
+          $ref: '#/components/schemas/OffersSvcTradeMode'
+        base:
+          type: number
+          description: Flat fee that must be paid for irrespective of percentage fee
+        tradePercentage:
+          type: number
+          description: Fee described as a percentage of the trade
+        cap:
+          type: number
+          description: Maximum value a fee is allowed to have
+        network:
+          type: string
+          description: 'The network this config should be applied to(There will always be at least
+
+            one fee config, that config will have network value of `default`
+
+            '
+      required:
+      - base
+      - tradePercentage
+      - network
+      x-source-svc: offers
+  parameters:
+    OffersSvcfiatSymbolQueryParam:
+      name: fiatSymbol
+      in: query
+      schema:
+        type: string
+      required: false
+    OffersSvcnetworkQueryParam:
+      in: query
+      name: network
+      required: false
+      schema:
+        type: string
+      description: Blockchain network identifier
+    OffersSvcunitAmountQueryParam:
+      name: unitAmount
+      in: query
+      schema:
+        type: number
+    OffersSvcpaymentChannelQueryParam:
+      name: paymentChannel
+      in: query
+      schema:
+        type: string
+    OffersSvcofferTypeQueryParam:
+      name: offerType
+      in: query
+      schema:
+        $ref: '#/components/schemas/OffersSvcOfferType'
+      required: false
+    OffersSvcprioritizeIpQueryParam:
+      name: prioritizeIp
+      in: query
+      required: false
+      schema:
+        type: boolean
+    OffersSvctokenSymbolQueryParam:
+      name: tokenSymbol
+      in: query
+      schema:
+        type: string
+      required: false
+    OffersSvcfiatUnitAmountQueryParam:
+      name: fiatUnitAmount
+      in: query
+      schema:
+        type: number
+    OffersSvcmerchantBlackListQueryParam:
+      name: exemptedMerchants
+      in: query
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
   securitySchemes:
     authSignature:
       type: apiKey

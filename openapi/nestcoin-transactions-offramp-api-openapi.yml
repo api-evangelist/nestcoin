@@ -185,6 +185,96 @@ paths:
       x-visibility: external
 components:
   schemas:
+    Fee:
+      required:
+      - asFiat
+      - asToken
+      type: object
+      properties:
+        asToken:
+          type: string
+          pattern: ([0-9]*[.])?[0-9]+
+          example: '1000.0'
+        asFiat:
+          type: number
+      x-source-svc: transactions
+    CustomerConfirmationRequest:
+      required:
+      - customerId
+      - transactionId
+      - verificationData
+      type: object
+      properties:
+        customerId:
+          type: string
+          format: uuid
+        transactionId:
+          type: string
+          format: uuid
+        verificationData:
+          $ref: '#/components/schemas/VerificationData'
+      x-source-svc: transactions
+    TransactionsSvcWalletDTO:
+      type: object
+      properties:
+        walletAddress:
+          type: string
+          example: 0
+        networkId:
+          type: string
+          example: bsc_testnet
+        walletName:
+          type: string
+          example: My Trust Wallet
+      x-source-svc: transactions
+    UserType:
+      type: string
+      description: Type of user/role of user in transaction
+      enum:
+      - CUSTOMER
+      - PARTNER
+      x-source-svc: transactions
+    VerificationData:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Hello Onboard
+        signature:
+          type: string
+          example: 1.4274191415664356e+156
+        timestamp:
+          type: integer
+          example: 1655483046
+        otp:
+          type: string
+          example: '1655483046'
+        totp:
+          type: string
+          description: User totp from authenticator app
+          example: 28404
+      x-source-svc: transactions
+    ErrorMessageDto:
+      description: Default error object for services. This gives consistent error object that all services may use.
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          description: Error code
+          example: UNKNOWN_ERROR
+        message:
+          type: string
+          description: Descriptive error message
+          example: Request could not be completed due to an error
+        data:
+          type: object
+          description: Additional data for this error message.
+          additionalProperties: true
+          properties: {}
+      x-common-model: ErrorMessageDto
     TransactionDTO:
       required:
       - customerId
@@ -316,41 +406,23 @@ components:
         tradeContext:
           $ref: '#/components/schemas/TradeContext'
       x-source-svc: transactions
-    CustomerConfirmationRequest:
+    ThirdpartyOrderInfoDTO:
       required:
-      - customerId
-      - transactionId
-      - verificationData
-      type: object
+      - businessId
       properties:
-        customerId:
+        businessId:
           type: string
-          format: uuid
-        transactionId:
+          description: The thirdparty business the customer is trading via
+        tradeId:
           type: string
-          format: uuid
-        verificationData:
-          $ref: '#/components/schemas/VerificationData'
-      x-source-svc: transactions
-    UserType:
-      type: string
-      description: Type of user/role of user in transaction
-      enum:
-      - CUSTOMER
-      - PARTNER
-      x-source-svc: transactions
-    TransactionsSvcTransactionType:
-      type: string
-      description: Transaction order type, can be ONRAMP or OFFRAMP
-      enum:
-      - ONRAMP
-      - OFFRAMP
-      x-source-svc: transactions
-    TradeContext:
-      type: string
-      enum:
-      - STANDARD_TRADE
-      - INTERNAL_RAIL
+          description: Tracking trade Id
+        product:
+          type: string
+          description: Product name, typically custodial or web
+        blockchainOrderId:
+          type: integer
+        externalOrderReference:
+          type: string
       x-source-svc: transactions
     TimeoutDTO:
       type: object
@@ -373,39 +445,72 @@ components:
           type: integer
           format: int64
       x-source-svc: transactions
-    ErrorMessageDto:
-      description: Default error object for services. This gives consistent error object that all services may use.
-      type: object
+    CustomerActionFields:
       required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          description: Error code
-          example: UNKNOWN_ERROR
-        message:
-          type: string
-          description: Descriptive error message
-          example: Request could not be completed due to an error
-        data:
-          type: object
-          description: Additional data for this error message.
-          additionalProperties: true
-          properties: {}
-      x-common-model: ErrorMessageDto
-    TransactionsSvcWalletDTO:
+      - customerId
+      - transactionId
       type: object
       properties:
-        walletAddress:
+        customerId:
           type: string
-          example: 0
-        networkId:
+          format: uuid
+        transactionId:
           type: string
-          example: bsc_testnet
-        walletName:
+          format: uuid
+      x-source-svc: transactions
+    TransactionsSvcTransactionType:
+      type: string
+      description: Transaction order type, can be ONRAMP or OFFRAMP
+      enum:
+      - ONRAMP
+      - OFFRAMP
+      x-source-svc: transactions
+    InstantPayProcessingStatus:
+      type: string
+      enum:
+      - PENDING_IP_REPORT
+      - IN_PROGRESS
+      - FAILURE
+      - SUCCESS
+      x-source-svc: transactions
+    CustomerInitiateOrderRequestV2:
+      type: object
+      properties:
+        offerId:
           type: string
-          example: My Trust Wallet
+          description: id of offer to make unit reservation from
+        offerToken:
+          type: string
+          description: Token used to access private ads.
+        unitAmount:
+          type: string
+          description: unit to be reserved
+        rate:
+          type: number
+          description: rate to make reservation at
+        fiatAmount:
+          type: number
+          description: fiat equivalent of reserved unit
+        tradeRequestBroadcastId:
+          type: string
+          format: uuid
+        paymentMethodId:
+          type: string
+        paymentChannelId:
+          type: string
+        buyerPaymentMethodId:
+          type: string
+        customerWallet:
+          $ref: '#/components/schemas/TransactionsSvcWalletDTO'
+        apiKey:
+          type: string
+        thirdPartyOrderTradeId:
+          type: string
+        cexOrderId:
+          type: string
+      required:
+      - offerId
+      - unitAmount
       x-source-svc: transactions
     TransactionOrderStatus:
       type: string
@@ -419,41 +524,6 @@ components:
       - CANCELLED
       - IN_DISPUTE
       - AWAITING_ACCEPTANCE
-      x-source-svc: transactions
-    CustomerActionRequest:
-      allOf:
-      - $ref: '#/components/schemas/CustomerActionFields'
-      - type: object
-        properties:
-          txHash:
-            type: string
-            description: Deposit transaction hash for deposit related transaction
-          permitSignature:
-            type: string
-            description: Permit data signature for permit related approval
-          flag:
-            type: string
-          paymentReceiptUploadId:
-            type: string
-            description: Upload ID for receipt uploaded on storage bucket
-      x-source-svc: transactions
-    ThirdpartyOrderInfoDTO:
-      required:
-      - businessId
-      properties:
-        businessId:
-          type: string
-          description: The thirdparty business the customer is trading via
-        tradeId:
-          type: string
-          description: Tracking trade Id
-        product:
-          type: string
-          description: Product name, typically custodial or web
-        blockchainOrderId:
-          type: integer
-        externalOrderReference:
-          type: string
       x-source-svc: transactions
     TransactionsSvcOfferDTO:
       required:
@@ -510,19 +580,6 @@ components:
         tradeMode:
           $ref: '#/components/schemas/TransactionsSvcTradeMode'
       x-source-svc: transactions
-    Fee:
-      required:
-      - asFiat
-      - asToken
-      type: object
-      properties:
-        asToken:
-          type: string
-          pattern: ([0-9]*[.])?[0-9]+
-          example: '1000.0'
-        asFiat:
-          type: number
-      x-source-svc: transactions
     TransactionsSvcTradeMode:
       type: string
       enum:
@@ -530,85 +587,28 @@ components:
       - IP
       - OTC
       x-source-svc: transactions
-    InstantPayProcessingStatus:
+    CustomerActionRequest:
+      allOf:
+      - $ref: '#/components/schemas/CustomerActionFields'
+      - type: object
+        properties:
+          txHash:
+            type: string
+            description: Deposit transaction hash for deposit related transaction
+          permitSignature:
+            type: string
+            description: Permit data signature for permit related approval
+          flag:
+            type: string
+          paymentReceiptUploadId:
+            type: string
+            description: Upload ID for receipt uploaded on storage bucket
+      x-source-svc: transactions
+    TradeContext:
       type: string
       enum:
-      - PENDING_IP_REPORT
-      - IN_PROGRESS
-      - FAILURE
-      - SUCCESS
-      x-source-svc: transactions
-    CustomerInitiateOrderRequestV2:
-      type: object
-      properties:
-        offerId:
-          type: string
-          description: id of offer to make unit reservation from
-        offerToken:
-          type: string
-          description: Token used to access private ads.
-        unitAmount:
-          type: string
-          description: unit to be reserved
-        rate:
-          type: number
-          description: rate to make reservation at
-        fiatAmount:
-          type: number
-          description: fiat equivalent of reserved unit
-        tradeRequestBroadcastId:
-          type: string
-          format: uuid
-        paymentMethodId:
-          type: string
-        paymentChannelId:
-          type: string
-        buyerPaymentMethodId:
-          type: string
-        customerWallet:
-          $ref: '#/components/schemas/TransactionsSvcWalletDTO'
-        apiKey:
-          type: string
-        thirdPartyOrderTradeId:
-          type: string
-        cexOrderId:
-          type: string
-      required:
-      - offerId
-      - unitAmount
-      x-source-svc: transactions
-    CustomerActionFields:
-      required:
-      - customerId
-      - transactionId
-      type: object
-      properties:
-        customerId:
-          type: string
-          format: uuid
-        transactionId:
-          type: string
-          format: uuid
-      x-source-svc: transactions
-    VerificationData:
-      type: object
-      properties:
-        message:
-          type: string
-          example: Hello Onboard
-        signature:
-          type: string
-          example: 1.4274191415664356e+156
-        timestamp:
-          type: integer
-          example: 1655483046
-        otp:
-          type: string
-          example: '1655483046'
-        totp:
-          type: string
-          description: User totp from authenticator app
-          example: 28404
+      - STANDARD_TRADE
+      - INTERNAL_RAIL
       x-source-svc: transactions
   securitySchemes:
     authSignature:

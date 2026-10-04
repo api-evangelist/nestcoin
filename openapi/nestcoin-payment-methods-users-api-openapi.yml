@@ -76,27 +76,6 @@ paths:
       x-codegen-request-body-name: updatePaymentMethodRequest
 components:
   schemas:
-    ErrorMessageDto:
-      description: Default error object for services. This gives consistent error object that all services may use.
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          description: Error code
-          example: UNKNOWN_ERROR
-        message:
-          type: string
-          description: Descriptive error message
-          example: Request could not be completed due to an error
-        data:
-          type: object
-          description: Additional data for this error message.
-          additionalProperties: true
-          properties: {}
-      x-common-model: ErrorMessageDto
     PaymentMethodUpdateRequest:
       required:
       - data
@@ -162,6 +141,27 @@ components:
 
             '
       x-source-svc: payment-methods
+    ErrorMessageDto:
+      description: Default error object for services. This gives consistent error object that all services may use.
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          description: Error code
+          example: UNKNOWN_ERROR
+        message:
+          type: string
+          description: Descriptive error message
+          example: Request could not be completed due to an error
+        data:
+          type: object
+          description: Additional data for this error message.
+          additionalProperties: true
+          properties: {}
+      x-common-model: ErrorMessageDto
   securitySchemes:
     authSignature:
       type: apiKey
